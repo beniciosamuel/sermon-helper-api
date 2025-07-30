@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": false,
+    "target": "ES2024",
+    "module": "commonjs",
+    "outDir": ".dist",
+    "moduleResolution": "node",
+		"lib": [
+			"ES2024",
+			"DOM"
+		],
+	},
+	"include": [
+		"client",
+		"server",
+	],
+}
