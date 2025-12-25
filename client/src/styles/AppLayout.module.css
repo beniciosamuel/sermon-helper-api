@@ -1,0 +1,22 @@
+.layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #0E0E14;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #0E0E14;
+  transition: margin-left 200ms ease-in-out;
+}
+
+/* When sidebar is collapsed, content adjusts */
+.contentWithCollapsedSidebar {
+  margin-left: 0;
+}
+
