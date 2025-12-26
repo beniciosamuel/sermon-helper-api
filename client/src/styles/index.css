@@ -1,3 +1,33 @@
+/* Dark theme CSS variables */
+body.theme-dark {
+  --bg: #0E0E14;
+  --panel: #151520;
+  --panel-alt: #181818;
+  --text-primary: #F5F5FA;
+  --text-secondary: #B5B5C5;
+  --accent: #E91E63;
+  --accent-alt: #FF4D8D;
+  /* Legacy variable names for backward compatibility */
+  --pink: #E91E63;
+  --magenta: #FF4D8D;
+  --purple-dark: #2A0F2F;
+}
+
+/* Light theme CSS variables */
+body.theme-light {
+  --bg: #F5F5FA;
+  --panel: #FFFFFF;
+  --panel-alt: #EAEAF0;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+  --accent: #E91E63;
+  --accent-alt: #FF4D8D;
+  /* Legacy variable names for backward compatibility */
+  --pink: #E91E63;
+  --magenta: #FF4D8D;
+  --purple-dark: #F0E6F2;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +35,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--text-primary);
+  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
 }
 
 code {

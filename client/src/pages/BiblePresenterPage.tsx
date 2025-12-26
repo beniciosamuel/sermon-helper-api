@@ -4,7 +4,6 @@ import VerseGrid from '../components/VerseGrid';
 import PreviewPanel from '../components/PreviewPanel';
 import FooterControls from '../components/FooterControls';
 import styles from '../styles/BiblePresenter.module.css';
-import { theme } from '../styles/theme';
 import { MOCK_VERSES } from '../data/mockVerses';
 
 const BiblePresenterPage: React.FC = () => {
@@ -71,19 +70,6 @@ const BiblePresenterPage: React.FC = () => {
       setSelectedVerse(1);
     }
   };
-
-  // Inject CSS variables
-  React.useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty('--bg', theme.background);
-    root.style.setProperty('--panel', theme.panel);
-    root.style.setProperty('--panel-alt', theme.panelAlt);
-    root.style.setProperty('--pink', theme.pink);
-    root.style.setProperty('--magenta', theme.magenta);
-    root.style.setProperty('--purple-dark', theme.purpleDark);
-    root.style.setProperty('--text-primary', theme.textPrimary);
-    root.style.setProperty('--text-secondary', theme.textSecondary);
-  }, []);
 
   return (
     <div className={styles.pageContainer}>
