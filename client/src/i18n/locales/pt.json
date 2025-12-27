@@ -2,6 +2,7 @@
   "sidebar": {
     "bible": "Bíblia",
     "artBuilder": "Art Builder",
+    "presentation": "Apresentação",
     "settings": "Configurações",
     "expandSidebar": "Expandir barra lateral",
     "collapseSidebar": "Recolher barra lateral"
@@ -74,6 +75,83 @@
   },
   "bible": {
     "chapters": "Capítulos"
+  },
+  "presentation": {
+    "listSidebar": {
+      "title": "Biblioteca de Conteúdo",
+      "songs": "Músicas",
+      "media": "Mídia",
+      "announcements": "Anúncios",
+      "searchPlaceholder": "Buscar...",
+      "noSongs": "Nenhuma música disponível",
+      "noMedia": "Nenhum arquivo de mídia carregado",
+      "noAnnouncements": "Nenhum anúncio",
+      "loadMedia": "Carregar Mídia",
+      "generateSlides": "Gerar slides da música",
+      "setAsBackground": "Definir como fundo do slide"
+    },
+    "visualization": {
+      "allSlides": "Todos os Slides",
+      "createSlide": "Criar Slide",
+      "noSlides": "Nenhum slide criado ainda",
+      "createFirstSlide": "Criar Primeiro Slide",
+      "noSlideSelected": "Nenhum slide selecionado",
+      "edit": "Editar",
+      "timeline": "Linha do Tempo"
+    },
+    "controls": {
+      "formatting": "Formatação",
+      "toggleLogo": "Alternar logo",
+      "logo": "Logo",
+      "blankScreen": "Tela em branco",
+      "blank": "Branco",
+      "previous": "Anterior",
+      "next": "Próximo",
+      "fontSize": "Tamanho da Fonte",
+      "fontFamily": "Fonte",
+      "textAlign": "Alinhamento",
+      "textStyle": "Estilo do Texto",
+      "textColor": "Cor do Texto",
+      "alignLeft": "Alinhar à esquerda",
+      "center": "Centralizar",
+      "alignRight": "Alinhar à direita",
+      "bold": "Negrito",
+      "italic": "Itálico",
+      "underline": "Sublinhado"
+    },
+    "slidesList": {
+      "title": "Slides",
+      "noSlides": "Nenhum slide",
+      "duplicate": "Duplicar",
+      "delete": "Excluir",
+      "deleteAll": "Excluir Todos",
+      "themes": "Temas"
+    },
+    "layers": {
+      "title": "Camadas",
+      "noLayers": "Nenhuma camada",
+      "background": "Fundo",
+      "lyrics": "Letra",
+      "announcement": "Anúncio",
+      "hideLayer": "Ocultar camada",
+      "showLayer": "Mostrar camada",
+      "unlockLayer": "Desbloquear camada",
+      "lockLayer": "Bloquear camada"
+    },
+    "viewMode": {
+      "preview": "Visualização",
+      "grid": "Grade",
+      "timeline": "Linha do Tempo"
+    },
+    "themes": {
+      "dark": "Escuro",
+      "light": "Claro",
+      "gradient": "Gradiente"
+    },
+    "slide": {
+      "newSlide": "Novo Slide",
+      "clickToEdit": "Clique para editar"
+    }
   }
 }
 

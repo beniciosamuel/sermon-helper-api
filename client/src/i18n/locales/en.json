@@ -2,6 +2,7 @@
   "sidebar": {
     "bible": "Bible",
     "artBuilder": "Art Builder",
+    "presentation": "Presentation",
     "settings": "Settings",
     "expandSidebar": "Expand sidebar",
     "collapseSidebar": "Collapse sidebar"
@@ -74,6 +75,83 @@
   },
   "bible": {
     "chapters": "Chapters"
+  },
+  "presentation": {
+    "listSidebar": {
+      "title": "Content Library",
+      "songs": "Songs",
+      "media": "Media",
+      "announcements": "Announcements",
+      "searchPlaceholder": "Search...",
+      "noSongs": "No songs available",
+      "noMedia": "No media files loaded",
+      "noAnnouncements": "No announcements",
+      "loadMedia": "Load Media",
+      "generateSlides": "Generate slides from song",
+      "setAsBackground": "Set as slide background"
+    },
+    "visualization": {
+      "allSlides": "All Slides",
+      "createSlide": "Create Slide",
+      "noSlides": "No slides created yet",
+      "createFirstSlide": "Create First Slide",
+      "noSlideSelected": "No slide selected",
+      "edit": "Edit",
+      "timeline": "Timeline"
+    },
+    "controls": {
+      "formatting": "Formatting",
+      "toggleLogo": "Toggle logo",
+      "logo": "Logo",
+      "blankScreen": "Blank screen",
+      "blank": "Blank",
+      "previous": "Previous",
+      "next": "Next",
+      "fontSize": "Font Size",
+      "fontFamily": "Font Family",
+      "textAlign": "Text Alignment",
+      "textStyle": "Text Style",
+      "textColor": "Text Color",
+      "alignLeft": "Align left",
+      "center": "Center",
+      "alignRight": "Align right",
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline"
+    },
+    "slidesList": {
+      "title": "Slides",
+      "noSlides": "No slides",
+      "duplicate": "Duplicate",
+      "delete": "Delete",
+      "deleteAll": "Delete All",
+      "themes": "Themes"
+    },
+    "layers": {
+      "title": "Layers",
+      "noLayers": "No layers",
+      "background": "Background",
+      "lyrics": "Lyrics",
+      "announcement": "Announcement",
+      "hideLayer": "Hide layer",
+      "showLayer": "Show layer",
+      "unlockLayer": "Unlock layer",
+      "lockLayer": "Lock layer"
+    },
+    "viewMode": {
+      "preview": "Preview",
+      "grid": "Grid",
+      "timeline": "Timeline"
+    },
+    "themes": {
+      "dark": "Dark",
+      "light": "Light",
+      "gradient": "Gradient"
+    },
+    "slide": {
+      "newSlide": "New Slide",
+      "clickToEdit": "Click to edit"
+    }
   }
 }
 

@@ -1,0 +1,96 @@
+.topControls {
+  grid-area: topControls;
+  background: var(--panel-alt);
+  border-bottom: 1px solid rgba(233, 30, 99, 0.1);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.formatPanel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.formatGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.formatGroup label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.formatGroup select {
+  padding: 6px 12px;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  transition: all 150ms ease-in-out;
+}
+
+.formatGroup select:hover {
+  border-color: var(--accent);
+}
+
+.formatGroup select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.2);
+}
+
+.alignButtons,
+.styleButtons {
+  display: flex;
+  gap: 4px;
+}
+
+.alignButton,
+.styleButton {
+  padding: 6px 12px;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alignButton:hover,
+.styleButton:hover {
+  background: rgba(233, 30, 99, 0.15);
+  border-color: var(--accent);
+}
+
+.alignButton.active,
+.styleButton.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+  border-color: transparent;
+  color: white;
+}
+
+.colorInput {
+  width: 40px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+}
+
+

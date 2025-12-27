@@ -4,6 +4,7 @@ import AppLayout from './layouts/AppLayout';
 import ArtBuilderPage from './pages/ArtBuilderPage';
 import BiblePresenterPage from './pages/BiblePresenterPage';
 import SettingsPage from './pages/SettingsPage';
+import PresentationPage from './pages/PresentationPage';
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Route path="/bible" element={<BiblePresenterPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/art-builder" element={<ArtBuilderPage />} />
+        <Route path="/presentation" element={<PresentationPage />} />
       </Route>
     </Routes>
   );

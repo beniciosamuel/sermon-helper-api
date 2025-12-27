@@ -1,0 +1,142 @@
+.layersPanel {
+  grid-area: layersPanel;
+  background: var(--panel-alt);
+  border-left: 1px solid rgba(233, 30, 99, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.layersHeader {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layersTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.layersList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.layerItem {
+  background: var(--panel-alt);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+}
+
+.layerItem:hover {
+  background: rgba(233, 30, 99, 0.1);
+  border-color: rgba(233, 30, 99, 0.3);
+}
+
+.layerItemActive {
+  background: rgba(233, 30, 99, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(233, 30, 99, 0.2);
+}
+
+.layerItemHidden {
+  opacity: 0.5;
+}
+
+.layerItemContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.layerTypeIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.layerInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.layerType {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.layerPreview {
+  font-size: 11px;
+  margin: 0;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.layerActions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.layerVisibilityButton,
+.layerLockButton {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease-in-out;
+  padding: 0;
+}
+
+.layerVisibilityButton:hover,
+.layerLockButton:hover {
+  background: rgba(233, 30, 99, 0.2);
+  border-color: var(--accent);
+}
+
+/* Scrollbar */
+.layersList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.layersList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.layersList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.layersList::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+

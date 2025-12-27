@@ -1,0 +1,71 @@
+.bottomControls {
+  grid-area: bottomControls;
+  background: var(--panel-alt);
+  border-top: 1px solid rgba(233, 30, 99, 0.1);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.controlButton {
+  padding: 10px 20px;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.controlButton:hover {
+  background: rgba(233, 30, 99, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(233, 30, 99, 0.2);
+  transform: translateY(-1px);
+}
+
+.controlButton.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+}
+
+.navButton {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navButton:hover:not(:disabled) {
+  box-shadow: 0 6px 25px rgba(233, 30, 99, 0.6);
+  transform: translateY(-2px);
+}
+
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.navButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
