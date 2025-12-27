@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../styles/PresentationControl.module.css';
 
-export interface PresentationLayer {
+export interface ArtBuilderLayer {
   id: string;
   name: string;
   visible: boolean;
@@ -10,7 +10,7 @@ export interface PresentationLayer {
 }
 
 interface LayerPanelProps {
-  layers: PresentationLayer[];
+  layers: ArtBuilderLayer[];
   activeLayerId: string | null;
   onLayerSelect: (layerId: string) => void;
   onLayerToggleVisibility: (layerId: string) => void;
@@ -33,7 +33,7 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
   const [editingLayerId, setEditingLayerId] = React.useState<string | null>(null);
   const [editingName, setEditingName] = React.useState<string>('');
 
-  const handleNameEdit = (layer: PresentationLayer) => {
+  const handleNameEdit = (layer: ArtBuilderLayer) => {
     setEditingLayerId(layer.id);
     setEditingName(layer.name);
   };

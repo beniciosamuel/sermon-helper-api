@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import PresentationToolbar from '../components/Presentation/PresentationToolbar';
-import LayerPanel, { PresentationLayer } from '../components/Presentation/LayerPanel';
-import PreviewCanvas from '../components/Presentation/PreviewCanvas';
-import ThemeSelector, { PresentationTheme } from '../components/Presentation/ThemeSelector';
+import ArtBuilderToolbar from '../components/ArtBuilder/ArtBuilderToolbar';
+import LayerPanel, { ArtBuilderLayer } from '../components/ArtBuilder/LayerPanel';
+import PreviewCanvas from '../components/ArtBuilder/PreviewCanvas';
+import ThemeSelector, { ArtBuilderTheme } from '../components/ArtBuilder/ThemeSelector';
 import styles from '../styles/PresentationControl.module.css';
 
 // Mock themes
-const MOCK_THEMES: PresentationTheme[] = [
+const MOCK_THEMES: ArtBuilderTheme[] = [
   {
     id: 'dark',
     name: 'Escuro',
@@ -44,8 +44,8 @@ const MOCK_THEMES: PresentationTheme[] = [
   },
 ];
 
-const PresentationControlPage: React.FC = () => {
-  const [layers, setLayers] = useState<PresentationLayer[]>([
+const ArtBuilderControlPage: React.FC = () => {
+  const [layers, setLayers] = useState<ArtBuilderLayer[]>([
     {
       id: '1',
       name: 'Camada 1',
@@ -88,7 +88,7 @@ const PresentationControlPage: React.FC = () => {
   };
 
   const handleLayerCreate = () => {
-    const newLayer: PresentationLayer = {
+    const newLayer: ArtBuilderLayer = {
       id: Date.now().toString(),
       name: `Camada ${layers.length + 1}`,
       visible: true,
@@ -138,7 +138,7 @@ const PresentationControlPage: React.FC = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <PresentationToolbar
+      <ArtBuilderToolbar
         onResolutionChange={(res) => console.log('Resolution:', res)}
         onAspectRatioChange={(ratio) => setAspectRatio(ratio)}
         onBackgroundToggle={() => console.log('Background toggled')}
@@ -178,5 +178,5 @@ const PresentationControlPage: React.FC = () => {
   );
 };
 
-export default PresentationControlPage;
+export default ArtBuilderControlPage;
 

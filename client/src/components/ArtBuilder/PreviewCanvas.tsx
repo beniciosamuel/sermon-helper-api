@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from '../../styles/PresentationControl.module.css';
-import { PresentationLayer } from './LayerPanel';
+import { ArtBuilderLayer } from './LayerPanel';
 
 interface PreviewCanvasProps {
-  layers: PresentationLayer[];
+  layers: ArtBuilderLayer[];
   activeLayerId: string | null;
   aspectRatio: string;
   onCanvasClick: () => void;

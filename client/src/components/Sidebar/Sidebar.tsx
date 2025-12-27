@@ -4,7 +4,7 @@ import SidebarItem from './SidebarItem';
 import styles from './Sidebar.module.css';
 
 // Icon components (inline SVG)
-const PresentationIcon: React.FC<{ className?: string }> = ({ className }) => (
+const ArtBuilderIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     className={className}
     width="20"
@@ -16,9 +16,7 @@ const PresentationIcon: React.FC<{ className?: string }> = ({ className }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-    <line x1="8" y1="21" x2="16" y2="21" />
-    <line x1="12" y1="17" x2="12" y2="21" />
+    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
   </svg>
 );
 
@@ -133,18 +131,18 @@ const Sidebar: React.FC = () => {
       <div className={styles.sidebarContent}>
         <div className={styles.sidebarSection}>
           <SidebarItem
-            icon={<PresentationIcon />}
-            label="Apresentação"
-            active={isActive('/presentation')}
-            collapsed={collapsed}
-            onClick={() => handleItemClick('/presentation')}
-          />
-          <SidebarItem
             icon={<BibleIcon />}
             label="Bíblia"
             active={isActive('/bible')}
             collapsed={collapsed}
             onClick={() => handleItemClick('/bible')}
+          />
+          <SidebarItem
+            icon={<ArtBuilderIcon />}
+            label="Art Builder"
+            active={isActive('/art-builder')}
+            collapsed={collapsed}
+            onClick={() => handleItemClick('/art-builder')}
           />
         </div>
 

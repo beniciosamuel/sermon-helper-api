@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styles from '../../styles/PresentationControl.module.css';
 
-interface PresentationToolbarProps {
+interface ArtBuilderToolbarProps {
   onFormatChange?: (format: any) => void;
   onResolutionChange?: (resolution: string) => void;
   onAspectRatioChange?: (ratio: string) => void;
@@ -9,7 +9,7 @@ interface PresentationToolbarProps {
   onPreviewToggle?: () => void;
 }
 
-const PresentationToolbar: React.FC<PresentationToolbarProps> = ({
+const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
   onFormatChange,
   onResolutionChange,
   onAspectRatioChange,
@@ -78,7 +78,7 @@ const PresentationToolbar: React.FC<PresentationToolbarProps> = ({
       </div>
 
       <div className={styles.toolbarRight}>
-        {/* Presentation Controls */}
+        {/* Art Builder Controls */}
         <select
           className={styles.controlSelect}
           defaultValue="1920x1080"
@@ -117,5 +117,5 @@ const PresentationToolbar: React.FC<PresentationToolbarProps> = ({
   );
 };
 
-export default PresentationToolbar;
+export default ArtBuilderToolbar;
 

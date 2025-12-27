@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../styles/PresentationControl.module.css';
 
-export interface PresentationTheme {
+export interface ArtBuilderTheme {
   id: string;
   name: string;
   backgroundColor: string;
@@ -10,7 +10,7 @@ export interface PresentationTheme {
 }
 
 interface ThemeSelectorProps {
-  themes: PresentationTheme[];
+  themes: ArtBuilderTheme[];
   activeThemeId: string | null;
   onThemeSelect: (themeId: string) => void;
 }
