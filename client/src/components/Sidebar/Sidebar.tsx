@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SidebarItem from './SidebarItem';
 import styles from './Sidebar.module.css';
 
@@ -90,6 +91,7 @@ const ChevronRightIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 const Sidebar: React.FC = () => {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -116,7 +118,7 @@ const Sidebar: React.FC = () => {
         <button
           className={styles.sidebarToggle}
           onClick={handleToggle}
-          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={collapsed ? t('sidebar.expandSidebar') : t('sidebar.collapseSidebar')}
         >
           <div
             className={`${styles.sidebarToggleIcon} ${
@@ -132,14 +134,14 @@ const Sidebar: React.FC = () => {
         <div className={styles.sidebarSection}>
           <SidebarItem
             icon={<BibleIcon />}
-            label="Bíblia"
+            label={t('sidebar.bible')}
             active={isActive('/bible')}
             collapsed={collapsed}
             onClick={() => handleItemClick('/bible')}
           />
           <SidebarItem
             icon={<ArtBuilderIcon />}
-            label="Art Builder"
+            label={t('sidebar.artBuilder')}
             active={isActive('/art-builder')}
             collapsed={collapsed}
             onClick={() => handleItemClick('/art-builder')}
@@ -151,7 +153,7 @@ const Sidebar: React.FC = () => {
         <div className={styles.sidebarFooter}>
           <SidebarItem
             icon={<SettingsIcon />}
-            label="Configurações"
+            label={t('sidebar.settings')}
             active={isActive('/settings')}
             collapsed={collapsed}
             onClick={() => handleItemClick('/settings')}

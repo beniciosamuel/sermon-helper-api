@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 import SettingsSection from '../components/Settings/SettingsSection';
 import ThemeToggle from '../components/Settings/ThemeToggle';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import styles from '../styles/SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { theme, setTheme } = useTheme();
@@ -15,26 +18,26 @@ const SettingsPage: React.FC = () => {
 
   const handlePasswordChange = () => {
     // Mock handler - no real backend
-    alert('Funcionalidade de alteração de senha será implementada em breve.');
+    alert(t('settings.account.passwordChangeAlert'));
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Configurações</h1>
+          <h1 className={styles.title}>{t('settings.title')}</h1>
           <p className={styles.subtitle}>
-            Gerencie sua conta e preferências de aparência
+            {t('settings.subtitle')}
           </p>
         </div>
 
         <SettingsSection
-          title="Conta de Acesso"
-          description="Gerencie suas credenciais de acesso"
+          title={t('settings.account.title')}
+          description={t('settings.account.description')}
         >
           <div className={styles.formGroup}>
             <label htmlFor="email" className={styles.label}>
-              Email
+              {t('settings.account.email')}
             </label>
             <input
               id="email"
@@ -42,13 +45,13 @@ const SettingsPage: React.FC = () => {
               className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="seu@email.com"
+              placeholder={t('settings.account.emailPlaceholder')}
             />
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="password" className={styles.label}>
-              Senha
+              {t('settings.account.password')}
             </label>
             <input
               id="password"
@@ -56,10 +59,10 @@ const SettingsPage: React.FC = () => {
               className={styles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder={t('settings.account.passwordPlaceholder')}
             />
             <p className={styles.helperText}>
-              Sua senha não é exibida por questões de segurança
+              {t('settings.account.passwordHelper')}
             </p>
           </div>
 
@@ -68,23 +71,30 @@ const SettingsPage: React.FC = () => {
             onClick={handlePasswordChange}
             type="button"
           >
-            Alterar senha
+            {t('settings.account.changePassword')}
           </button>
         </SettingsSection>
 
         <SettingsSection
-          title="Aparência"
-          description="Personalize a aparência da aplicação"
+          title={t('settings.appearance.title')}
+          description={t('settings.appearance.description')}
         >
           <div className={styles.themeSection}>
             <div className={styles.themeInfo}>
-              <h3 className={styles.themeTitle}>Tema</h3>
+              <h3 className={styles.themeTitle}>{t('settings.appearance.theme')}</h3>
               <p className={styles.themeDescription}>
-                Escolha entre modo escuro ou claro
+                {t('settings.appearance.themeDescription')}
               </p>
             </div>
             <ThemeToggle value={theme} onChange={handleThemeChange} />
           </div>
+        </SettingsSection>
+
+        <SettingsSection
+          title={t('settings.language.title')}
+          description={t('settings.language.description')}
+        >
+          <LanguageSwitcher />
         </SettingsSection>
       </div>
     </div>

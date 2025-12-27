@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from '../../styles/PresentationControl.module.css';
 
 export interface ArtBuilderLayer {
@@ -30,6 +31,7 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
   onLayerCreate,
   onLayerDelete,
 }) => {
+  const { t } = useTranslation();
   const [editingLayerId, setEditingLayerId] = React.useState<string | null>(null);
   const [editingName, setEditingName] = React.useState<string>('');
 
@@ -54,11 +56,11 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
   return (
     <div className={styles.layerPanel}>
       <div className={styles.layerPanelHeader}>
-        <h3 className={styles.layerPanelTitle}>Camadas</h3>
+        <h3 className={styles.layerPanelTitle}>{t('artBuilder.layers')}</h3>
         <button
           className={styles.addLayerButton}
           onClick={onLayerCreate}
-          title="Adicionar camada"
+          title={t('artBuilder.addLayer')}
         >
           +
         </button>
@@ -67,8 +69,8 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
       <div className={styles.layerList}>
         {layers.length === 0 ? (
           <div className={styles.emptyState}>
-            <p>Nenhuma camada</p>
-            <p className={styles.emptyStateHint}>Clique em + para adicionar</p>
+            <p>{t('artBuilder.noLayers')}</p>
+            <p className={styles.emptyStateHint}>{t('artBuilder.clickToAdd')}</p>
           </div>
         ) : (
           layers.map((layer) => (
@@ -82,7 +84,7 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
               <div className={styles.layerItemContent}>
                 <button
                   className={styles.layerDragHandle}
-                  title="Arrastar para reordenar"
+                  title={t('artBuilder.dragToReorder')}
                   disabled
                 >
                   ⋮⋮
@@ -94,7 +96,7 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
                     e.stopPropagation();
                     onLayerToggleVisibility(layer.id);
                   }}
-                  title={layer.visible ? 'Ocultar camada' : 'Mostrar camada'}
+                  title={layer.visible ? t('artBuilder.hideLayer') : t('artBuilder.showLayer')}
                 >
                   {layer.visible ? '👁️' : '👁️‍🗨️'}
                 </button>
@@ -130,7 +132,7 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
                     e.stopPropagation();
                     onLayerToggleLock(layer.id);
                   }}
-                  title={layer.locked ? 'Desbloquear camada' : 'Bloquear camada'}
+                  title={layer.locked ? t('artBuilder.unlockLayer') : t('artBuilder.lockLayer')}
                 >
                   {layer.locked ? '🔒' : '🔓'}
                 </button>
@@ -142,7 +144,7 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
                       e.stopPropagation();
                       onLayerDelete(layer.id);
                     }}
-                    title="Excluir camada"
+                    title={t('artBuilder.deleteLayer')}
                   >
                     ×
                   </button>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from '../../styles/SettingsPage.module.css';
 
 interface ThemeToggleProps {
@@ -45,6 +46,7 @@ const MoonIcon: React.FC = () => (
 );
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ value, onChange }) => {
+  const { t } = useTranslation();
   const handleToggle = () => {
     onChange(value === 'dark' ? 'light' : 'dark');
   };
@@ -64,7 +66,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ value, onChange }) => {
         onKeyDown={handleKeyDown}
         role="switch"
         aria-checked={value === 'light'}
-        aria-label={`Switch to ${value === 'dark' ? 'light' : 'dark'} mode`}
+        aria-label={value === 'dark' ? t('settings.appearance.switchToLight') : t('settings.appearance.switchToDark')}
         tabIndex={0}
       >
         <div
@@ -87,14 +89,14 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ value, onChange }) => {
             value === 'dark' ? styles.themeLabelActive : ''
           }`}
         >
-          <MoonIcon /> Escuro
+          <MoonIcon /> {t('settings.appearance.dark')}
         </span>
         <span
           className={`${styles.themeLabel} ${
             value === 'light' ? styles.themeLabelActive : ''
           }`}
         >
-          <SunIcon /> Claro
+          <SunIcon /> {t('settings.appearance.light')}
         </span>
       </div>
     </div>

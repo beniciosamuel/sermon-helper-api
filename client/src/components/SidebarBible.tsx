@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from '../styles/BiblePresenter.module.css';
 
 interface SidebarBibleProps {
@@ -33,6 +34,7 @@ const SidebarBible: React.FC<SidebarBibleProps> = ({
   selectedBook,
   selectedChapter,
 }) => {
+  const { t } = useTranslation();
   const [selectedVersion, setSelectedVersion] = useState<string>('ARA');
 
   const renderChapterButtons = () => {
@@ -93,7 +95,7 @@ const SidebarBible: React.FC<SidebarBibleProps> = ({
       
       {selectedBook && (
         <div className={styles.chapterSelector}>
-          <div className={styles.chapterSelectorTitle}>Capítulos</div>
+          <div className={styles.chapterSelectorTitle}>{t('bible.chapters')}</div>
           <div className={styles.chapterButtons}>
             {renderChapterButtons()}
           </div>

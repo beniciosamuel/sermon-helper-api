@@ -1,0 +1,79 @@
+{
+  "sidebar": {
+    "bible": "Bíblia",
+    "artBuilder": "Art Builder",
+    "settings": "Configurações",
+    "expandSidebar": "Expandir barra lateral",
+    "collapseSidebar": "Recolher barra lateral"
+  },
+  "artBuilder": {
+    "layers": "Camadas",
+    "addLayer": "Adicionar camada",
+    "noLayers": "Nenhuma camada",
+    "clickToAdd": "Clique em + para adicionar",
+    "dragToReorder": "Arrastar para reordenar",
+    "hideLayer": "Ocultar camada",
+    "showLayer": "Mostrar camada",
+    "unlockLayer": "Desbloquear camada",
+    "lockLayer": "Bloquear camada",
+    "deleteLayer": "Excluir camada",
+    "layer": "Camada",
+    "newLayer": "Nova camada",
+    "clickToEdit": "Clique para editar",
+    "selectOrCreate": "Selecione uma camada ou crie uma nova",
+    "themes": "Temas",
+    "toolbar": {
+      "bold": "Negrito",
+      "italic": "Itálico",
+      "underline": "Sublinhado",
+      "alignLeft": "Alinhar à esquerda",
+      "center": "Centralizar",
+      "alignRight": "Alinhar à direita",
+      "textColor": "Cor do texto",
+      "clearFormatting": "Limpar formatação",
+      "toggleBackground": "Alternar fundo",
+      "togglePreview": "Alternar visualização",
+      "preview": "Preview"
+    },
+    "themes": {
+      "dark": "Escuro",
+      "light": "Claro",
+      "gradient": "Gradiente",
+      "warm": "Quente",
+      "cool": "Frio"
+    }
+  },
+  "settings": {
+    "title": "Configurações",
+    "subtitle": "Gerencie sua conta e preferências de aparência",
+    "account": {
+      "title": "Conta de Acesso",
+      "description": "Gerencie suas credenciais de acesso",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "passwordPlaceholder": "••••••••",
+      "passwordHelper": "Sua senha não é exibida por questões de segurança",
+      "changePassword": "Alterar senha",
+      "passwordChangeAlert": "Funcionalidade de alteração de senha será implementada em breve."
+    },
+    "appearance": {
+      "title": "Aparência",
+      "description": "Personalize a aparência da aplicação",
+      "theme": "Tema",
+      "themeDescription": "Escolha entre modo escuro ou claro",
+      "switchToDark": "Alternar para modo escuro",
+      "switchToLight": "Alternar para modo claro",
+      "dark": "Escuro",
+      "light": "Claro"
+    },
+    "language": {
+      "title": "Idioma",
+      "description": "Escolha o idioma da aplicação"
+    }
+  },
+  "bible": {
+    "chapters": "Capítulos"
+  }
+}
+

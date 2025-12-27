@@ -1,0 +1,79 @@
+{
+  "sidebar": {
+    "bible": "Bible",
+    "artBuilder": "Art Builder",
+    "settings": "Settings",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar"
+  },
+  "artBuilder": {
+    "layers": "Layers",
+    "addLayer": "Add layer",
+    "noLayers": "No layers",
+    "clickToAdd": "Click + to add",
+    "dragToReorder": "Drag to reorder",
+    "hideLayer": "Hide layer",
+    "showLayer": "Show layer",
+    "unlockLayer": "Unlock layer",
+    "lockLayer": "Lock layer",
+    "deleteLayer": "Delete layer",
+    "layer": "Layer",
+    "newLayer": "New layer",
+    "clickToEdit": "Click to edit",
+    "selectOrCreate": "Select a layer or create a new one",
+    "themes": "Themes",
+    "toolbar": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "alignLeft": "Align left",
+      "center": "Center",
+      "alignRight": "Align right",
+      "textColor": "Text color",
+      "clearFormatting": "Clear formatting",
+      "toggleBackground": "Toggle background",
+      "togglePreview": "Toggle preview",
+      "preview": "Preview"
+    },
+    "themes": {
+      "dark": "Dark",
+      "light": "Light",
+      "gradient": "Gradient",
+      "warm": "Warm",
+      "cool": "Cool"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and appearance preferences",
+    "account": {
+      "title": "Access Account",
+      "description": "Manage your access credentials",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordHelper": "Your password is not displayed for security reasons",
+      "changePassword": "Change password",
+      "passwordChangeAlert": "Password change functionality will be implemented soon."
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize the application appearance",
+      "theme": "Theme",
+      "themeDescription": "Choose between dark or light mode",
+      "switchToDark": "Switch to dark mode",
+      "switchToLight": "Switch to light mode",
+      "dark": "Dark",
+      "light": "Light"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the application language"
+    }
+  },
+  "bible": {
+    "chapters": "Chapters"
+  }
+}
+

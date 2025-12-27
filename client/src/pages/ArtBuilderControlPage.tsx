@@ -1,57 +1,60 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ArtBuilderToolbar from '../components/ArtBuilder/ArtBuilderToolbar';
 import LayerPanel, { ArtBuilderLayer } from '../components/ArtBuilder/LayerPanel';
 import PreviewCanvas from '../components/ArtBuilder/PreviewCanvas';
 import ThemeSelector, { ArtBuilderTheme } from '../components/ArtBuilder/ThemeSelector';
 import styles from '../styles/PresentationControl.module.css';
 
-// Mock themes
-const MOCK_THEMES: ArtBuilderTheme[] = [
-  {
-    id: 'dark',
-    name: 'Escuro',
-    backgroundColor: '#0E0E14',
-    textColor: '#F5F5FA',
-    accentColor: '#E91E63',
-  },
-  {
-    id: 'light',
-    name: 'Claro',
-    backgroundColor: '#FFFFFF',
-    textColor: '#1A1A1A',
-    accentColor: '#E91E63',
-  },
-  {
-    id: 'gradient',
-    name: 'Gradiente',
-    backgroundColor: '#1A1A2E',
-    textColor: '#F5F5FA',
-    accentColor: '#FF4D8D',
-  },
-  {
-    id: 'warm',
-    name: 'Quente',
-    backgroundColor: '#2D1B1B',
-    textColor: '#FFE5D9',
-    accentColor: '#FF6B6B',
-  },
-  {
-    id: 'cool',
-    name: 'Frio',
-    backgroundColor: '#0A1929',
-    textColor: '#E3F2FD',
-    accentColor: '#42A5F5',
-  },
-];
-
 const ArtBuilderControlPage: React.FC = () => {
+  const { t } = useTranslation();
+  
+  // Mock themes with translated names
+  const MOCK_THEMES: ArtBuilderTheme[] = [
+    {
+      id: 'dark',
+      name: t('artBuilder.themes.dark'),
+      backgroundColor: '#0E0E14',
+      textColor: '#F5F5FA',
+      accentColor: '#E91E63',
+    },
+    {
+      id: 'light',
+      name: t('artBuilder.themes.light'),
+      backgroundColor: '#FFFFFF',
+      textColor: '#1A1A1A',
+      accentColor: '#E91E63',
+    },
+    {
+      id: 'gradient',
+      name: t('artBuilder.themes.gradient'),
+      backgroundColor: '#1A1A2E',
+      textColor: '#F5F5FA',
+      accentColor: '#FF4D8D',
+    },
+    {
+      id: 'warm',
+      name: t('artBuilder.themes.warm'),
+      backgroundColor: '#2D1B1B',
+      textColor: '#FFE5D9',
+      accentColor: '#FF6B6B',
+    },
+    {
+      id: 'cool',
+      name: t('artBuilder.themes.cool'),
+      backgroundColor: '#0A1929',
+      textColor: '#E3F2FD',
+      accentColor: '#42A5F5',
+    },
+  ];
+
   const [layers, setLayers] = useState<ArtBuilderLayer[]>([
     {
       id: '1',
-      name: 'Camada 1',
+      name: `${t('artBuilder.layer')} 1`,
       visible: true,
       locked: false,
-      content: '<p>Clique para editar</p>',
+      content: `<p>${t('artBuilder.clickToEdit')}</p>`,
     },
   ]);
   const [activeLayerId, setActiveLayerId] = useState<string | null>('1');
@@ -90,10 +93,10 @@ const ArtBuilderControlPage: React.FC = () => {
   const handleLayerCreate = () => {
     const newLayer: ArtBuilderLayer = {
       id: Date.now().toString(),
-      name: `Camada ${layers.length + 1}`,
+      name: `${t('artBuilder.layer')} ${layers.length + 1}`,
       visible: true,
       locked: false,
-      content: '<p>Nova camada</p>',
+      content: `<p>${t('artBuilder.newLayer')}</p>`,
     };
     setLayers((prev) => [...prev, newLayer]);
     setActiveLayerId(newLayer.id);

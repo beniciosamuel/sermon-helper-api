@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from '../../styles/PresentationControl.module.css';
 
 export interface ArtBuilderTheme {
@@ -20,10 +21,11 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   activeThemeId,
   onThemeSelect,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className={styles.themeSelector}>
       <div className={styles.themeSelectorHeader}>
-        <h3 className={styles.themeSelectorTitle}>Temas</h3>
+        <h3 className={styles.themeSelectorTitle}>{t('artBuilder.themes')}</h3>
       </div>
       <div className={styles.themeList}>
         {themes.map((theme) => (

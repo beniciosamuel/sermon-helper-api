@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from '../../styles/PresentationControl.module.css';
 import { ArtBuilderLayer } from './LayerPanel';
 
@@ -19,6 +20,7 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
   onLayerClick,
   onLayerContentChange,
 }) => {
+  const { t } = useTranslation();
   const [aspectWidth, aspectHeight] = aspectRatio.split(':').map(Number);
   const layerRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -29,7 +31,7 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
     visibleLayers.forEach((layer) => {
       const ref = layerRefs.current[layer.id];
       if (ref && ref.innerHTML !== layer.content) {
-        ref.innerHTML = layer.content || '<p>Clique para editar</p>';
+        ref.innerHTML = layer.content || `<p>${t('artBuilder.clickToEdit')}</p>`;
       }
     });
   }, [layers, visibleLayers]);
@@ -51,9 +53,9 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
         <div className={styles.previewGrid} />
         {visibleLayers.length === 0 ? (
           <div className={styles.previewPlaceholder}>
-            <p>Clique para editar</p>
+            <p>{t('artBuilder.clickToEdit')}</p>
             <p className={styles.previewPlaceholderHint}>
-              Selecione uma camada ou crie uma nova
+              {t('artBuilder.selectOrCreate')}
             </p>
           </div>
         ) : (

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from '../../styles/PresentationControl.module.css';
 
 interface ArtBuilderToolbarProps {
@@ -16,6 +17,7 @@ const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
   onBackgroundToggle,
   onPreviewToggle,
 }) => {
+  const { t } = useTranslation();
   const quillRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,23 +33,23 @@ const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
       <div className={styles.toolbarLeft}>
         {/* Rich Text Formatting Controls */}
         <div className={styles.formatGroup}>
-          <button className={styles.toolbarButton} title="Negrito">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.bold')}>
             <strong>B</strong>
           </button>
-          <button className={styles.toolbarButton} title="Itálico">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.italic')}>
             <em>I</em>
           </button>
-          <button className={styles.toolbarButton} title="Sublinhado">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.underline')}>
             <u>S</u>
           </button>
           <div className={styles.toolbarSeparator} />
-          <button className={styles.toolbarButton} title="Alinhar à esquerda">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.alignLeft')}>
             ⬅
           </button>
-          <button className={styles.toolbarButton} title="Centralizar">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.center')}>
             ⬌
           </button>
-          <button className={styles.toolbarButton} title="Alinhar à direita">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.alignRight')}>
             ➡
           </button>
           <div className={styles.toolbarSeparator} />
@@ -65,13 +67,13 @@ const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
             <option value="64">64</option>
           </select>
           <div className={styles.toolbarSeparator} />
-          <button className={styles.toolbarButton} title="Cor do texto">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.textColor')}>
             <span className={styles.colorButton}>
               A
               <span className={styles.colorIndicator} style={{ backgroundColor: 'var(--accent)' }} />
             </span>
           </button>
-          <button className={styles.toolbarButton} title="Limpar formatação">
+          <button className={styles.toolbarButton} title={t('artBuilder.toolbar.clearFormatting')}>
             🧹
           </button>
         </div>
@@ -100,7 +102,7 @@ const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
         <button
           className={styles.toolbarButton}
           onClick={onBackgroundToggle}
-          title="Alternar fundo"
+          title={t('artBuilder.toolbar.toggleBackground')}
         >
           🖼️
         </button>
@@ -108,9 +110,9 @@ const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
         <button
           className={`${styles.toolbarButton} ${styles.previewButton}`}
           onClick={onPreviewToggle}
-          title="Alternar visualização"
+          title={t('artBuilder.toolbar.togglePreview')}
         >
-          👁️ Preview
+          👁️ {t('artBuilder.toolbar.preview')}
         </button>
       </div>
     </div>
