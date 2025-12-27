@@ -152,6 +152,43 @@
       "newSlide": "Novo Slide",
       "clickToEdit": "Clique para editar"
     }
+  },
+  "auth": {
+    "title": "Bem-vindo",
+    "subtitle": "Entre na sua conta ou crie uma nova",
+    "login": {
+      "title": "Entrar",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "passwordPlaceholder": "Digite sua senha",
+      "submit": "Entrar",
+      "submitting": "Entrando...",
+      "emailRequired": "Email é obrigatório",
+      "emailInvalid": "Por favor, insira um email válido",
+      "passwordRequired": "Senha é obrigatória",
+      "failed": "Falha no login. Verifique suas credenciais.",
+      "error": "Ocorreu um erro. Tente novamente."
+    },
+    "signup": {
+      "title": "Criar Conta",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "passwordPlaceholder": "Crie uma senha",
+      "confirmPassword": "Confirmar Senha",
+      "confirmPasswordPlaceholder": "Confirme sua senha",
+      "submit": "Criar Conta",
+      "submitting": "Criando conta...",
+      "emailRequired": "Email é obrigatório",
+      "emailInvalid": "Por favor, insira um email válido",
+      "passwordRequired": "Senha é obrigatória",
+      "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
+      "confirmPasswordRequired": "Por favor, confirme sua senha",
+      "passwordMismatch": "As senhas não coincidem",
+      "failed": "Falha ao criar conta. Tente novamente.",
+      "error": "Ocorreu um erro. Tente novamente."
+    }
   }
 }
 

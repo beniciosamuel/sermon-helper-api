@@ -152,6 +152,43 @@
       "newSlide": "New Slide",
       "clickToEdit": "Click to edit"
     }
+  },
+  "auth": {
+    "title": "Welcome",
+    "subtitle": "Sign in to your account or create a new one",
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "failed": "Login failed. Please check your credentials.",
+      "error": "An error occurred. Please try again."
+    },
+    "signup": {
+      "title": "Sign Up",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "submit": "Create Account",
+      "submitting": "Creating account...",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordMismatch": "Passwords do not match",
+      "failed": "Failed to create account. Please try again.",
+      "error": "An error occurred. Please try again."
+    }
   }
 }
 

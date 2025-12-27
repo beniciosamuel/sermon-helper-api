@@ -5,10 +5,12 @@ import ArtBuilderPage from './pages/ArtBuilderPage';
 import BiblePresenterPage from './pages/BiblePresenterPage';
 import SettingsPage from './pages/SettingsPage';
 import PresentationPage from './pages/PresentationPage';
+import LoginPage from './pages/LoginPage';
 
 const App: React.FC = () => {
   return (
     <Routes>
+      <Route path="/login" element={<LoginPage />} />
       <Route element={<AppLayout />}>
         <Route path="/" element={<Navigate to="/bible" replace />} />
         <Route path="/bible" element={<BiblePresenterPage />} />
