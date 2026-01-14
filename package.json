@@ -1,6 +1,9 @@
 {
   "name": "audio-presentation-node",
   "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start:client": "npm --prefix client start",
     "start:server": "npm --prefix server start"

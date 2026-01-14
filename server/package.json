@@ -2,15 +2,19 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "scripts/start.sh",
-    "build": "tsc"
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "typescript": "^5.9.3",
     "@types/express": "^5.0.2",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",

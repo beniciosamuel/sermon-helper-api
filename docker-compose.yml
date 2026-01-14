@@ -1,0 +1,132 @@
+version: '3.8'
+
+# Docker Compose configuration for Kerygma API monorepo
+# Includes: Backend, Frontend, PostgreSQL, and Metabase
+
+services:
+  # PostgreSQL Database Service
+  # Not exposed outside Docker network - only accessible internally
+  postgres:
+    image: postgres:16-alpine
+    container_name: kerygma-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-kerygma}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      # Persistent volume for database data
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - kerygma-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    # Security: Run as non-root user (postgres image handles this internally)
+
+  # Backend Service (Node.js/Express)
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: kerygma-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Database connection
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-kerygma}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-kerygma}
+      # Server configuration
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3000
+      # CORS configuration
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5000}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kerygma-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # Frontend Service (React)
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:3000}
+    container_name: kerygma-frontend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:3000}
+      REACT_APP_WS_URL: ${REACT_APP_WS_URL:-http://localhost:3000}
+    depends_on:
+      - backend
+    networks:
+      - kerygma-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Metabase - Business Intelligence & Analytics
+  # Metabase stores its metadata in PostgreSQL and connects to application databases via UI
+  metabase:
+    image: metabase/metabase:latest
+    container_name: kerygma-metabase
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      # Metabase's own metadata database (separate from application DB)
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${METABASE_DB_NAME:-metabase}
+      MB_DB_PORT: 5432
+      MB_DB_USER: ${POSTGRES_USER:-postgres}
+      MB_DB_PASS: ${POSTGRES_PASSWORD:-postgres}
+      MB_DB_HOST: postgres
+      # Note: Application database connection is configured through Metabase UI
+      # Connection string: postgresql://postgres:postgres@postgres:5432/kerygma
+    volumes:
+      # Persistent volume for Metabase data
+      - metabase_data:/metabase-data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kerygma-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+# Named volumes for data persistence
+volumes:
+  postgres_data:
+    driver: local
+  metabase_data:
+    driver: local
+
+# Internal Docker network for service communication
+networks:
+  kerygma-network:
+    driver: bridge
+

@@ -5,11 +5,23 @@ import { Server } from 'socket.io';
 
 const app = express();
 const server = createServer(app);
+
+// Get port from environment variable or default to 3000
+const PORT = process.env.PORT || 3000;
+
+// Get CORS origin from environment variable or default to allow all
+const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
+
 const io = new Server(server, {
 	cors: {
-		origin: '*',
+		origin: CORS_ORIGIN,
 		methods: ['GET', 'POST'],
 	},
+});
+
+// Health check endpoint for Docker healthchecks
+app.get('/health', (req: Request, res: Response) => {
+	res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
 io.on('connection', (socket) => {
@@ -24,6 +36,6 @@ io.on('disconnect', (socket) => {
 	console.log('A user disconnected');
 });
 
-server.listen(3000, () => {
-	console.log('Server is running on port 3000');
+server.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}`);
 });

@@ -1,0 +1,11 @@
+# Root level .dockerignore (if needed for any root-level builds)
+node_modules
+.env
+.env.local
+.git
+.gitignore
+README*.md
+*.md
+
+
+

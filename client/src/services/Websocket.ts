@@ -4,7 +4,9 @@ export class Websocket {
   connection: Socket;
 
   constructor() {
-    this.connection = io('http://localhost:3000');
+    // Use environment variable for WebSocket URL, fallback to localhost for development
+    const wsUrl = process.env.REACT_APP_WS_URL || 'http://localhost:3000';
+    this.connection = io(wsUrl);
   }
 
   static getInstance() {
