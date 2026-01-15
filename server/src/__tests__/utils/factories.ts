@@ -1,0 +1,51 @@
+/**
+ * Test data factories
+ * Use factories to create consistent test data
+ */
+
+/**
+ * User factory - creates mock user data
+ */
+export const createUserFactory = (overrides?: Partial<any>) => {
+	return {
+		id: 1,
+		name: 'Test User',
+		email: 'test@example.com',
+		phone: '+1234567890',
+		password: 'hashedPassword123',
+		color_theme: 'light',
+		language: 'en',
+		created_at: new Date('2024-01-01'),
+		updated_at: new Date('2024-01-01'),
+		deleted_at: null,
+		...overrides,
+	};
+};
+
+/**
+ * OAuth token factory - creates mock OAuth token data
+ */
+export const createOAuthTokenFactory = (overrides?: Partial<any>) => {
+	return {
+		id: 1,
+		user_id: 1,
+		token: 'mock-oauth-token-12345',
+		created_at: new Date('2024-01-01'),
+		updated_at: new Date('2024-01-01'),
+		deleted_at: null,
+		...overrides,
+	};
+};
+
+/**
+ * Creates multiple instances using a factory
+ */
+export const createMultiple = <T extends { id?: number }>(
+	factory: (overrides?: Partial<T>) => T,
+	count: number,
+	overrides?: Partial<T>
+): T[] => {
+	return Array.from({ length: count }, (_, index) =>
+		factory({ ...overrides, id: index + 1 } as Partial<T>)
+	);
+};
