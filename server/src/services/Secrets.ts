@@ -25,9 +25,7 @@ export class Secrets {
 	async getString(key: string): Promise<string> {
 		try {
 			const secrets = await this.getSecrets();
-			console.log('secrets', secrets);
 			const secret = secrets[this.env][key];
-			console.log('secret', secret);
 			if (!secret) {
 				throw new Error(`Secret ${key} not found`);
 			}
@@ -53,5 +51,9 @@ export class Secrets {
 			password: secrets.DB_PASSWORD,
 			database: secrets.DB_NAME,
 		};
+	}
+
+	async getResendApiKey(): Promise<string> {
+		return this.getString('RESEND_API_KEY');
 	}
 }
