@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { createServer } from 'http';
 import { EmailService, Secrets } from './services';
 import { emailConfirmation } from './templates/emails/emailConfirmation';
+import { User } from './models/entities/User';
 
 const app = express();
 const server = createServer(app);
@@ -29,6 +30,18 @@ app.get('/emailtest', async (req: Request, res: Response) => {
 	});
 	await emailService.sendEmail('briariustecno@gmail.com', 'Test Email', email);
 	res.status(200).json({ message: 'Email sent' });
+});
+
+app.get('/createtestuser', async (req: Request, res: Response) => {
+	await User.create({
+		name: 'John Doe',
+		email: 'john.doe@example.com',
+		password: 'password',
+		color_theme: 'light',
+		language: 'en',
+		phone: '+1234567890',
+	});
+	res.status(200).json({ message: 'User created' });
 });
 
 server.listen(PORT, () => {

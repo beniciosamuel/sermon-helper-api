@@ -36,7 +36,11 @@ check_gcloud_installed() {
 
 # Function to check if user is authenticated
 check_gcloud_auth() {
-    if ! gcloud auth list --filter=status:ACTIVE --format="value(account)" &> /dev/null | grep -q .; then
+    # Get the active account
+    local active_account
+    active_account=$(gcloud auth list --filter=status:ACTIVE --format="value(account)" 2>/dev/null | head -n1)
+    
+    if [ -z "$active_account" ]; then
         print_warning "No active Google Cloud authentication found"
         echo "Starting authentication process..."
         
@@ -45,8 +49,29 @@ check_gcloud_auth() {
             exit 1
         fi
         print_success "Google Cloud authentication successful"
+        return
+    fi
+    
+    # Check if the token is expired or invalid
+    local auth_info
+    auth_info=$(gcloud auth describe "$active_account" --format="json" 2>/dev/null)
+    
+    local is_expired
+    local is_valid
+    is_expired=$(echo "$auth_info" | jq -r 'if .expired == null then "true" else (.expired | tostring) end')
+    is_valid=$(echo "$auth_info" | jq -r 'if .valid == null then "false" else (.valid | tostring) end')
+    
+    if [ "$is_expired" = "true" ] || [ "$is_valid" = "false" ]; then
+        print_warning "Google Cloud authentication has expired or is invalid"
+        echo "Starting re-authentication process..."
+        
+        if ! gcloud auth login; then
+            print_error "Google Cloud authentication failed"
+            exit 1
+        fi
+        print_success "Google Cloud re-authentication successful"
     else
-        print_success "Google Cloud authentication verified"
+        print_success "Google Cloud authentication verified (account: $active_account)"
     fi
 }
 

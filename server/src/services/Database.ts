@@ -54,6 +54,7 @@ export class DatabaseService {
 	 * Create Knex configuration from database config
 	 */
 	private createKnexConfig(config: DatabaseConfig): Knex.Config {
+		console.log(config);
 		return {
 			client: 'pg',
 			connection: {
@@ -99,8 +100,9 @@ export class DatabaseService {
 			const knexConfig = this.createKnexConfig(config);
 			this.knexInstance = knex(knexConfig);
 
-			// Test the connection
-			await this.knexInstance.raw('SELECT 1');
+			// Test the connection getting all tables
+			const tables = await this.knexInstance.raw('SELECT table_name FROM information_schema.tables WHERE table_schema = \'public\'');
+			console.log(tables);
 			this.isConnected = true;
 
 			console.log(`Database connected successfully to ${config.host}:${config.port}/${config.database}`);

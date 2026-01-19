@@ -8,6 +8,7 @@
   "scripts": {
     "start": "scripts/start.sh",
     "build": "npx tsc",
+    "populate": "database/populate.sh",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
