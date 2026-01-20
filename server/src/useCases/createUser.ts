@@ -1,9 +1,11 @@
-import { User, UserCreateArgs } from "../models/entities/User";
-import { UserRepository } from "../models/repositories/UserRepository";
-import { Context } from "../services/Context";
+import { User, UserCreateArgs } from '../models/entities/User';
+import { UserRepository } from '../models/repositories/UserRepository';
+import { Context } from '../services/Context';
 
-export async function createUser(args: UserCreateArgs, context: Context): 
-Promise<{ success: boolean, user?: User, error?: string }> {
+export async function createUser(
+  args: UserCreateArgs,
+  context: Context
+): Promise<{ success: boolean; user?: User; error?: string }> {
   try {
     const existingUser = await UserRepository.findByEmailOrPhone(args.email, args.phone, context);
 
@@ -16,13 +18,14 @@ Promise<{ success: boolean, user?: User, error?: string }> {
     return {
       success: true,
       user,
-    }
+    };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error creating user', error);
 
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
-    }
+    };
   }
 }

@@ -9,31 +9,21 @@ interface PreviewPanelProps {
   isLive: boolean;
 }
 
-const PreviewPanel: React.FC<PreviewPanelProps> = ({
-  book,
-  chapter,
-  verse,
-  verseText,
-  isLive,
-}) => {
+const PreviewPanel: React.FC<PreviewPanelProps> = ({ book, chapter, verse, verseText, isLive }) => {
   const highlightKeyword = (text: string): React.ReactNode => {
     // Simple keyword highlighting - highlight words like "Deus", "Senhor", "Jesus"
     const keywords = ['Deus', 'Senhor', 'Jesus', 'Cristo', 'Espírito'];
     const words = text.split(' ');
-    
+
     return words.map((word, index) => {
       const cleanWord = word.replace(/[.,;:!?]/g, '');
       const isKeyword = keywords.some(
         (keyword) => cleanWord.toLowerCase() === keyword.toLowerCase()
       );
-      
+
       return (
         <React.Fragment key={index}>
-          {isKeyword ? (
-            <span className={styles.previewTextHighlight}>{word}</span>
-          ) : (
-            word
-          )}
+          {isKeyword ? <span className={styles.previewTextHighlight}>{word}</span> : word}
           {index < words.length - 1 && ' '}
         </React.Fragment>
       );
@@ -49,12 +39,8 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
         <div className={styles.previewArea}>
           {verseText ? (
             <>
-              <p className={styles.previewText}>
-                {highlightKeyword(verseText)}
-              </p>
-              {reference && (
-                <div className={styles.previewReference}>{reference}</div>
-              )}
+              <p className={styles.previewText}>{highlightKeyword(verseText)}</p>
+              {reference && <div className={styles.previewReference}>{reference}</div>}
             </>
           ) : (
             <p className={styles.previewText} style={{ opacity: 0.3 }}>
@@ -63,22 +49,14 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
           )}
         </div>
       </div>
-      
+
       <div className={styles.previewSection}>
         <div className={styles.sectionTitle}>Saída ao Vivo</div>
-        <div
-          className={`${styles.previewArea} ${
-            isLive ? styles.previewAreaLive : ''
-          }`}
-        >
+        <div className={`${styles.previewArea} ${isLive ? styles.previewAreaLive : ''}`}>
           {isLive && verseText ? (
             <>
-              <p className={styles.previewText}>
-                {highlightKeyword(verseText)}
-              </p>
-              {reference && (
-                <div className={styles.previewReference}>{reference}</div>
-              )}
+              <p className={styles.previewText}>{highlightKeyword(verseText)}</p>
+              {reference && <div className={styles.previewReference}>{reference}</div>}
             </>
           ) : (
             <p className={styles.previewText} style={{ opacity: 0.3 }}>
@@ -92,4 +70,3 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
 };
 
 export default PreviewPanel;
-

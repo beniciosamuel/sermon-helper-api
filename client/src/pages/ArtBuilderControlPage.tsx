@@ -8,7 +8,7 @@ import styles from '../styles/PresentationControl.module.css';
 
 const ArtBuilderControlPage: React.FC = () => {
   const { t } = useTranslation();
-  
+
   // Mock themes with translated names
   const MOCK_THEMES: ArtBuilderTheme[] = [
     {
@@ -68,25 +68,19 @@ const ArtBuilderControlPage: React.FC = () => {
 
   const handleLayerToggleVisibility = (layerId: string) => {
     setLayers((prev) =>
-      prev.map((layer) =>
-        layer.id === layerId ? { ...layer, visible: !layer.visible } : layer
-      )
+      prev.map((layer) => (layer.id === layerId ? { ...layer, visible: !layer.visible } : layer))
     );
   };
 
   const handleLayerToggleLock = (layerId: string) => {
     setLayers((prev) =>
-      prev.map((layer) =>
-        layer.id === layerId ? { ...layer, locked: !layer.locked } : layer
-      )
+      prev.map((layer) => (layer.id === layerId ? { ...layer, locked: !layer.locked } : layer))
     );
   };
 
   const handleLayerRename = (layerId: string, newName: string) => {
     setLayers((prev) =>
-      prev.map((layer) =>
-        layer.id === layerId ? { ...layer, name: newName } : layer
-      )
+      prev.map((layer) => (layer.id === layerId ? { ...layer, name: newName } : layer))
     );
   };
 
@@ -127,9 +121,7 @@ const ArtBuilderControlPage: React.FC = () => {
 
   const handleLayerContentChange = (layerId: string, content: string) => {
     setLayers((prev) =>
-      prev.map((layer) =>
-        layer.id === layerId ? { ...layer, content } : layer
-      )
+      prev.map((layer) => (layer.id === layerId ? { ...layer, content } : layer))
     );
   };
 
@@ -137,13 +129,15 @@ const ArtBuilderControlPage: React.FC = () => {
     setActiveThemeId(themeId);
   };
 
-  const activeTheme = MOCK_THEMES.find((t) => t.id === activeThemeId) || MOCK_THEMES[0];
+  const _activeTheme = MOCK_THEMES.find((theme) => theme.id === activeThemeId) || MOCK_THEMES[0];
 
   return (
     <div className={styles.pageContainer}>
       <ArtBuilderToolbar
+        // eslint-disable-next-line no-console
         onResolutionChange={(res) => console.log('Resolution:', res)}
         onAspectRatioChange={(ratio) => setAspectRatio(ratio)}
+        // eslint-disable-next-line no-console
         onBackgroundToggle={() => console.log('Background toggled')}
         onPreviewToggle={() => setIsPreviewMode(!isPreviewMode)}
       />
@@ -182,4 +176,3 @@ const ArtBuilderControlPage: React.FC = () => {
 };
 
 export default ArtBuilderControlPage;
-

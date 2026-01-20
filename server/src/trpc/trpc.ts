@@ -1,11 +1,11 @@
 /**
  * tRPC Initialization
- * 
+ *
  * This is where tRPC is initialized and the base router/procedures are created.
  * This should be kept minimal - only tRPC setup, no business logic.
  */
 
-import { initTRPC, TRPCError } from '@trpc/server';
+import { initTRPC } from '@trpc/server';
 import type { TRPCContext } from './context';
 
 /**
@@ -13,7 +13,7 @@ import type { TRPCContext } from './context';
  * Should be done only once per backend!
  */
 const t = initTRPC.context<TRPCContext>().create({
-  errorFormatter({ shape, error }) {
+  errorFormatter({ shape, error: _error }) {
     return {
       ...shape,
       data: {
@@ -39,9 +39,10 @@ const loggerMiddleware = middleware(async ({ path, type, next }) => {
   const start = Date.now();
   const result = await next();
   const duration = Date.now() - start;
-  
+
+  // eslint-disable-next-line no-console
   console.log(`[tRPC] ${type} ${path} - ${duration}ms`);
-  
+
   return result;
 });
 

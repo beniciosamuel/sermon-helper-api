@@ -17,10 +17,12 @@ export class Websocket {
     this.connection.disconnect();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   on(event: string, callback: (...args: any[]) => void) {
     this.connection.on(event, callback);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emit(event: string, ...args: any[]) {
     this.connection.emit(event, ...args);
   }

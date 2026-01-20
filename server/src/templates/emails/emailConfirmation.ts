@@ -5,23 +5,23 @@ import { emailTheme } from './theme';
  * Options for the email confirmation template
  */
 export interface EmailConfirmationOptions {
-	/** Recipient's name (optional, will use "there" if not provided) */
-	userName?: string;
-	/** The confirmation link URL */
-	confirmationUrl: string;
-	/** How long the link is valid (e.g., "24 hours") */
-	expiresIn?: string;
-	/** App name override */
-	appName?: string;
+  /** Recipient's name (optional, will use "there" if not provided) */
+  userName?: string;
+  /** The confirmation link URL */
+  confirmationUrl: string;
+  /** How long the link is valid (e.g., "24 hours") */
+  expiresIn?: string;
+  /** App name override */
+  appName?: string;
 }
 
 /**
  * Generates an email confirmation template
  * Used when a user registers and needs to verify their email address
- * 
+ *
  * @param options - Configuration options for the email
  * @returns Complete HTML email string
- * 
+ *
  * @example
  * ```typescript
  * const html = emailConfirmation({
@@ -32,17 +32,12 @@ export interface EmailConfirmationOptions {
  * ```
  */
 export function emailConfirmation(options: EmailConfirmationOptions): string {
-	const {
-		userName,
-		confirmationUrl,
-		expiresIn = '24 hours',
-		appName = 'Sermon Helper',
-	} = options;
+  const { userName, confirmationUrl, expiresIn = '24 hours', appName = 'Sermon Helper' } = options;
 
-	const greeting = userName ? `Hi ${userName},` : 'Hi there,';
-	const { colors, fonts, spacing } = emailTheme;
+  const greeting = userName ? `Hi ${userName},` : 'Hi there,';
+  const { colors, fonts, spacing } = emailTheme;
 
-	const content = `
+  const content = `
 		${heading('Confirm Your Email Address', { align: 'center' })}
 		
 		${spacer('md')}
@@ -84,13 +79,13 @@ export function emailConfirmation(options: EmailConfirmationOptions): string {
 		${paragraph(`The ${appName} Team`, { muted: true })}
 	`;
 
-	return baseLayout({
-		content,
-		previewText: `Confirm your email address to get started with ${appName}`,
-		appName,
-		footerLinks: [
-			{ text: 'Help Center', url: '#' },
-			{ text: 'Privacy Policy', url: '#' },
-		],
-	});
+  return baseLayout({
+    content,
+    previewText: `Confirm your email address to get started with ${appName}`,
+    appName,
+    footerLinks: [
+      { text: 'Help Center', url: '#' },
+      { text: 'Privacy Policy', url: '#' },
+    ],
+  });
 }

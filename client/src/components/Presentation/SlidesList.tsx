@@ -27,7 +27,7 @@ const SlidesList: React.FC<SlidesListProps> = ({
   onSlideReorder,
   onThemeSelect,
   onSlideDelete,
-  onSlideDuplicate,
+  onSlideDuplicate: _onSlideDuplicate,
   onDeleteAllSlides,
 }) => {
   const { t } = useTranslation();
@@ -121,45 +121,45 @@ const SlidesList: React.FC<SlidesListProps> = ({
       </div>
 
       {activeTab === 'slides' && (
-      <div className={styles.slidesContainer}>
-        {sortedSlides.length === 0 ? (
-          <div className={styles.emptyState}>
-            <p>{t('presentation.slidesList.noSlides')}</p>
-          </div>
-        ) : (
-          sortedSlides.map((slide, index) => (
-            <div
-              key={slide.id}
-              className={`${styles.slideItem} ${
-                selectedSlideId === slide.id ? styles.slideItemSelected : ''
-              } ${draggedSlideId === slide.id ? styles.slideItemDragging : ''} ${
-                dragOverSlideId === slide.id ? styles.slideItemDragOver : ''
-              }`}
-              draggable
-              onDragStart={(e) => handleDragStart(e, slide.id)}
-              onDragOver={(e) => handleDragOver(e, slide.id)}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, slide.id)}
-              onDragEnd={handleDragEnd}
-              onClick={() => onSlideSelect(slide.id)}
-            >
-              <div className={styles.slideItemPreview}>
-                <SlidePreviewThumbnail slide={slide} mediaFiles={mediaFiles} />
-                <button
-                  className={styles.deleteSlideButton}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSlideDelete(slide.id);
-                  }}
-                  title={t('presentation.slidesList.delete')}
-                >
-                  🗑️
-                </button>
-              </div>
+        <div className={styles.slidesContainer}>
+          {sortedSlides.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>{t('presentation.slidesList.noSlides')}</p>
             </div>
-          ))
-        )}
-      </div>
+          ) : (
+            sortedSlides.map((slide) => (
+              <div
+                key={slide.id}
+                className={`${styles.slideItem} ${
+                  selectedSlideId === slide.id ? styles.slideItemSelected : ''
+                } ${draggedSlideId === slide.id ? styles.slideItemDragging : ''} ${
+                  dragOverSlideId === slide.id ? styles.slideItemDragOver : ''
+                }`}
+                draggable
+                onDragStart={(e) => handleDragStart(e, slide.id)}
+                onDragOver={(e) => handleDragOver(e, slide.id)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, slide.id)}
+                onDragEnd={handleDragEnd}
+                onClick={() => onSlideSelect(slide.id)}
+              >
+                <div className={styles.slideItemPreview}>
+                  <SlidePreviewThumbnail slide={slide} mediaFiles={mediaFiles} />
+                  <button
+                    className={styles.deleteSlideButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSlideDelete(slide.id);
+                    }}
+                    title={t('presentation.slidesList.delete')}
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       )}
 
       {activeTab === 'themes' && (
@@ -211,18 +211,14 @@ const SlidePreviewThumbnail: React.FC<{
     <div
       className={styles.slideThumbnail}
       style={{
-        backgroundImage: backgroundMedia?.type === 'image' ? `url(${backgroundMedia.url})` : undefined,
+        backgroundImage:
+          backgroundMedia?.type === 'image' ? `url(${backgroundMedia.url})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
     >
       {backgroundMedia?.type === 'video' && (
-        <video
-          className={styles.thumbnailVideo}
-          src={backgroundMedia.url}
-          muted
-          playsInline
-        />
+        <video className={styles.thumbnailVideo} src={backgroundMedia.url} muted playsInline />
       )}
       {visibleLayers.length > 0 && (
         <div className={styles.thumbnailContent}>
@@ -234,4 +230,3 @@ const SlidePreviewThumbnail: React.FC<{
 };
 
 export default SlidesList;
-

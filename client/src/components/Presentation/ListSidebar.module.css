@@ -232,7 +232,6 @@
   text-transform: capitalize;
 }
 
-
 /* Announcements List */
 .announcementsList {
   display: flex;
@@ -294,4 +293,3 @@
 .content::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.15);
 }
-

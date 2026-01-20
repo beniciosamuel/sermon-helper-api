@@ -1,6 +1,6 @@
 /**
  * tRPC Server Setup
- * 
+ *
  * This file initializes tRPC and exports the core building blocks:
  * - router: Creates new routers
  * - publicProcedure: Procedure without authentication

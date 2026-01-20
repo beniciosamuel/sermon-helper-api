@@ -66,7 +66,11 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ value, onChange }) => {
         onKeyDown={handleKeyDown}
         role="switch"
         aria-checked={value === 'light'}
-        aria-label={value === 'dark' ? t('settings.appearance.switchToLight') : t('settings.appearance.switchToDark')}
+        aria-label={
+          value === 'dark'
+            ? t('settings.appearance.switchToLight')
+            : t('settings.appearance.switchToDark')
+        }
         tabIndex={0}
       >
         <div
@@ -84,17 +88,11 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ value, onChange }) => {
         </div>
       </div>
       <div className={styles.themeToggleLabels}>
-        <span
-          className={`${styles.themeLabel} ${
-            value === 'dark' ? styles.themeLabelActive : ''
-          }`}
-        >
+        <span className={`${styles.themeLabel} ${value === 'dark' ? styles.themeLabelActive : ''}`}>
           <MoonIcon /> {t('settings.appearance.dark')}
         </span>
         <span
-          className={`${styles.themeLabel} ${
-            value === 'light' ? styles.themeLabelActive : ''
-          }`}
+          className={`${styles.themeLabel} ${value === 'light' ? styles.themeLabelActive : ''}`}
         >
           <SunIcon /> {t('settings.appearance.light')}
         </span>
@@ -104,4 +102,3 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ value, onChange }) => {
 };
 
 export default ThemeToggle;
-

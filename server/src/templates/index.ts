@@ -1,6 +1,6 @@
 /**
  * Templates Module
- * 
+ *
  * Central export point for all template types (emails, etc.)
  */
 

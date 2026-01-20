@@ -16,11 +16,7 @@ interface ThemeSelectorProps {
   onThemeSelect: (themeId: string) => void;
 }
 
-const ThemeSelector: React.FC<ThemeSelectorProps> = ({
-  themes,
-  activeThemeId,
-  onThemeSelect,
-}) => {
+const ThemeSelector: React.FC<ThemeSelectorProps> = ({ themes, activeThemeId, onThemeSelect }) => {
   const { t } = useTranslation();
   return (
     <div className={styles.themeSelector}>
@@ -43,10 +39,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                 color: theme.textColor,
               }}
             >
-              <div
-                className={styles.themeAccent}
-                style={{ backgroundColor: theme.accentColor }}
-              />
+              <div className={styles.themeAccent} style={{ backgroundColor: theme.accentColor }} />
               <span className={styles.themePreviewText}>Aa</span>
             </div>
             <span className={styles.themeName}>{theme.name}</span>
@@ -58,4 +51,3 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
 };
 
 export default ThemeSelector;
-

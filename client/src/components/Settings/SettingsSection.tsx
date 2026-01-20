@@ -7,18 +7,12 @@ interface SettingsSectionProps {
   children: ReactNode;
 }
 
-const SettingsSection: React.FC<SettingsSectionProps> = ({
-  title,
-  description,
-  children,
-}) => {
+const SettingsSection: React.FC<SettingsSectionProps> = ({ title, description, children }) => {
   return (
     <div className={styles.section}>
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>{title}</h2>
-        {description && (
-          <p className={styles.sectionDescription}>{description}</p>
-        )}
+        {description && <p className={styles.sectionDescription}>{description}</p>}
       </div>
       <div className={styles.sectionContent}>{children}</div>
     </div>
@@ -26,4 +20,3 @@ const SettingsSection: React.FC<SettingsSectionProps> = ({
 };
 
 export default SettingsSection;
-

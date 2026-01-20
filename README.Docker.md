@@ -12,6 +12,7 @@ This guide explains how to run the Kerygma API monorepo using Docker and Docker 
 ## 🚀 Quick Start
 
 1. **Copy environment variables:**
+
    ```bash
    cp .env.example .env
    ```
@@ -19,6 +20,7 @@ This guide explains how to run the Kerygma API monorepo using Docker and Docker 
 2. **Edit `.env` file** with your desired configuration (especially passwords for production)
 
 3. **Build and start all services:**
+
    ```bash
    docker compose up --build
    ```
@@ -91,6 +93,7 @@ All data is persisted in Docker volumes:
 - `metabase_data`: Metabase configuration
 
 To remove all data:
+
 ```bash
 docker compose down -v
 ```
@@ -98,12 +101,14 @@ docker compose down -v
 ## 🛠️ Development
 
 ### Rebuild a specific service:
+
 ```bash
 docker compose build backend
 docker compose up backend
 ```
 
 ### View logs:
+
 ```bash
 # All services
 docker compose logs -f
@@ -113,6 +118,7 @@ docker compose logs -f backend
 ```
 
 ### Execute commands in containers:
+
 ```bash
 # Backend shell
 docker compose exec backend sh
@@ -132,25 +138,32 @@ docker compose exec postgres psql -U postgres -d kerygma
 ## 🐛 Troubleshooting
 
 ### Port conflicts
+
 If ports are already in use, modify port mappings in `docker-compose.yml`:
+
 ```yaml
 ports:
-  - "3000:3000"  # Change first number to available port
+  - '3000:3000' # Change first number to available port
 ```
 
 ### Services not starting
+
 Check logs:
+
 ```bash
 docker compose logs [service-name]
 ```
 
 ### Database connection issues
+
 Ensure PostgreSQL is healthy:
+
 ```bash
 docker compose ps postgres
 ```
 
 ### Frontend can't connect to backend
+
 Check that `REACT_APP_API_URL` and `REACT_APP_WS_URL` in `.env` match your setup.
 
 ## 📝 Notes
@@ -171,6 +184,3 @@ For production:
 5. Use Docker secrets for sensitive data
 6. Set up log aggregation
 7. Configure monitoring alerts
-
-
-

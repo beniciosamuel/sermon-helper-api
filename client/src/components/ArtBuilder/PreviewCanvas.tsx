@@ -22,7 +22,7 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
 }) => {
   const { t } = useTranslation();
   const [aspectWidth, aspectHeight] = aspectRatio.split(':').map(Number);
-  const layerRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const layerRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
 
   const visibleLayers = layers.filter((layer) => layer.visible);
 
@@ -34,7 +34,7 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
         ref.innerHTML = layer.content || `<p>${t('artBuilder.clickToEdit')}</p>`;
       }
     });
-  }, [layers, visibleLayers]);
+  }, [layers, visibleLayers, t]);
 
   const handleContentChange = (layerId: string, event: React.FormEvent<HTMLDivElement>) => {
     if (onLayerContentChange) {
@@ -54,9 +54,7 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
         {visibleLayers.length === 0 ? (
           <div className={styles.previewPlaceholder}>
             <p>{t('artBuilder.clickToEdit')}</p>
-            <p className={styles.previewPlaceholderHint}>
-              {t('artBuilder.selectOrCreate')}
-            </p>
+            <p className={styles.previewPlaceholderHint}>{t('artBuilder.selectOrCreate')}</p>
           </div>
         ) : (
           visibleLayers.map((layer) => (
@@ -85,4 +83,3 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
 };
 
 export default PreviewCanvas;
-

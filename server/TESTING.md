@@ -122,10 +122,7 @@ describe('UserController', () => {
     mockService.getUser.mockResolvedValue(mockUser);
     mockRequest.params = { id: '1' };
 
-    await controller.getUser(
-      mockRequest as Request,
-      mockResponse as Response
-    );
+    await controller.getUser(mockRequest as Request, mockResponse as Response);
 
     expect(mockResponse.status).toHaveBeenCalledWith(200);
     expect(mockResponse.json).toHaveBeenCalledWith(mockUser);
@@ -169,12 +166,14 @@ describe('UserController', () => {
 ## Coverage
 
 Coverage thresholds are set to 70% for:
+
 - Branches
 - Functions
 - Lines
 - Statements
 
 Coverage reports are generated in multiple formats:
+
 - **Text**: Console output
 - **LCOV**: For CI/CD integration
 - **HTML**: Visual report in `coverage/` directory

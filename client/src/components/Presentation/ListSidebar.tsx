@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Song, MediaFile, Announcement, Slide } from '../../types/presentation';
+import { Song, MediaFile, Announcement } from '../../types/presentation';
 import styles from './ListSidebar.module.css';
 
 interface ListSidebarProps {
@@ -26,8 +26,8 @@ const ListSidebar: React.FC<ListSidebarProps> = ({
   onMediaSelect,
   onAnnouncementSelect,
   onGenerateSlides,
-  onBackgroundVideoSelect,
-  selectedSlideId,
+  onBackgroundVideoSelect: _onBackgroundVideoSelect,
+  selectedSlideId: _selectedSlideId,
   selectedMediaId,
 }) => {
   const { t } = useTranslation();
@@ -68,7 +68,7 @@ const ListSidebar: React.FC<ListSidebarProps> = ({
     }
   };
 
-  const videoFiles = mediaFiles.filter((m) => m.type === 'video');
+  const _videoFiles = mediaFiles.filter((m) => m.type === 'video');
 
   return (
     <div className={styles.listSidebar}>
@@ -116,11 +116,7 @@ const ListSidebar: React.FC<ListSidebarProps> = ({
               </div>
             ) : (
               filteredSongs.map((song) => (
-                <div
-                  key={song.id}
-                  className={styles.songItem}
-                  onClick={() => onSongSelect(song)}
-                >
+                <div key={song.id} className={styles.songItem} onClick={() => onSongSelect(song)}>
                   <div className={styles.songInfo}>
                     <h4 className={styles.songTitle}>{song.title}</h4>
                     {song.artist && <p className={styles.songArtist}>{song.artist}</p>}
@@ -144,10 +140,7 @@ const ListSidebar: React.FC<ListSidebarProps> = ({
         {activeTab === 'media' && (
           <div className={styles.mediaList}>
             <div className={styles.mediaActions}>
-              <button
-                className={styles.uploadButton}
-                onClick={() => setShowMediaUpload(true)}
-              >
+              <button className={styles.uploadButton} onClick={() => setShowMediaUpload(true)}>
                 {t('presentation.listSidebar.loadMedia')}
               </button>
               {showMediaUpload && (
@@ -212,4 +205,3 @@ const ListSidebar: React.FC<ListSidebarProps> = ({
 };
 
 export default ListSidebar;
-

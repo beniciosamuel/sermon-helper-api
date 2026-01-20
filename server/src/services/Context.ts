@@ -1,8 +1,8 @@
-import { EmailService } from "./Email";
-import { Secrets } from "./Secrets";
-import { DatabaseService } from "./Database";
-import { Password } from "./Password";
-import { Knex } from "knex";
+import { EmailService } from './Email';
+import { Secrets } from './Secrets';
+import { DatabaseService } from './Database';
+import { Password } from './Password';
+import { Knex } from 'knex';
 
 export class Context {
   public db: Knex;
@@ -10,12 +10,7 @@ export class Context {
   public secrets: Secrets;
   public password: Password;
 
-  constructor(args: {
-    db: Knex;
-    email: EmailService;
-    secrets: Secrets;
-    password: Password;
-  }) {
+  constructor(args: { db: Knex; email: EmailService; secrets: Secrets; password: Password }) {
     this.db = args.db;
     this.email = args.email || null;
     this.secrets = args.secrets || new Secrets();

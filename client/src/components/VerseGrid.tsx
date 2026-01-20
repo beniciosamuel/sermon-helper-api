@@ -33,11 +33,7 @@ const VerseGrid: React.FC<VerseGridProps> = ({
           <h1 className={styles.contentTitle}>
             {book} {chapter}
           </h1>
-          <select
-            className={styles.chapterSelect}
-            value={chapter}
-            onChange={handleChapterChange}
-          >
+          <select className={styles.chapterSelect} value={chapter} onChange={handleChapterChange}>
             {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
               <option key={num} value={num}>
                 Capítulo {num}
@@ -60,11 +56,7 @@ const VerseGrid: React.FC<VerseGridProps> = ({
         <h1 className={styles.contentTitle}>
           {book} {chapter}
         </h1>
-        <select
-          className={styles.chapterSelect}
-          value={chapter}
-          onChange={handleChapterChange}
-        >
+        <select className={styles.chapterSelect} value={chapter} onChange={handleChapterChange}>
           {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
             <option key={num} value={num}>
               Capítulo {num}
@@ -91,4 +83,3 @@ const VerseGrid: React.FC<VerseGridProps> = ({
 };
 
 export default VerseGrid;
-

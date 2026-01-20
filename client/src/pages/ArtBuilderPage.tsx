@@ -6,4 +6,3 @@ const ArtBuilderPage: React.FC = () => {
 };
 
 export default ArtBuilderPage;
-

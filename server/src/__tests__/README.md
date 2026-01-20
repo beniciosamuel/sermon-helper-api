@@ -37,6 +37,7 @@ npm run test:coverage
 ### Unit Tests
 
 Unit tests should:
+
 - Test one unit of code in isolation
 - Mock all external dependencies (repositories, services, APIs)
 - Be fast and deterministic

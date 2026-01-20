@@ -22,4 +22,3 @@ export const lightTheme = {
 
 // Legacy export for backward compatibility
 export const theme = darkTheme;
-

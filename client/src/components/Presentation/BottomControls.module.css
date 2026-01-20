@@ -68,4 +68,3 @@
 .navButton:active:not(:disabled) {
   transform: translateY(0);
 }
-

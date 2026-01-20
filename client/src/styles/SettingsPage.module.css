@@ -4,7 +4,9 @@
   overflow-y: auto;
   background: var(--bg);
   color: var(--text-primary);
-  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+  transition:
+    background-color 200ms ease-in-out,
+    color 200ms ease-in-out;
 }
 
 .content {
@@ -39,7 +41,9 @@
   padding: 24px;
   margin-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
+  transition:
+    background-color 200ms ease-in-out,
+    box-shadow 200ms ease-in-out;
 }
 
 :global(body.theme-light) .section {
@@ -209,12 +213,12 @@
 }
 
 :global(body.theme-light) .themeToggleTrack {
-  background: #E0E0E0;
+  background: #e0e0e0;
   border-color: rgba(0, 0, 0, 0.1);
 }
 
 .themeToggleTrackLight {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
+  background: linear-gradient(135deg, #ffd700, #ffa500);
   border-color: rgba(255, 215, 0, 0.3);
 }
 
@@ -227,20 +231,22 @@
   align-items: center;
   justify-content: center;
   color: var(--text-primary);
-  transition: transform 300ms ease-in-out, background 300ms ease-in-out;
+  transition:
+    transform 300ms ease-in-out,
+    background 300ms ease-in-out;
   transform: translateX(0);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 :global(body.theme-light) .themeToggleThumb {
-  background: #FFFFFF;
-  color: #FFA500;
+  background: #ffffff;
+  color: #ffa500;
 }
 
 .themeToggleThumbLight {
   transform: translateX(32px);
-  background: #FFFFFF;
-  color: #FFA500;
+  background: #ffffff;
+  color: #ffa500;
 }
 
 .themeToggleLabels {
@@ -284,4 +290,3 @@
     align-items: flex-start;
   }
 }
-

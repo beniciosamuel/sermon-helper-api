@@ -64,4 +64,3 @@ const BottomControls: React.FC<BottomControlsProps> = ({
 };
 
 export default BottomControls;
-

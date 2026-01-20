@@ -2,6 +2,7 @@
   "recommendations": [
     "ms-vscode.vscode-typescript-next",
     "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
     "eamodio.gitlens",
     "firsttris.vscode-jest-runner",
     "github.vscode-github-actions"

@@ -51,8 +51,8 @@ const PresentationPage: React.FC = () => {
   const [selectedMediaId, setSelectedMediaId] = useState<string | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [viewMode, setViewMode] = useState<'preview' | 'grid' | 'timeline'>('preview');
-  const [showLogo, setShowLogo] = useState<boolean>(false);
-  const [isBlankScreen, setIsBlankScreen] = useState<boolean>(false);
+  const [_showLogo, setShowLogo] = useState<boolean>(false);
+  const [_isBlankScreen, setIsBlankScreen] = useState<boolean>(false);
   const [isLive, setIsLive] = useState<boolean>(false);
   const [activeThemeId, setActiveThemeId] = useState<string>('dark');
 
@@ -81,51 +81,55 @@ const PresentationPage: React.FC = () => {
   ];
 
   const selectedSlide = slides.find((s) => s.id === selectedSlideId) || null;
-  const currentSlide = slides[currentSlideIndex] || null;
+  const _currentSlide = slides[currentSlideIndex] || null;
 
   // Song handlers
   const handleSongSelect = useCallback((song: Song) => {
+    // eslint-disable-next-line no-console
     console.log('Song selected:', song);
   }, []);
 
-  const handleGenerateSlides = useCallback((song: Song) => {
-    const newSlides: Slide[] = song.lyrics.map((lyric, index) => ({
-      id: `slide-${Date.now()}-${index}`,
-      title: `${song.title} - Verse ${index + 1}`,
-      layers: [
-        {
-          id: `layer-${Date.now()}-${index}-lyrics`,
-          type: 'lyrics' as const,
-          visible: true,
-          locked: false,
-          content: `<p>${lyric}</p>`,
-          style: {
-            fontSize: 32,
-            fontFamily: 'Arial',
-            color: '#FFFFFF',
-            textAlign: 'center' as const,
+  const handleGenerateSlides = useCallback(
+    (song: Song) => {
+      const newSlides: Slide[] = song.lyrics.map((lyric, index) => ({
+        id: `slide-${Date.now()}-${index}`,
+        title: `${song.title} - Verse ${index + 1}`,
+        layers: [
+          {
+            id: `layer-${Date.now()}-${index}-lyrics`,
+            type: 'lyrics' as const,
+            visible: true,
+            locked: false,
+            content: `<p>${lyric}</p>`,
+            style: {
+              fontSize: 32,
+              fontFamily: 'Arial',
+              color: '#FFFFFF',
+              textAlign: 'center' as const,
+            },
           },
-        },
-      ],
-      order: slides.length + index,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
+        ],
+        order: slides.length + index,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
 
-    setSlides((prev) => [...prev, ...newSlides]);
-    if (newSlides.length > 0) {
-      setSelectedSlideId(newSlides[0].id);
-      setCurrentSlideIndex(slides.length);
-    }
-  }, [slides]);
+      setSlides((prev) => [...prev, ...newSlides]);
+      if (newSlides.length > 0) {
+        setSelectedSlideId(newSlides[0].id);
+        setCurrentSlideIndex(slides.length);
+      }
+    },
+    [slides]
+  );
 
   // Media handlers
   const handleMediaLoad = useCallback((file: File) => {
     const fileType = file.type.startsWith('image/')
       ? 'image'
       : file.type.startsWith('video/')
-      ? 'video'
-      : 'audio';
+        ? 'video'
+        : 'audio';
 
     const newMedia: MediaFile = {
       id: `media-${Date.now()}`,
@@ -141,9 +145,9 @@ const PresentationPage: React.FC = () => {
     // Replace slides with slides generated from the selected media
     // This ensures idempotent behavior - clicking the same media multiple times
     // will always result in the same slide set
-    
+
     let newSlides: Slide[] = [];
-    
+
     if (media.type === 'image') {
       // For images, create a single slide with the image as background
       newSlides = [
@@ -225,13 +229,13 @@ const PresentationPage: React.FC = () => {
         },
       ];
     }
-    
+
     // Replace all slides with the new ones
     setSlides(newSlides);
-    
+
     // Update selected media
     setSelectedMediaId(media.id);
-    
+
     // Select the first slide if available
     if (newSlides.length > 0) {
       setSelectedSlideId(newSlides[0].id);
@@ -244,41 +248,42 @@ const PresentationPage: React.FC = () => {
 
   const handleBackgroundVideoSelect = useCallback((slideId: string, mediaId: string) => {
     setSlides((prev) =>
-      prev.map((slide) =>
-        slide.id === slideId ? { ...slide, backgroundMediaId: mediaId } : slide
-      )
+      prev.map((slide) => (slide.id === slideId ? { ...slide, backgroundMediaId: mediaId } : slide))
     );
   }, []);
 
   // Announcement handlers
-  const handleAnnouncementSelect = useCallback((announcement: Announcement) => {
-    const newSlide: Slide = {
-      id: `slide-${Date.now()}`,
-      title: announcement.title,
-      layers: [
-        {
-          id: `layer-${Date.now()}-announcement`,
-          type: 'announcement' as const,
-          visible: true,
-          locked: false,
-          content: `<p>${announcement.content}</p>`,
-          style: {
-            fontSize: 24,
-            fontFamily: 'Arial',
-            color: '#FFFFFF',
-            textAlign: 'center' as const,
+  const handleAnnouncementSelect = useCallback(
+    (announcement: Announcement) => {
+      const newSlide: Slide = {
+        id: `slide-${Date.now()}`,
+        title: announcement.title,
+        layers: [
+          {
+            id: `layer-${Date.now()}-announcement`,
+            type: 'announcement' as const,
+            visible: true,
+            locked: false,
+            content: `<p>${announcement.content}</p>`,
+            style: {
+              fontSize: 24,
+              fontFamily: 'Arial',
+              color: '#FFFFFF',
+              textAlign: 'center' as const,
+            },
           },
-        },
-      ],
-      order: slides.length,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+        ],
+        order: slides.length,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-    setSlides((prev) => [...prev, newSlide]);
-    setSelectedSlideId(newSlide.id);
-    setCurrentSlideIndex(slides.length);
-  }, [slides]);
+      setSlides((prev) => [...prev, newSlide]);
+      setSelectedSlideId(newSlide.id);
+      setCurrentSlideIndex(slides.length);
+    },
+    [slides]
+  );
 
   // Slide handlers
   const handleSlideCreate = useCallback(() => {
@@ -310,13 +315,16 @@ const PresentationPage: React.FC = () => {
     setCurrentSlideIndex(slides.length);
   }, [slides, t]);
 
-  const handleSlideSelect = useCallback((slideId: string) => {
-    setSelectedSlideId(slideId);
-    const index = slides.findIndex((s) => s.id === slideId);
-    if (index !== -1) {
-      setCurrentSlideIndex(index);
-    }
-  }, [slides]);
+  const handleSlideSelect = useCallback(
+    (slideId: string) => {
+      setSelectedSlideId(slideId);
+      const index = slides.findIndex((s) => s.id === slideId);
+      if (index !== -1) {
+        setCurrentSlideIndex(index);
+      }
+    },
+    [slides]
+  );
 
   const handleSlideEdit = useCallback((slideId: string) => {
     setSelectedSlideId(slideId);
@@ -331,16 +339,19 @@ const PresentationPage: React.FC = () => {
     setSlides(updatedSlides);
   }, []);
 
-  const handleSlideDelete = useCallback((slideId: string) => {
-    setSlides((prev) => {
-      const filtered = prev.filter((s) => s.id !== slideId);
-      if (selectedSlideId === slideId) {
-        setSelectedSlideId(filtered.length > 0 ? filtered[0].id : null);
-        setCurrentSlideIndex(0);
-      }
-      return filtered;
-    });
-  }, [selectedSlideId]);
+  const handleSlideDelete = useCallback(
+    (slideId: string) => {
+      setSlides((prev) => {
+        const filtered = prev.filter((s) => s.id !== slideId);
+        if (selectedSlideId === slideId) {
+          setSelectedSlideId(filtered.length > 0 ? filtered[0].id : null);
+          setCurrentSlideIndex(0);
+        }
+        return filtered;
+      });
+    },
+    [selectedSlideId]
+  );
 
   const handleDeleteAllSlides = useCallback(() => {
     setSlides([]);
@@ -349,62 +360,72 @@ const PresentationPage: React.FC = () => {
     setSelectedMediaId(null);
   }, []);
 
-  const handleSlideDuplicate = useCallback((slideId: string) => {
-    const slide = slides.find((s) => s.id === slideId);
-    if (slide) {
-      const duplicatedSlide: Slide = {
-        ...slide,
-        id: `slide-${Date.now()}`,
-        title: `${slide.title} (Copy)`,
-        layers: slide.layers.map((layer) => ({
-          ...layer,
-          id: `layer-${Date.now()}-${Math.random()}`,
-        })),
-        order: slides.length,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      setSlides((prev) => [...prev, duplicatedSlide]);
-    }
-  }, [slides]);
+  const handleSlideDuplicate = useCallback(
+    (slideId: string) => {
+      const slide = slides.find((s) => s.id === slideId);
+      if (slide) {
+        const duplicatedSlide: Slide = {
+          ...slide,
+          id: `slide-${Date.now()}`,
+          title: `${slide.title} (Copy)`,
+          layers: slide.layers.map((layer) => ({
+            ...layer,
+            id: `layer-${Date.now()}-${Math.random()}`,
+          })),
+          order: slides.length,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        setSlides((prev) => [...prev, duplicatedSlide]);
+      }
+    },
+    [slides]
+  );
 
   // Layer handlers
   const handleLayerSelect = useCallback((layerId: string) => {
     // Layer selection logic
+    // eslint-disable-next-line no-console
     console.log('Layer selected:', layerId);
   }, []);
 
-  const handleLayerToggleVisibility = useCallback((layerId: string) => {
-    if (!selectedSlide) return;
-    setSlides((prev) =>
-      prev.map((slide) =>
-        slide.id === selectedSlide.id
-          ? {
-              ...slide,
-              layers: slide.layers.map((layer) =>
-                layer.id === layerId ? { ...layer, visible: !layer.visible } : layer
-              ),
-            }
-          : slide
-      )
-    );
-  }, [selectedSlide]);
+  const handleLayerToggleVisibility = useCallback(
+    (layerId: string) => {
+      if (!selectedSlide) return;
+      setSlides((prev) =>
+        prev.map((slide) =>
+          slide.id === selectedSlide.id
+            ? {
+                ...slide,
+                layers: slide.layers.map((layer) =>
+                  layer.id === layerId ? { ...layer, visible: !layer.visible } : layer
+                ),
+              }
+            : slide
+        )
+      );
+    },
+    [selectedSlide]
+  );
 
-  const handleLayerToggleLock = useCallback((layerId: string) => {
-    if (!selectedSlide) return;
-    setSlides((prev) =>
-      prev.map((slide) =>
-        slide.id === selectedSlide.id
-          ? {
-              ...slide,
-              layers: slide.layers.map((layer) =>
-                layer.id === layerId ? { ...layer, locked: !layer.locked } : layer
-              ),
-            }
-          : slide
-      )
-    );
-  }, [selectedSlide]);
+  const handleLayerToggleLock = useCallback(
+    (layerId: string) => {
+      if (!selectedSlide) return;
+      setSlides((prev) =>
+        prev.map((slide) =>
+          slide.id === selectedSlide.id
+            ? {
+                ...slide,
+                layers: slide.layers.map((layer) =>
+                  layer.id === layerId ? { ...layer, locked: !layer.locked } : layer
+                ),
+              }
+            : slide
+        )
+      );
+    },
+    [selectedSlide]
+  );
 
   // Control handlers
   const handleLive = useCallback(() => {
@@ -470,50 +491,41 @@ const PresentationPage: React.FC = () => {
   return (
     <div className={styles.presentationPage}>
       {/* Top Controls */}
-      <TopControls
-        onFormatChange={handleFormatChange}
-        currentFormat={currentFormat}
-      />
+      <TopControls onFormatChange={handleFormatChange} currentFormat={currentFormat} />
 
       {/* Secondary List Sidebar */}
-        <ListSidebar
-          songs={songs}
-          mediaFiles={mediaFiles}
-          announcements={announcements}
-          onSongSelect={handleSongSelect}
-          onMediaLoad={handleMediaLoad}
-          onMediaSelect={handleMediaSelect}
-          onAnnouncementSelect={handleAnnouncementSelect}
-          onGenerateSlides={handleGenerateSlides}
-          onBackgroundVideoSelect={handleBackgroundVideoSelect}
-          selectedSlideId={selectedSlideId}
-          selectedMediaId={selectedMediaId}
-        />
+      <ListSidebar
+        songs={songs}
+        mediaFiles={mediaFiles}
+        announcements={announcements}
+        onSongSelect={handleSongSelect}
+        onMediaLoad={handleMediaLoad}
+        onMediaSelect={handleMediaSelect}
+        onAnnouncementSelect={handleAnnouncementSelect}
+        onGenerateSlides={handleGenerateSlides}
+        onBackgroundVideoSelect={handleBackgroundVideoSelect}
+        selectedSlideId={selectedSlideId}
+        selectedMediaId={selectedMediaId}
+      />
 
       {/* Main Content Area */}
       <div className={styles.mainContent}>
         {/* View Mode Toggle */}
         <div className={styles.viewModeToggle}>
           <button
-            className={`${styles.viewModeButton} ${
-              viewMode === 'preview' ? styles.active : ''
-            }`}
+            className={`${styles.viewModeButton} ${viewMode === 'preview' ? styles.active : ''}`}
             onClick={() => setViewMode('preview')}
           >
             {t('presentation.viewMode.preview')}
           </button>
           <button
-            className={`${styles.viewModeButton} ${
-              viewMode === 'grid' ? styles.active : ''
-            }`}
+            className={`${styles.viewModeButton} ${viewMode === 'grid' ? styles.active : ''}`}
             onClick={() => setViewMode('grid')}
           >
             {t('presentation.viewMode.grid')}
           </button>
           <button
-            className={`${styles.viewModeButton} ${
-              viewMode === 'timeline' ? styles.active : ''
-            }`}
+            className={`${styles.viewModeButton} ${viewMode === 'timeline' ? styles.active : ''}`}
             onClick={() => setViewMode('timeline')}
           >
             {t('presentation.viewMode.timeline')}
@@ -577,4 +589,3 @@ const PresentationPage: React.FC = () => {
 };
 
 export default PresentationPage;
-

@@ -1,6 +1,6 @@
 /**
  * tRPC Context
- * 
+ *
  * Creates the context that is available in all procedures.
  * This bridges tRPC with the existing Context service.
  */
@@ -30,9 +30,7 @@ let cachedContext: Context | null = null;
  * Creates the context for each tRPC request
  * This is called for every request and the result is passed to all procedures
  */
-export async function createContext(
-  opts: CreateExpressContextOptions
-): Promise<TRPCContext> {
+export async function createContext(opts: CreateExpressContextOptions): Promise<TRPCContext> {
   // Initialize or reuse the application context
   if (!cachedContext) {
     cachedContext = await Context.initialize();

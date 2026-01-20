@@ -23,13 +23,10 @@ interface TopControlsProps {
   };
 }
 
-const TopControls: React.FC<TopControlsProps> = ({
-  onFormatChange,
-  currentFormat = {},
-}) => {
+const TopControls: React.FC<TopControlsProps> = ({ onFormatChange, currentFormat = {} }) => {
   const { t } = useTranslation();
 
-  const handleFormatChange = (key: string, value: any) => {
+  const handleFormatChange = (key: string, value: string | number) => {
     if (onFormatChange) {
       onFormatChange({ ...currentFormat, [key]: value });
     }
@@ -169,4 +166,3 @@ const TopControls: React.FC<TopControlsProps> = ({
 };
 
 export default TopControls;
-

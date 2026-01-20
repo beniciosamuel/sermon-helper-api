@@ -37,10 +37,7 @@ const FooterControls: React.FC<FooterControlsProps> = ({
       <button className={styles.footerButton} onClick={onForward}>
         Avançar
       </button>
-      <button
-        className={`${styles.footerButton} ${styles.footerButtonPrimary}`}
-        onClick={onLive}
-      >
+      <button className={`${styles.footerButton} ${styles.footerButtonPrimary}`} onClick={onLive}>
         {isLive ? 'AO VIVO' : 'AO VIVO'}
       </button>
     </div>
@@ -48,4 +45,3 @@ const FooterControls: React.FC<FooterControlsProps> = ({
 };
 
 export default FooterControls;
-

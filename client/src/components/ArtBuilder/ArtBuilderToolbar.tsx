@@ -2,8 +2,17 @@ import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../../styles/PresentationControl.module.css';
 
+interface TextFormat {
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  align?: 'left' | 'center' | 'right';
+  fontSize?: number;
+  color?: string;
+}
+
 interface ArtBuilderToolbarProps {
-  onFormatChange?: (format: any) => void;
+  onFormatChange?: (format: TextFormat) => void;
   onResolutionChange?: (resolution: string) => void;
   onAspectRatioChange?: (ratio: string) => void;
   onBackgroundToggle?: () => void;
@@ -11,7 +20,7 @@ interface ArtBuilderToolbarProps {
 }
 
 const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
-  onFormatChange,
+  onFormatChange: _onFormatChange,
   onResolutionChange,
   onAspectRatioChange,
   onBackgroundToggle,
@@ -70,7 +79,10 @@ const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
           <button className={styles.toolbarButton} title={t('artBuilder.toolbar.textColor')}>
             <span className={styles.colorButton}>
               A
-              <span className={styles.colorIndicator} style={{ backgroundColor: 'var(--accent)' }} />
+              <span
+                className={styles.colorIndicator}
+                style={{ backgroundColor: 'var(--accent)' }}
+              />
             </span>
           </button>
           <button className={styles.toolbarButton} title={t('artBuilder.toolbar.clearFormatting')}>
@@ -120,4 +132,3 @@ const ArtBuilderToolbar: React.FC<ArtBuilderToolbarProps> = ({
 };
 
 export default ArtBuilderToolbar;
-

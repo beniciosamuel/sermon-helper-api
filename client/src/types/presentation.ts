@@ -74,4 +74,3 @@ export interface PresentationState {
   activeThemeId: string;
   selectedSlideId: string | null;
 }
-

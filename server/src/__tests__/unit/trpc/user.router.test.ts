@@ -1,6 +1,6 @@
 /**
  * User Router Unit Tests
- * 
+ *
  * Tests the tRPC user router procedures (create, findById, findByEmailOrPhone)
  * Uses mocked use cases and repositories to isolate router logic
  */
@@ -46,12 +46,14 @@ import { findUserByEmailOrPhone } from '../../../useCases/findUserByEmailOrPhone
 
 const mockedCreateUser = createUser as jest.MockedFunction<typeof createUser>;
 const mockedFindUserById = findUserById as jest.MockedFunction<typeof findUserById>;
-const mockedFindUserByEmailOrPhone = findUserByEmailOrPhone as jest.MockedFunction<typeof findUserByEmailOrPhone>;
+const mockedFindUserByEmailOrPhone = findUserByEmailOrPhone as jest.MockedFunction<
+  typeof findUserByEmailOrPhone
+>;
 
 describe('User Router', () => {
   // Create a caller for testing the router
   const createCaller = createCallerFactory(userRouter);
-  
+
   // Mock context
   const mockContext = {
     context: {} as any,
@@ -68,11 +70,13 @@ describe('User Router', () => {
   describe('create', () => {
     it('should create a user successfully', async () => {
       const input = createValidUserInput();
-      const createdUser = new User(createUserDatabaseEntityFactory({
-        full_name: input.name,
-        email: input.email,
-        phone: input.phone,
-      }));
+      const createdUser = new User(
+        createUserDatabaseEntityFactory({
+          full_name: input.name,
+          email: input.email,
+          phone: input.phone,
+        })
+      );
 
       mockedCreateUser.mockResolvedValue({
         success: true,

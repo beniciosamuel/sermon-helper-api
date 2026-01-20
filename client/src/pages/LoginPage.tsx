@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
 
   const validateLogin = (): boolean => {
     const errors: Partial<LoginCredentials> = {};
-    
+
     if (!loginForm.email.trim()) {
       errors.email = t('auth.login.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(loginForm.email)) {
@@ -46,7 +46,7 @@ const LoginPage: React.FC = () => {
 
   const validateSignUp = (): boolean => {
     const errors: Partial<SignUpData> = {};
-    
+
     if (!signUpForm.email.trim()) {
       errors.email = t('auth.signup.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(signUpForm.email)) {
@@ -87,7 +87,7 @@ const LoginPage: React.FC = () => {
       } else {
         setError(response.message || t('auth.login.failed'));
       }
-    } catch (err) {
+    } catch {
       setError(t('auth.login.error'));
     } finally {
       setIsSubmitting(false);
@@ -112,7 +112,7 @@ const LoginPage: React.FC = () => {
       } else {
         setError(response.message || t('auth.signup.failed'));
       }
-    } catch (err) {
+    } catch {
       setError(t('auth.signup.error'));
     } finally {
       setIsSubmitting(false);
@@ -167,11 +167,7 @@ const LoginPage: React.FC = () => {
             </button>
           </div>
 
-          {error && (
-            <div className={styles.errorMessage}>
-              {error}
-            </div>
-          )}
+          {error && <div className={styles.errorMessage}>{error}</div>}
 
           {activeTab === 'login' ? (
             <form onSubmit={handleLogin} className={styles.form}>
@@ -188,9 +184,7 @@ const LoginPage: React.FC = () => {
                   placeholder={t('auth.login.emailPlaceholder')}
                   disabled={isSubmitting}
                 />
-                {loginErrors.email && (
-                  <span className={styles.errorText}>{loginErrors.email}</span>
-                )}
+                {loginErrors.email && <span className={styles.errorText}>{loginErrors.email}</span>}
               </div>
 
               <div className={styles.formGroup}>
@@ -211,11 +205,7 @@ const LoginPage: React.FC = () => {
                 )}
               </div>
 
-              <button
-                type="submit"
-                className={styles.submitButton}
-                disabled={isSubmitting}
-              >
+              <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
                 {isSubmitting ? t('auth.login.submitting') : t('auth.login.submit')}
               </button>
             </form>
@@ -275,11 +265,7 @@ const LoginPage: React.FC = () => {
                 )}
               </div>
 
-              <button
-                type="submit"
-                className={styles.submitButton}
-                disabled={isSubmitting}
-              >
+              <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
                 {isSubmitting ? t('auth.signup.submitting') : t('auth.signup.submit')}
               </button>
             </form>
@@ -291,4 +277,3 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
-

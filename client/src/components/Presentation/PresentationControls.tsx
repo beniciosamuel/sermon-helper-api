@@ -46,7 +46,7 @@ const PresentationControls: React.FC<PresentationControlsProps> = ({
   const { t } = useTranslation();
   const [showFormatPanel, setShowFormatPanel] = React.useState(false);
 
-  const handleFormatChange = (key: string, value: any) => {
+  const handleFormatChange = (key: string, value: string | number) => {
     if (onFormatChange) {
       onFormatChange({ ...currentFormat, [key]: value });
     }
@@ -183,10 +183,7 @@ const PresentationControls: React.FC<PresentationControlsProps> = ({
             />
           </div>
 
-          <button
-            className={styles.closeFormatButton}
-            onClick={() => setShowFormatPanel(false)}
-          >
+          <button className={styles.closeFormatButton} onClick={() => setShowFormatPanel(false)}>
             ✕
           </button>
         </div>
@@ -244,4 +241,3 @@ const PresentationControls: React.FC<PresentationControlsProps> = ({
 };
 
 export default PresentationControls;
-

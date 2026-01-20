@@ -26,9 +26,7 @@ const SettingsPage: React.FC = () => {
       <div className={styles.content}>
         <div className={styles.header}>
           <h1 className={styles.title}>{t('settings.title')}</h1>
-          <p className={styles.subtitle}>
-            {t('settings.subtitle')}
-          </p>
+          <p className={styles.subtitle}>{t('settings.subtitle')}</p>
         </div>
 
         <SettingsSection
@@ -61,16 +59,10 @@ const SettingsPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t('settings.account.passwordPlaceholder')}
             />
-            <p className={styles.helperText}>
-              {t('settings.account.passwordHelper')}
-            </p>
+            <p className={styles.helperText}>{t('settings.account.passwordHelper')}</p>
           </div>
 
-          <button
-            className={styles.button}
-            onClick={handlePasswordChange}
-            type="button"
-          >
+          <button className={styles.button} onClick={handlePasswordChange} type="button">
             {t('settings.account.changePassword')}
           </button>
         </SettingsSection>
@@ -82,9 +74,7 @@ const SettingsPage: React.FC = () => {
           <div className={styles.themeSection}>
             <div className={styles.themeInfo}>
               <h3 className={styles.themeTitle}>{t('settings.appearance.theme')}</h3>
-              <p className={styles.themeDescription}>
-                {t('settings.appearance.themeDescription')}
-              </p>
+              <p className={styles.themeDescription}>{t('settings.appearance.themeDescription')}</p>
             </div>
             <ThemeToggle value={theme} onChange={handleThemeChange} />
           </div>
@@ -102,4 +92,3 @@ const SettingsPage: React.FC = () => {
 };
 
 export default SettingsPage;
-

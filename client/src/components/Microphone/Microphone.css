@@ -1,68 +1,72 @@
 .Microphone {
-	margin: 0;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 1000;
+  margin: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 
 .MicrophoneIcon {
-	padding: 30px;
-	border-radius: 50%;
-	color: #6c2c4a;
-	background-color: #fffcf5;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
+  padding: 30px;
+  border-radius: 50%;
+  color: #6c2c4a;
+  background-color: #fffcf5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .MicrophoneIcon:hover {
-	background-color: #ff8f74;
-	color: #fff;
-	transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #ff8f74;
+  color: #fff;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 .MicrophoneIcon:active {
-	background-color: #d25659;
-	color: #fff;
-	transition: background-color 0.1s ease, color 0.1s ease;
+  background-color: #d25659;
+  color: #fff;
+  transition:
+    background-color 0.1s ease,
+    color 0.1s ease;
 }
 .MicrophoneIcon svg {
-	width: 24px;
-	height: 24px;
+  width: 24px;
+  height: 24px;
 }
 .MicrophoneIcon svg path {
-	fill: currentColor;
+  fill: currentColor;
 }
 .MicrophoneIcon svg:hover path {
-	fill: #fff;
-	transition: fill 0.3s ease;
+  fill: #fff;
+  transition: fill 0.3s ease;
 }
 .MicrophoneIcon svg:active path {
-	fill: #d25659;
-	transition: fill 0.1s ease;
+  fill: #d25659;
+  transition: fill 0.1s ease;
 }
 .MicrophoneIcon:focus {
-	outline: none;
-	box-shadow: 0 0 0 3px rgba(108, 44, 74, 0.5);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(108, 44, 74, 0.5);
 }
 .MicrophoneIcon:focus svg path {
-	fill: #fff;
-	transition: fill 0.3s ease;
+  fill: #fff;
+  transition: fill 0.3s ease;
 }
 .MicrophoneIcon:focus-visible {
-	outline: 2px solid #6c2c4a;
-	outline-offset: 2px;
+  outline: 2px solid #6c2c4a;
+  outline-offset: 2px;
 }
 .MicrophoneIcon:focus-visible svg path {
-	fill: #fff;
-	transition: fill 0.3s ease;
+  fill: #fff;
+  transition: fill 0.3s ease;
 }
 .MicrophoneIcon:disabled {
-	background-color: #ebebe9;
-	color: #6c2c4a;
-	cursor: not-allowed;
-	box-shadow: none;
+  background-color: #ebebe9;
+  color: #6c2c4a;
+  cursor: not-allowed;
+  box-shadow: none;
 }

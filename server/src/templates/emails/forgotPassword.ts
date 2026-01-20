@@ -5,23 +5,23 @@ import { emailTheme } from './theme';
  * Options for the forgot password email template
  */
 export interface ForgotPasswordOptions {
-	/** Recipient's name (optional, will use "there" if not provided) */
-	userName?: string;
-	/** The 6-character alphanumeric recovery code */
-	recoveryCode: string;
-	/** How long the code is valid (e.g., "15 minutes") */
-	expiresIn?: string;
-	/** App name override */
-	appName?: string;
+  /** Recipient's name (optional, will use "there" if not provided) */
+  userName?: string;
+  /** The 6-character alphanumeric recovery code */
+  recoveryCode: string;
+  /** How long the code is valid (e.g., "15 minutes") */
+  expiresIn?: string;
+  /** App name override */
+  appName?: string;
 }
 
 /**
  * Generates a 6-character alphanumeric code for password recovery
  * Uses uppercase letters and numbers for better readability
  * Excludes ambiguous characters: 0, O, I, 1, L
- * 
+ *
  * @returns A 6-character alphanumeric string
- * 
+ *
  * @example
  * ```typescript
  * const code = generateRecoveryCode();
@@ -29,25 +29,25 @@ export interface ForgotPasswordOptions {
  * ```
  */
 export function generateRecoveryCode(): string {
-	// Exclude ambiguous characters: 0, O, I, 1, L
-	const characters = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-	let code = '';
-	
-	for (let i = 0; i < 6; i++) {
-		const randomIndex = Math.floor(Math.random() * characters.length);
-		code += characters[randomIndex];
-	}
-	
-	return code;
+  // Exclude ambiguous characters: 0, O, I, 1, L
+  const characters = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let code = '';
+
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    code += characters[randomIndex];
+  }
+
+  return code;
 }
 
 /**
  * Generates a forgot password email template
  * Includes a 6-character alphanumeric code for account recovery
- * 
+ *
  * @param options - Configuration options for the email
  * @returns Complete HTML email string
- * 
+ *
  * @example
  * ```typescript
  * const code = generateRecoveryCode();
@@ -59,17 +59,12 @@ export function generateRecoveryCode(): string {
  * ```
  */
 export function forgotPassword(options: ForgotPasswordOptions): string {
-	const {
-		userName,
-		recoveryCode,
-		expiresIn = '15 minutes',
-		appName = 'Sermon Helper',
-	} = options;
+  const { userName, recoveryCode, expiresIn = '15 minutes', appName = 'Sermon Helper' } = options;
 
-	const greeting = userName ? `Hi ${userName},` : 'Hi there,';
-	const { colors, fonts, spacing } = emailTheme;
+  const greeting = userName ? `Hi ${userName},` : 'Hi there,';
+  const { colors, fonts, spacing } = emailTheme;
 
-	const content = `
+  const content = `
 		${heading('Reset Your Password', { align: 'center' })}
 		
 		${spacer('md')}
@@ -122,13 +117,13 @@ export function forgotPassword(options: ForgotPasswordOptions): string {
 		${paragraph(`The ${appName} Team`, { muted: true })}
 	`;
 
-	return baseLayout({
-		content,
-		previewText: `Your ${appName} password reset code is ${recoveryCode}`,
-		appName,
-		footerLinks: [
-			{ text: 'Help Center', url: '#' },
-			{ text: 'Privacy Policy', url: '#' },
-		],
-	});
+  return baseLayout({
+    content,
+    previewText: `Your ${appName} password reset code is ${recoveryCode}`,
+    appName,
+    footerLinks: [
+      { text: 'Help Center', url: '#' },
+      { text: 'Privacy Policy', url: '#' },
+    ],
+  });
 }

@@ -23,13 +23,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       title={collapsed ? label : undefined}
     >
       <div className={styles.sidebarItemIcon}>{icon}</div>
-      {!collapsed && (
-        <span className={styles.sidebarItemLabel}>{label}</span>
-      )}
+      {!collapsed && <span className={styles.sidebarItemLabel}>{label}</span>}
       {active && <div className={styles.sidebarItemIndicator} />}
     </div>
   );
 };
 
 export default SidebarItem;
-

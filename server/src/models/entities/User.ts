@@ -9,25 +9,25 @@ export interface UserDatabaseEntity {
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
- }
- 
- export interface UserCreateArgs {
+}
+
+export interface UserCreateArgs {
   name: string;
   email: string;
   phone: string;
   password: string;
   color_theme: string;
   language: string;
- }
- 
- export interface UserUpdateArgs {
+}
+
+export interface UserUpdateArgs {
   full_name?: string;
   email?: string;
   phone?: string;
   password?: string;
   color_theme?: string;
   language?: string;
- }
+}
 export class User {
   id: number;
   full_name: string;

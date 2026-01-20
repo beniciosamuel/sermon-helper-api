@@ -194,7 +194,6 @@
   max-width: 100%;
 }
 
-
 .themesContainer {
   flex: 1;
   overflow-y: auto;
@@ -304,4 +303,3 @@
 .themesList::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.15);
 }
-

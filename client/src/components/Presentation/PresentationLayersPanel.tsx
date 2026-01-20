@@ -123,4 +123,3 @@ const PresentationLayersPanel: React.FC<PresentationLayersPanelProps> = ({
 };
 
 export default PresentationLayersPanel;
-

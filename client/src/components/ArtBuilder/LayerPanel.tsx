@@ -118,10 +118,7 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
                     autoFocus
                   />
                 ) : (
-                  <span
-                    className={styles.layerName}
-                    onDoubleClick={() => handleNameEdit(layer)}
-                  >
+                  <span className={styles.layerName} onDoubleClick={() => handleNameEdit(layer)}>
                     {layer.name}
                   </span>
                 )}
@@ -159,4 +156,3 @@ const LayerPanel: React.FC<LayerPanelProps> = ({
 };
 
 export default LayerPanel;
-

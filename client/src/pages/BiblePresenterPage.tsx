@@ -53,6 +53,7 @@ const BiblePresenterPage: React.FC = () => {
 
   const handleLogo = () => {
     // Placeholder for logo action
+    // eslint-disable-next-line no-console
     console.log('Logo clicked');
   };
 
@@ -107,4 +108,3 @@ const BiblePresenterPage: React.FC = () => {
 };
 
 export default BiblePresenterPage;
-

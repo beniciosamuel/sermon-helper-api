@@ -4,16 +4,16 @@ import { emailTheme } from './theme';
  * Options for the base email layout
  */
 export interface BaseLayoutOptions {
-	/** The main content of the email */
-	content: string;
-	/** Optional preview text shown in email clients */
-	previewText?: string;
-	/** Year for copyright notice (defaults to current year) */
-	copyrightYear?: number;
-	/** Company/app name */
-	appName?: string;
-	/** Optional footer links */
-	footerLinks?: Array<{ text: string; url: string }>;
+  /** The main content of the email */
+  content: string;
+  /** Optional preview text shown in email clients */
+  previewText?: string;
+  /** Year for copyright notice (defaults to current year) */
+  copyrightYear?: number;
+  /** Company/app name */
+  appName?: string;
+  /** Optional footer links */
+  footerLinks?: { text: string; url: string }[];
 }
 
 /**
@@ -21,24 +21,28 @@ export interface BaseLayoutOptions {
  * This layout is responsive and compatible with major email clients
  */
 export function baseLayout(options: BaseLayoutOptions): string {
-	const {
-		content,
-		previewText = '',
-		copyrightYear = new Date().getFullYear(),
-		appName = 'Sermon Helper',
-		footerLinks = [],
-	} = options;
+  const {
+    content,
+    previewText = '',
+    copyrightYear = new Date().getFullYear(),
+    appName = 'Sermon Helper',
+    footerLinks = [],
+  } = options;
 
-	const { colors, fonts, spacing, borderRadius } = emailTheme;
+  const { colors, fonts, spacing, borderRadius } = emailTheme;
 
-	// Generate footer links HTML
-	const footerLinksHtml = footerLinks.length > 0
-		? footerLinks
-			.map(link => `<a href="${link.url}" style="color: ${colors.accent}; text-decoration: none;">${link.text}</a>`)
-			.join(' &middot; ')
-		: '';
+  // Generate footer links HTML
+  const footerLinksHtml =
+    footerLinks.length > 0
+      ? footerLinks
+          .map(
+            (link) =>
+              `<a href="${link.url}" style="color: ${colors.accent}; text-decoration: none;">${link.text}</a>`
+          )
+          .join(' &middot; ')
+      : '';
 
-	return `
+  return `
 <!DOCTYPE html>
 <html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -119,12 +123,16 @@ export function baseLayout(options: BaseLayoutOptions): string {
 </head>
 <body style="margin: 0; padding: 0; background-color: ${colors.background}; font-family: ${fonts.primary};">
 	<!-- Preview text -->
-	${previewText ? `
+	${
+    previewText
+      ? `
 	<div style="display: none; max-height: 0; overflow: hidden;">
 		${previewText}
 		${'&zwnj;&nbsp;'.repeat(90)}
 	</div>
-	` : ''}
+	`
+      : ''
+  }
 	
 	<!-- Email wrapper -->
 	<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color: ${colors.background};">
@@ -166,7 +174,9 @@ export function baseLayout(options: BaseLayoutOptions): string {
 					<tr>
 						<td align="center" style="padding-top: ${spacing.xl};">
 							<table role="presentation" cellpadding="0" cellspacing="0" width="100%">
-								${footerLinksHtml ? `
+								${
+                  footerLinksHtml
+                    ? `
 								<tr>
 									<td align="center" style="padding-bottom: ${spacing.md};">
 										<p style="margin: 0; font-size: 14px; line-height: 1.5; color: ${colors.textSecondary}; font-family: ${fonts.primary};">
@@ -174,7 +184,9 @@ export function baseLayout(options: BaseLayoutOptions): string {
 										</p>
 									</td>
 								</tr>
-								` : ''}
+								`
+                    : ''
+                }
 								<tr>
 									<td align="center">
 										<p style="margin: 0; font-size: 12px; line-height: 1.5; color: ${colors.textMuted}; font-family: ${fonts.primary};">
@@ -205,19 +217,23 @@ export function baseLayout(options: BaseLayoutOptions): string {
 /**
  * Creates a styled button for use in email templates
  */
-export function emailButton(text: string, url: string, options?: {
-	variant?: 'primary' | 'secondary';
-	fullWidth?: boolean;
-}): string {
-	const { variant = 'primary', fullWidth = false } = options ?? {};
-	const { colors, spacing, borderRadius, fonts } = emailTheme;
+export function emailButton(
+  text: string,
+  url: string,
+  options?: {
+    variant?: 'primary' | 'secondary';
+    fullWidth?: boolean;
+  }
+): string {
+  const { variant = 'primary', fullWidth = false } = options ?? {};
+  const { colors, spacing, borderRadius, fonts } = emailTheme;
 
-	const backgroundColor = variant === 'primary' ? colors.accent : 'transparent';
-	const textColor = variant === 'primary' ? '#FFFFFF' : colors.accent;
-	const border = variant === 'secondary' ? `2px solid ${colors.accent}` : 'none';
-	const width = fullWidth ? 'width: 100%;' : '';
+  const backgroundColor = variant === 'primary' ? colors.accent : 'transparent';
+  const textColor = variant === 'primary' ? '#FFFFFF' : colors.accent;
+  const border = variant === 'secondary' ? `2px solid ${colors.accent}` : 'none';
+  const width = fullWidth ? 'width: 100%;' : '';
 
-	return `
+  return `
 <table role="presentation" cellpadding="0" cellspacing="0" ${fullWidth ? 'width="100%"' : ''} style="margin: ${spacing.md} 0;">
 	<tr>
 		<td align="center">
@@ -260,9 +276,9 @@ export function emailButton(text: string, url: string, options?: {
  * Creates a styled code/token display box for verification codes
  */
 export function codeBox(code: string): string {
-	const { colors, spacing, borderRadius, fonts } = emailTheme;
+  const { colors, spacing, borderRadius, fonts } = emailTheme;
 
-	return `
+  return `
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin: ${spacing.lg} 0;">
 	<tr>
 		<td align="center">
@@ -290,16 +306,19 @@ export function codeBox(code: string): string {
 /**
  * Creates a paragraph with consistent styling
  */
-export function paragraph(text: string, options?: {
-	align?: 'left' | 'center' | 'right';
-	muted?: boolean;
-}): string {
-	const { align = 'left', muted = false } = options ?? {};
-	const { colors, fonts, spacing } = emailTheme;
+export function paragraph(
+  text: string,
+  options?: {
+    align?: 'left' | 'center' | 'right';
+    muted?: boolean;
+  }
+): string {
+  const { align = 'left', muted = false } = options ?? {};
+  const { colors, fonts, spacing } = emailTheme;
 
-	const textColor = muted ? colors.textSecondary : colors.textPrimary;
+  const textColor = muted ? colors.textSecondary : colors.textPrimary;
 
-	return `
+  return `
 <p style="
 	margin: 0 0 ${spacing.md} 0;
 	font-family: ${fonts.primary};
@@ -314,17 +333,20 @@ export function paragraph(text: string, options?: {
 /**
  * Creates a heading with consistent styling
  */
-export function heading(text: string, options?: {
-	level?: 1 | 2 | 3;
-	align?: 'left' | 'center' | 'right';
-}): string {
-	const { level = 2, align = 'left' } = options ?? {};
-	const { colors, fonts, spacing } = emailTheme;
+export function heading(
+  text: string,
+  options?: {
+    level?: 1 | 2 | 3;
+    align?: 'left' | 'center' | 'right';
+  }
+): string {
+  const { level = 2, align = 'left' } = options ?? {};
+  const { colors, fonts, spacing } = emailTheme;
 
-	const fontSize = level === 1 ? '28px' : level === 2 ? '24px' : '20px';
-	const marginBottom = level === 1 ? spacing.lg : spacing.md;
+  const fontSize = level === 1 ? '28px' : level === 2 ? '24px' : '20px';
+  const marginBottom = level === 1 ? spacing.lg : spacing.md;
 
-	return `
+  return `
 <h${level} style="
 	margin: 0 0 ${marginBottom} 0;
 	font-family: ${fonts.primary};
@@ -341,9 +363,9 @@ export function heading(text: string, options?: {
  * Creates a divider line
  */
 export function divider(): string {
-	const { colors, spacing } = emailTheme;
+  const { colors, spacing } = emailTheme;
 
-	return `
+  return `
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin: ${spacing.lg} 0;">
 	<tr>
 		<td style="border-top: 1px solid ${colors.border};"></td>
@@ -356,8 +378,8 @@ export function divider(): string {
  * Creates a spacer
  */
 export function spacer(size: 'sm' | 'md' | 'lg' | 'xl' = 'md'): string {
-	const { spacing } = emailTheme;
-	const height = spacing[size];
+  const { spacing } = emailTheme;
+  const height = spacing[size];
 
-	return `<div style="height: ${height};"></div>`;
+  return `<div style="height: ${height};"></div>`;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Slide, MediaFile } from '../../types/presentation';
 import styles from './SlideVisualization.module.css';
@@ -43,11 +43,7 @@ const SlideVisualization: React.FC<SlideVisualizationProps> = ({
             </div>
           ) : (
             slides.map((s) => (
-              <div
-                key={s.id}
-                className={styles.gridItem}
-                onClick={() => onSlideSelect?.(s.id)}
-              >
+              <div key={s.id} className={styles.gridItem} onClick={() => onSlideSelect?.(s.id)}>
                 <div className={styles.gridItemPreview}>
                   <SlidePreview slide={s} mediaFiles={mediaFiles} />
                 </div>
@@ -76,11 +72,7 @@ const SlideVisualization: React.FC<SlideVisualizationProps> = ({
             </div>
           ) : (
             slides.map((s, index) => (
-              <div
-                key={s.id}
-                className={styles.timelineItem}
-                onClick={() => onSlideSelect?.(s.id)}
-              >
+              <div key={s.id} className={styles.timelineItem} onClick={() => onSlideSelect?.(s.id)}>
                 <div className={styles.timelineNumber}>{index + 1}</div>
                 <div className={styles.timelinePreview}>
                   <SlidePreview slide={s} mediaFiles={mediaFiles} />
@@ -105,10 +97,7 @@ const SlideVisualization: React.FC<SlideVisualizationProps> = ({
             <SlidePreview slide={slide} mediaFiles={mediaFiles} />
           </div>
           <div className={styles.slideActions}>
-            <button
-              className={styles.editButton}
-              onClick={() => onSlideEdit(slide.id)}
-            >
+            <button className={styles.editButton} onClick={() => onSlideEdit(slide.id)}>
               {t('presentation.visualization.edit')}
             </button>
           </div>
@@ -140,7 +129,8 @@ const SlidePreview: React.FC<{
     <div
       className={styles.slidePreviewContent}
       style={{
-        backgroundImage: backgroundMedia?.type === 'image' ? `url(${backgroundMedia.url})` : undefined,
+        backgroundImage:
+          backgroundMedia?.type === 'image' ? `url(${backgroundMedia.url})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -171,4 +161,3 @@ const SlidePreview: React.FC<{
 };
 
 export default SlideVisualization;
-

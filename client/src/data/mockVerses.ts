@@ -4,40 +4,108 @@ export interface Verse {
 }
 
 export const MOCK_VERSES: Record<string, Record<number, Verse[]>> = {
-  'Gênesis': {
+  Gênesis: {
     1: [
       { number: 1, text: 'No princípio, criou Deus os céus e a terra.' },
-      { number: 2, text: 'A terra, porém, estava sem forma e vazia; havia trevas sobre a face do abismo, e o Espírito de Deus pairava por sobre as águas.' },
+      {
+        number: 2,
+        text: 'A terra, porém, estava sem forma e vazia; havia trevas sobre a face do abismo, e o Espírito de Deus pairava por sobre as águas.',
+      },
       { number: 3, text: 'Disse Deus: Haja luz; e houve luz.' },
       { number: 4, text: 'Viu Deus que a luz era boa; e fez separação entre a luz e as trevas.' },
-      { number: 5, text: 'Chamou Deus à luz Dia e às trevas, Noite. Houve tarde e manhã, o primeiro dia.' },
-      { number: 6, text: 'E disse Deus: Haja firmamento no meio das águas e separação entre águas e águas.' },
-      { number: 7, text: 'Fez, pois, Deus o firmamento e a separação entre as águas que estavam debaixo do firmamento e as que estavam por cima do firmamento. E assim se fez.' },
+      {
+        number: 5,
+        text: 'Chamou Deus à luz Dia e às trevas, Noite. Houve tarde e manhã, o primeiro dia.',
+      },
+      {
+        number: 6,
+        text: 'E disse Deus: Haja firmamento no meio das águas e separação entre águas e águas.',
+      },
+      {
+        number: 7,
+        text: 'Fez, pois, Deus o firmamento e a separação entre as águas que estavam debaixo do firmamento e as que estavam por cima do firmamento. E assim se fez.',
+      },
       { number: 8, text: 'Chamou Deus ao firmamento Céus. Houve tarde e manhã, o segundo dia.' },
-      { number: 9, text: 'Disse também Deus: Ajuntem-se as águas debaixo dos céus num só lugar, e apareça a porção seca. E assim se fez.' },
-      { number: 10, text: 'À porção seca chamou Deus Terra e ao ajuntamento das águas, Mares. E viu Deus que isso era bom.' },
-      { number: 11, text: 'E disse: Produza a terra relva, ervas que deem semente e árvores frutíferas que deem fruto segundo a sua espécie, cuja semente esteja nele, sobre a terra. E assim se fez.' },
-      { number: 12, text: 'A terra, pois, produziu relva, ervas que davam semente segundo a sua espécie e árvores que davam fruto, cuja semente estava nele, conforme a sua espécie. E viu Deus que isso era bom.' },
+      {
+        number: 9,
+        text: 'Disse também Deus: Ajuntem-se as águas debaixo dos céus num só lugar, e apareça a porção seca. E assim se fez.',
+      },
+      {
+        number: 10,
+        text: 'À porção seca chamou Deus Terra e ao ajuntamento das águas, Mares. E viu Deus que isso era bom.',
+      },
+      {
+        number: 11,
+        text: 'E disse: Produza a terra relva, ervas que deem semente e árvores frutíferas que deem fruto segundo a sua espécie, cuja semente esteja nele, sobre a terra. E assim se fez.',
+      },
+      {
+        number: 12,
+        text: 'A terra, pois, produziu relva, ervas que davam semente segundo a sua espécie e árvores que davam fruto, cuja semente estava nele, conforme a sua espécie. E viu Deus que isso era bom.',
+      },
       { number: 13, text: 'Houve tarde e manhã, o terceiro dia.' },
-      { number: 14, text: 'Disse também Deus: Haja luzeiros no firmamento do céu, para fazerem separação entre o dia e a noite; e sejam eles para sinais, para estações, para dias e anos.' },
-      { number: 15, text: 'E sejam para luzeiros no firmamento do céu, para alumiar a terra. E assim se fez.' },
-      { number: 16, text: 'Fez Deus os dois grandes luzeiros: o maior para governar o dia, e o menor para governar a noite; e fez também as estrelas.' },
+      {
+        number: 14,
+        text: 'Disse também Deus: Haja luzeiros no firmamento do céu, para fazerem separação entre o dia e a noite; e sejam eles para sinais, para estações, para dias e anos.',
+      },
+      {
+        number: 15,
+        text: 'E sejam para luzeiros no firmamento do céu, para alumiar a terra. E assim se fez.',
+      },
+      {
+        number: 16,
+        text: 'Fez Deus os dois grandes luzeiros: o maior para governar o dia, e o menor para governar a noite; e fez também as estrelas.',
+      },
       { number: 17, text: 'E os colocou no firmamento do céu para alumiar a terra,' },
-      { number: 18, text: 'para governar o dia e a noite e fazer separação entre a luz e as trevas. E viu Deus que isso era bom.' },
+      {
+        number: 18,
+        text: 'para governar o dia e a noite e fazer separação entre a luz e as trevas. E viu Deus que isso era bom.',
+      },
       { number: 19, text: 'Houve tarde e manhã, o quarto dia.' },
-      { number: 20, text: 'Disse também Deus: Povoem-se as águas de enxames de seres viventes; e voem as aves sobre a terra, sob o firmamento do céu.' },
-      { number: 21, text: 'Criou, pois, Deus os grandes animais marinhos e todos os seres viventes que rastejam, os quais povoavam as águas, segundo as suas espécies; e todas as aves, segundo as suas espécies. E viu Deus que isso era bom.' },
-      { number: 22, text: 'E Deus os abençoou, dizendo: Sede fecundos, multiplicai-vos e enchei as águas dos mares; e, na terra, se multipliquem as aves.' },
+      {
+        number: 20,
+        text: 'Disse também Deus: Povoem-se as águas de enxames de seres viventes; e voem as aves sobre a terra, sob o firmamento do céu.',
+      },
+      {
+        number: 21,
+        text: 'Criou, pois, Deus os grandes animais marinhos e todos os seres viventes que rastejam, os quais povoavam as águas, segundo as suas espécies; e todas as aves, segundo as suas espécies. E viu Deus que isso era bom.',
+      },
+      {
+        number: 22,
+        text: 'E Deus os abençoou, dizendo: Sede fecundos, multiplicai-vos e enchei as águas dos mares; e, na terra, se multipliquem as aves.',
+      },
       { number: 23, text: 'Houve tarde e manhã, o quinto dia.' },
-      { number: 24, text: 'Disse também Deus: Produza a terra seres viventes, conforme a sua espécie: animais domésticos, répteis e animais selváticos, segundo a sua espécie. E assim se fez.' },
-      { number: 25, text: 'Fez Deus os animais selváticos, segundo a sua espécie, e os animais domésticos, conforme a sua espécie, e todos os répteis da terra, conforme a sua espécie. E viu Deus que isso era bom.' },
-      { number: 26, text: 'Também disse Deus: Façamos o homem à nossa imagem, conforme a nossa semelhança; tenha ele domínio sobre os peixes do mar, sobre as aves dos céus, sobre os animais domésticos, sobre toda a terra e sobre todos os répteis que rastejam pela terra.' },
-      { number: 27, text: 'Criou Deus, pois, o homem à sua imagem, à imagem de Deus o criou; homem e mulher os criou.' },
-      { number: 28, text: 'E Deus os abençoou e lhes disse: Sede fecundos, multiplicai-vos, enchei a terra e sujeitai-a; dominai sobre os peixes do mar, sobre as aves dos céus e sobre todo animal que rasteja pela terra.' },
-      { number: 29, text: 'E disse Deus ainda: Eis que vos tenho dado todas as ervas que dão semente e se acham na superfície de toda a terra e todas as árvores em que há fruto que dê semente; isso vos será para mantimento.' },
-      { number: 30, text: 'E a todos os animais da terra, e a todas as aves dos céus, e a todos os répteis da terra, em que há fôlego de vida, tenho dado todas as ervas verdes para mantimento. E assim se fez.' },
-      { number: 31, text: 'Viu Deus tudo quanto fizera, e eis que era muito bom. Houve tarde e manhã, o sexto dia.' },
+      {
+        number: 24,
+        text: 'Disse também Deus: Produza a terra seres viventes, conforme a sua espécie: animais domésticos, répteis e animais selváticos, segundo a sua espécie. E assim se fez.',
+      },
+      {
+        number: 25,
+        text: 'Fez Deus os animais selváticos, segundo a sua espécie, e os animais domésticos, conforme a sua espécie, e todos os répteis da terra, conforme a sua espécie. E viu Deus que isso era bom.',
+      },
+      {
+        number: 26,
+        text: 'Também disse Deus: Façamos o homem à nossa imagem, conforme a nossa semelhança; tenha ele domínio sobre os peixes do mar, sobre as aves dos céus, sobre os animais domésticos, sobre toda a terra e sobre todos os répteis que rastejam pela terra.',
+      },
+      {
+        number: 27,
+        text: 'Criou Deus, pois, o homem à sua imagem, à imagem de Deus o criou; homem e mulher os criou.',
+      },
+      {
+        number: 28,
+        text: 'E Deus os abençoou e lhes disse: Sede fecundos, multiplicai-vos, enchei a terra e sujeitai-a; dominai sobre os peixes do mar, sobre as aves dos céus e sobre todo animal que rasteja pela terra.',
+      },
+      {
+        number: 29,
+        text: 'E disse Deus ainda: Eis que vos tenho dado todas as ervas que dão semente e se acham na superfície de toda a terra e todas as árvores em que há fruto que dê semente; isso vos será para mantimento.',
+      },
+      {
+        number: 30,
+        text: 'E a todos os animais da terra, e a todas as aves dos céus, e a todos os répteis da terra, em que há fôlego de vida, tenho dado todas as ervas verdes para mantimento. E assim se fez.',
+      },
+      {
+        number: 31,
+        text: 'Viu Deus tudo quanto fizera, e eis que era muito bom. Houve tarde e manhã, o sexto dia.',
+      },
     ],
   },
 };
-
