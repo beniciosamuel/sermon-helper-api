@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS users;
 -- Users table
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL UNIQUE,
+    full_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone VARCHAR(255) DEFAULT NULL,
     password_hash VARCHAR(255) NOT NULL,

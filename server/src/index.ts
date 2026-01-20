@@ -3,7 +3,8 @@ import { Request, Response } from 'express';
 import { createServer } from 'http';
 import { EmailService, Secrets } from './services';
 import { emailConfirmation } from './templates/emails/emailConfirmation';
-import { User } from './models/entities/User';
+import * as useCases from './useCases';
+import { Context } from './services/Context';
 
 const app = express();
 const server = createServer(app);
@@ -33,15 +34,18 @@ app.get('/emailtest', async (req: Request, res: Response) => {
 });
 
 app.get('/createtestuser', async (req: Request, res: Response) => {
-	await User.create({
+	const context = await Context.initialize();
+	
+	const response = await useCases.createUser({
 		name: 'John Doe',
-		email: 'john.doe@example.com',
+		email: 'brian.sueden@gmail.com',
 		password: 'password',
 		color_theme: 'light',
 		language: 'en',
-		phone: '+1234567890',
-	});
-	res.status(200).json({ message: 'User created' });
+		phone: '+4917644444',
+	}, context);
+
+	res.status(200).json(response);
 });
 
 server.listen(PORT, () => {
