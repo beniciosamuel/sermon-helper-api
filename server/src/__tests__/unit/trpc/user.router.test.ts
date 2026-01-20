@@ -25,29 +25,19 @@ const createValidUserInput = (overrides?: Partial<CreateUserInput>): CreateUserI
   ...overrides,
 });
 
-// Mock the use cases
+// Mock all use cases from the index file (where user.router imports them from)
 jest.mock('../../../useCases', () => ({
   createUser: jest.fn(),
-}));
-
-// Mock the findUserById use case
-jest.mock('../../../useCases/findUserById', () => ({
   findUserById: jest.fn(),
-}));
-
-// Mock the findUserByEmailOrPhone use case
-jest.mock('../../../useCases/findUserByEmailOrPhone', () => ({
   findUserByEmailOrPhone: jest.fn(),
 }));
 
-// Mock the authenticate use case
+// Mock the authenticate use case (imported separately in user.router)
 jest.mock('../../../useCases/authenticate', () => ({
   authenticate: jest.fn(),
 }));
 
-import { createUser } from '../../../useCases';
-import { findUserById } from '../../../useCases/findUserById';
-import { findUserByEmailOrPhone } from '../../../useCases/findUserByEmailOrPhone';
+import { createUser, findUserById, findUserByEmailOrPhone } from '../../../useCases';
 import { authenticate } from '../../../useCases/authenticate';
 
 const mockedCreateUser = createUser as jest.MockedFunction<typeof createUser>;
@@ -66,6 +56,7 @@ describe('User Router', () => {
     context: {} as any,
     req: {} as any,
     res: {} as any,
+    user: null,
   };
 
   const caller = createCaller(mockContext);
@@ -243,9 +234,19 @@ describe('User Router', () => {
         '+1234567890',
         mockContext.context
       );
-      // The router currently doesn't return anything for findByEmailOrPhone
-      // This test will need to be updated when the router is fixed to return data
-      expect(result).toBeUndefined();
+      expect(result).toEqual({
+        id: user.id,
+        full_name: user.full_name,
+        email: user.email,
+        phone: user.phone,
+        color_theme: user.color_theme,
+        lang: user.lang,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+      });
+      // Should not contain sensitive data
+      expect(result).not.toHaveProperty('password_hash');
+      expect(result).not.toHaveProperty('deleted_at');
     });
 
     it('should throw NOT_FOUND when user does not exist', async () => {

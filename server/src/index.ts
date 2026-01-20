@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import { Request, Response } from 'express';
 import { createServer } from 'http';
 import { EmailService, Secrets } from './services';
@@ -6,6 +6,7 @@ import { emailConfirmation } from './templates/emails/emailConfirmation';
 import * as useCases from './useCases';
 import { Context } from './services/Context';
 import { createTrpcRouter } from './trpc';
+import { authMiddleware, AuthenticatedRequest } from './middlewares';
 
 const app = express();
 const server = createServer(app);
@@ -15,7 +16,7 @@ const PORT = process.env.SERVER_PORT || 3000;
 // Middleware
 app.use(express.json());
 
-// Health check endpoint
+// Health check endpoint (public)
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
@@ -23,7 +24,29 @@ app.get('/health', (req: Request, res: Response) => {
 // Mount versioned tRPC routes at /v1/trpc
 app.use(createTrpcRouter());
 
+// ============================================================================
+// Protected Express Routes
+// All routes in this router require authentication via Bearer token
+// ============================================================================
+const protectedRouter = Router();
+protectedRouter.use(authMiddleware);
+
+// Example protected route - returns the authenticated user's info
+protectedRouter.get('/me', (req: Request, res: Response) => {
+  const { user } = req as AuthenticatedRequest;
+  res.status(200).json({
+    id: user.id,
+    name: user.full_name,
+    email: user.email,
+  });
+});
+
+// Mount protected routes at /api
+app.use('/api', protectedRouter);
+
+// ============================================================================
 // Legacy routes (can be removed once migrated to tRPC)
+// ============================================================================
 app.get('/', async (req: Request, res: Response) => {
   const secrets = new Secrets();
   const secret = await secrets.getString('DB_PASSWORD');
@@ -65,4 +88,6 @@ server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   // eslint-disable-next-line no-console
   console.log(`tRPC endpoint available at: http://localhost:${PORT}/v1/trpc`);
+  // eslint-disable-next-line no-console
+  console.log(`Protected API routes available at: http://localhost:${PORT}/api`);
 });

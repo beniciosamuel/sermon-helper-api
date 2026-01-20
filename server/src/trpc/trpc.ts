@@ -5,8 +5,10 @@
  * This should be kept minimal - only tRPC setup, no business logic.
  */
 
-import { initTRPC } from '@trpc/server';
-import type { TRPCContext } from './context';
+import { initTRPC, TRPCError } from '@trpc/server';
+import type { TRPCContext, AuthenticatedTRPCContext } from './context';
+import { OauthTokenRepository } from '../models/repositories/OauthTokenRepository';
+import { UserRepository } from '../models/repositories/UserRepository';
 
 /**
  * Initialization of tRPC backend
@@ -52,18 +54,88 @@ const loggerMiddleware = middleware(async ({ path, type, next }) => {
 export const loggedProcedure = publicProcedure.use(loggerMiddleware);
 
 /**
- * Protected procedure example (for future authentication)
- * Uncomment and modify when authentication is implemented
+ * Extracts the Bearer token from the Authorization header
  */
-// const authMiddleware = middleware(async ({ ctx, next }) => {
-//   if (!ctx.user) {
-//     throw new TRPCError({ code: 'UNAUTHORIZED' });
-//   }
-//   return next({
-//     ctx: {
-//       ...ctx,
-//       user: ctx.user,
-//     },
-//   });
-// });
-// export const protectedProcedure = publicProcedure.use(authMiddleware);
+function extractBearerToken(authorizationHeader: string | undefined): string | null {
+  if (!authorizationHeader) {
+    return null;
+  }
+
+  const parts = authorizationHeader.split(' ');
+  if (parts.length !== 2 || parts[0].toLowerCase() !== 'bearer') {
+    return null;
+  }
+
+  return parts[1];
+}
+
+/**
+ * Authentication middleware
+ *
+ * Validates the Bearer token from the Authorization header and injects
+ * the authenticated user into the context.
+ *
+ * Fails fast with HTTP 401 if:
+ * - No Authorization header is present
+ * - The token format is invalid
+ * - The token is not found in the database
+ * - The user associated with the token does not exist
+ */
+const authMiddleware = middleware(async ({ ctx, next }) => {
+  // Extract token from Authorization header
+  const authHeader = ctx.req.headers.authorization;
+  const token = extractBearerToken(authHeader);
+
+  if (!token) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'Missing or invalid Authorization header',
+    });
+  }
+
+  // Find the OAuth token record
+  const oauthToken = await OauthTokenRepository.findByOauthToken(token, ctx.context);
+
+  if (!oauthToken) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'Invalid or expired token',
+    });
+  }
+
+  // Find the user associated with the token
+  const user = await UserRepository.findById(oauthToken.user_id, ctx.context);
+
+  if (!user) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User not found',
+    });
+  }
+
+  // Proceed with the authenticated user in context
+  return next({
+    ctx: {
+      ...ctx,
+      user,
+    } as AuthenticatedTRPCContext,
+  });
+});
+
+/**
+ * Protected procedure - requires authentication
+ *
+ * Use this for any procedure that requires an authenticated user.
+ * The user will be available in ctx.user and is guaranteed to exist.
+ *
+ * @example
+ * ```typescript
+ * export const myProtectedRouter = router({
+ *   getProfile: protectedProcedure.query(({ ctx }) => {
+ *     // ctx.user is guaranteed to be a User here
+ *     return { name: ctx.user.full_name };
+ *   }),
+ * });
+ * ```
+ */
+export const protectedProcedure = publicProcedure.use(authMiddleware);

@@ -7,6 +7,7 @@
 
 import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
 import { Context } from '../services/Context';
+import type { User } from '../models/entities/User';
 
 /**
  * The context type that will be available in all procedures
@@ -18,6 +19,15 @@ export interface TRPCContext {
   req: CreateExpressContextOptions['req'];
   /** Response object */
   res: CreateExpressContextOptions['res'];
+  /** Authenticated user (set by auth middleware) */
+  user: User | null;
+}
+
+/**
+ * Context type for protected procedures (user is guaranteed to exist)
+ */
+export interface AuthenticatedTRPCContext extends TRPCContext {
+  user: User;
 }
 
 /**
@@ -40,6 +50,7 @@ export async function createContext(opts: CreateExpressContextOptions): Promise<
     context: cachedContext,
     req: opts.req,
     res: opts.res,
+    user: null,
   };
 }
 
