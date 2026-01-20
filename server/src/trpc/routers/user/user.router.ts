@@ -11,9 +11,11 @@
 
 import { TRPCError } from '@trpc/server';
 import { router, publicProcedure } from '../../trpc';
-import { createUserInputSchema, findByIdInputSchema } from '../../schemas';
+import { createUserInputSchema, findByIdInputSchema, findByEmailOrPhoneInputSchema } from '../../schemas';
 import { createUser } from '../../../useCases';
 import { UserRepository } from '../../../models/repositories/UserRepository';
+import { findUserById } from '../../../useCases/findUserById';
+import { findUserByEmailOrPhone } from '../../../useCases/findUserByEmailOrPhone';
 
 /**
  * User Router
@@ -57,19 +59,45 @@ export const userRouter = router({
   findById: publicProcedure
     .input(findByIdInputSchema)
     .query(async ({ input, ctx }) => {
-      const user = await UserRepository.findById(input.id, ctx.context);
+      const result = await findUserById(input.id, ctx.context);
 
-      if (!user) {
+      if (!result.success || !result.user) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `User with ID ${input.id} not found`,
+          message: result.error || `User with ID ${input.id} not found`,
         });
       }
 
-      // Return user without sensitive data
-      const { password_hash, deleted_at, ...safeUser } = user;
-      return safeUser;
+      return {
+        id: result.user.id,
+        full_name: result.user.full_name,
+        email: result.user.email,
+        phone: result.user.phone,
+        color_theme: result.user.color_theme,
+        lang: result.user.lang,
+        created_at: result.user.created_at,
+        updated_at: result.user.updated_at,
+      };
     }),
+  /**
+   * Find a user by email or phone
+   * 
+   * @query
+   * @input { email: string, phone: string }
+   * @returns User data or null if not found
+   */
+  findByEmailOrPhone: publicProcedure
+    .input(findByEmailOrPhoneInputSchema)
+    .query(async ({ input, ctx }) => {
+      const result = await findUserByEmailOrPhone(input.email, input.phone, ctx.context);
+
+      if (!result.success || !result.user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: result.error || `User with email ${input.email} or phone ${input.phone} not found`,
+        });
+      }
+    })
 });
 
 /**

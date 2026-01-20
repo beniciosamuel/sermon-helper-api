@@ -27,6 +27,14 @@ export const findByIdInputSchema = z.object({
 });
 
 /**
+ * Schema for finding a user by email or phone
+ */
+export const findByEmailOrPhoneInputSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  phone: z.string().min(1, 'Phone is required'),
+});
+
+/**
  * Schema for updating a user
  */
 export const updateUserInputSchema = z.object({
