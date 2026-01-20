@@ -101,7 +101,7 @@ export class DatabaseService {
 			this.knexInstance = knex(knexConfig);
 
 			// Test the connection getting all tables
-			const tables = await this.knexInstance.raw('SELECT table_name FROM information_schema.tables WHERE table_schema = \'public\'');
+			const tables = await this.knexInstance.raw('SELECT 1');
 			console.log(tables);
 			this.isConnected = true;
 

@@ -3,8 +3,45 @@
  * Use factories to create consistent test data
  */
 
+import { UserDatabaseEntity, UserCreateArgs } from '../../../models/entities/User';
+
 /**
- * User factory - creates mock user data
+ * User database entity factory - creates mock user data matching UserDatabaseEntity interface
+ */
+export const createUserDatabaseEntityFactory = (overrides?: Partial<UserDatabaseEntity>): UserDatabaseEntity => {
+	return {
+		id: 1,
+		full_name: 'Test User',
+		email: 'test@example.com',
+		phone: '+1234567890',
+		password_hash: '$argon2id$v=19$m=65536,t=3,p=4$hashedPassword123',
+		color_theme: 'light',
+		lang: 'en',
+		created_at: '2024-01-01T00:00:00.000Z',
+		updated_at: '2024-01-01T00:00:00.000Z',
+		deleted_at: null,
+		...overrides,
+	};
+};
+
+/**
+ * User create args factory - creates mock user creation arguments
+ */
+export const createUserArgsFactory = (overrides?: Partial<UserCreateArgs>): UserCreateArgs => {
+	return {
+		name: 'Test User',
+		email: 'test@example.com',
+		phone: '+1234567890',
+		password: 'plainPassword123',
+		color_theme: 'light',
+		language: 'en',
+		...overrides,
+	};
+};
+
+/**
+ * @deprecated Use createUserDatabaseEntityFactory instead for UserDatabaseEntity
+ * User factory - creates mock user data (legacy format)
  */
 export const createUserFactory = (overrides?: Partial<any>) => {
 	return {
