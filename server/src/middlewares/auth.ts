@@ -123,7 +123,10 @@ export async function authMiddleware(
 
     // Inject user and context into request
     (req as AuthenticatedRequest).user = user;
-    (req as AuthenticatedRequest).context = context;
+    (req as AuthenticatedRequest).context = {
+      ...context,
+      user,
+    };
 
     next();
   } catch (error) {
