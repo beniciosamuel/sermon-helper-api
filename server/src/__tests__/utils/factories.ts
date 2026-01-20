@@ -3,7 +3,7 @@
  * Use factories to create consistent test data
  */
 
-import { UserDatabaseEntity, UserCreateArgs } from '../../../models/entities/User';
+import { UserDatabaseEntity, UserCreateArgs } from '../../models/entities/User';
 
 /**
  * User database entity factory - creates mock user data matching UserDatabaseEntity interface

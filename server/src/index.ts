@@ -5,16 +5,25 @@ import { EmailService, Secrets } from './services';
 import { emailConfirmation } from './templates/emails/emailConfirmation';
 import * as useCases from './useCases';
 import { Context } from './services/Context';
+import { createTrpcRouter } from './trpc';
 
 const app = express();
 const server = createServer(app);
 
 const PORT = process.env.SERVER_PORT || 3000;
 
+// Middleware
+app.use(express.json());
+
+// Health check endpoint
 app.get('/health', (req: Request, res: Response) => {
 	res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
+// Mount versioned tRPC routes at /v1/trpc
+app.use(createTrpcRouter());
+
+// Legacy routes (can be removed once migrated to tRPC)
 app.get('/', async (req: Request, res: Response) => {
 	const secrets = new Secrets();
 	const secret = await secrets.getString('DB_PASSWORD');
@@ -50,4 +59,5 @@ app.get('/createtestuser', async (req: Request, res: Response) => {
 
 server.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
+	console.log(`tRPC endpoint available at: http://localhost:${PORT}/v1/trpc`);
 });
