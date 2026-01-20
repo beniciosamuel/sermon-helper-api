@@ -61,8 +61,28 @@ export const createUserFactory = (overrides?: Partial<any>) => {
   };
 };
 
+import { OauthTokenDatabaseEntity } from '../../models/entities/OauthToken';
+
 /**
- * OAuth token factory - creates mock OAuth token data
+ * OAuth token database entity factory - creates mock OAuth token data matching OauthTokenDatabaseEntity interface
+ */
+export const createOauthTokenDatabaseEntityFactory = (
+  overrides?: Partial<OauthTokenDatabaseEntity>
+): OauthTokenDatabaseEntity => {
+  return {
+    id: 1,
+    user_id: 1,
+    oauth_token: 'mock-oauth-token-12345abcdef',
+    created_at: '2024-01-01T00:00:00.000Z',
+    updated_at: '2024-01-01T00:00:00.000Z',
+    deleted_at: null,
+    ...overrides,
+  };
+};
+
+/**
+ * @deprecated Use createOauthTokenDatabaseEntityFactory instead for OauthTokenDatabaseEntity
+ * OAuth token factory - creates mock OAuth token data (legacy format)
  */
 export const createOAuthTokenFactory = (overrides?: Partial<any>) => {
   return {

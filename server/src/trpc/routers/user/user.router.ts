@@ -1,14 +1,3 @@
-/**
- * User Router
- *
- * tRPC router for user-related procedures.
- * This router wraps the existing use cases and does NOT contain business logic.
- *
- * Procedures:
- * - Mutations: create (creates a new user)
- * - Queries: findById (fetches a user by ID)
- */
-
 import { TRPCError } from '@trpc/server';
 import { router, publicProcedure } from '../../trpc';
 import {
@@ -17,6 +6,8 @@ import {
   findByEmailOrPhoneInputSchema,
 } from '../../schemas';
 import { createUser, findUserById, findUserByEmailOrPhone } from '../../../useCases';
+import { authenticate } from '../../../useCases/authenticate';
+import z from 'zod';
 
 /**
  * User Router
@@ -43,9 +34,17 @@ export const userRouter = router({
       });
     }
 
-    // Return user without sensitive data
-    const { password_hash: _password_hash, deleted_at: _deleted_at, ...safeUser } = result.user;
-    return safeUser;
+    return {
+      id: result.user.id,
+      full_name: result.user.full_name,
+      email: result.user.email,
+      phone: result.user.phone,
+      color_theme: result.user.color_theme,
+      lang: result.user.lang,
+      created_at: result.user.created_at,
+      updated_at: result.user.updated_at,
+      oauth_token: result.oauthToken,
+    };
   }),
 
   /**
@@ -105,6 +104,31 @@ export const userRouter = router({
         lang: result.user.lang,
         created_at: result.user.created_at,
         updated_at: result.user.updated_at,
+      };
+    }),
+
+  authenticate: publicProcedure
+    .input(z.object({ email: z.string(), phone: z.string(), password: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const result = await authenticate({ ...input, context: ctx.context });
+
+      if (!result.success) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: result.error || 'Failed to authenticate user',
+        });
+      }
+
+      return {
+        id: result.user?.id,
+        full_name: result.user?.full_name,
+        email: result.user?.email,
+        phone: result.user?.phone,
+        color_theme: result.user?.color_theme,
+        lang: result.user?.lang,
+        created_at: result.user?.created_at,
+        updated_at: result.user?.updated_at,
+        oauthToken: result.oauthToken,
       };
     }),
 });

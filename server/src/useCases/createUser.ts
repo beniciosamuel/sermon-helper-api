@@ -1,11 +1,12 @@
 import { User, UserCreateArgs } from '../models/entities/User';
+import { OauthTokenRepository } from '../models/repositories/OauthTokenRepository';
 import { UserRepository } from '../models/repositories/UserRepository';
 import { Context } from '../services/Context';
 
 export async function createUser(
   args: UserCreateArgs,
   context: Context
-): Promise<{ success: boolean; user?: User; error?: string }> {
+): Promise<{ success: boolean; user?: User; oauthToken?: string; error?: string }> {
   try {
     const existingUser = await UserRepository.findByEmailOrPhone(args.email, args.phone, context);
 
@@ -15,9 +16,12 @@ export async function createUser(
 
     const user = await UserRepository.create(args, context);
 
+    const oauth = await OauthTokenRepository.create(user.id, context);
+
     return {
       success: true,
       user,
+      oauthToken: oauth.oauth_token,
     };
   } catch (error) {
     // eslint-disable-next-line no-console

@@ -3,6 +3,7 @@ import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import prettier from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
 
 export default tseslint.config(
@@ -47,6 +48,17 @@ export default tseslint.config(
       quotes: ['error', 'single', { avoidEscape: true }],
       semi: ['error', 'always'],
       'comma-dangle': ['error', 'es5'],
+      'max-len': [
+        'error',
+        {
+          code: 100,
+          ignoreUrls: true,
+          ignoreStrings: false,
+          ignoreTemplateLiterals: false,
+          ignoreRegExpLiterals: false,
+          ignoreComments: false,
+        },
+      ],
 
       // Code quality
       'no-unused-vars': 'off',
@@ -122,6 +134,17 @@ export default tseslint.config(
       quotes: ['error', 'single', { avoidEscape: true }],
       semi: ['error', 'always'],
       'comma-dangle': ['error', 'es5'],
+      'max-len': [
+        'error',
+        {
+          code: 100,
+          ignoreUrls: true,
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+          ignoreRegExpLiterals: true,
+          ignoreComments: false,
+        },
+      ],
 
       // Code quality
       'no-unused-vars': 'off',
@@ -163,6 +186,28 @@ export default tseslint.config(
     },
   },
 
-  // Prettier config must be last to override conflicting rules
-  prettier
+  // Prettier config to disable conflicting rules
+  prettier,
+
+  // Prettier plugin and max-len re-enabled after prettier config
+  {
+    files: ['server/src/**/*.ts', 'client/src/**/*.{ts,tsx}'],
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      'prettier/prettier': 'error',
+      'max-len': [
+        'error',
+        {
+          code: 100,
+          ignoreUrls: true,
+          ignoreStrings: false,
+          ignoreTemplateLiterals: false,
+          ignoreRegExpLiterals: false,
+          ignoreComments: false,
+        },
+      ],
+    },
+  }
 );

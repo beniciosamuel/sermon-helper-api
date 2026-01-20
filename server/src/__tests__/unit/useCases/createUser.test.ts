@@ -1,12 +1,15 @@
 import { createUser } from '../../../useCases/createUser';
 import { UserRepository } from '../../../models/repositories/UserRepository';
+import { OauthTokenRepository } from '../../../models/repositories/OauthTokenRepository';
 import { User, UserDatabaseEntity } from '../../../models/entities/User';
 import { Context } from '../../../services/Context';
 
 // Mock UserRepository module
 jest.mock('../../../models/repositories/UserRepository');
+jest.mock('../../../models/repositories/OauthTokenRepository');
 
 const MockedUserRepository = jest.mocked(UserRepository);
+const MockedOauthTokenRepository = jest.mocked(OauthTokenRepository);
 
 describe('createUser', () => {
   // Mock user data
@@ -36,6 +39,15 @@ describe('createUser', () => {
 
   const mockContext = {} as Context;
 
+  const mockOauthToken = {
+    id: 1,
+    user_id: 1,
+    oauth_token: 'mock-oauth-token-12345',
+    created_at: '2024-01-01T00:00:00.000Z',
+    updated_at: '2024-01-01T00:00:00.000Z',
+    deleted_at: null,
+  };
+
   let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
@@ -48,10 +60,11 @@ describe('createUser', () => {
   });
 
   describe('successful user creation', () => {
-    it('should return success with user when no existing user', async () => {
+    it('should return success with user and oauth token when no existing user', async () => {
       // Arrange
       MockedUserRepository.findByEmailOrPhone.mockResolvedValue(null);
       MockedUserRepository.create.mockResolvedValue(mockUser);
+      MockedOauthTokenRepository.create.mockResolvedValue(mockOauthToken as any);
 
       // Act
       const result = await createUser(createArgs, mockContext);
@@ -59,6 +72,7 @@ describe('createUser', () => {
       // Assert
       expect(result.success).toBe(true);
       expect(result.user).toBe(mockUser);
+      expect(result.oauthToken).toBe(mockOauthToken.oauth_token);
       expect(result.error).toBeUndefined();
       expect(MockedUserRepository.findByEmailOrPhone).toHaveBeenCalledWith(
         createArgs.email,
@@ -66,6 +80,7 @@ describe('createUser', () => {
         mockContext
       );
       expect(MockedUserRepository.create).toHaveBeenCalledWith(createArgs, mockContext);
+      expect(MockedOauthTokenRepository.create).toHaveBeenCalledWith(mockUser.id, mockContext);
     });
   });
 
@@ -153,6 +168,21 @@ describe('createUser', () => {
       // Assert
       expect(result.success).toBe(false);
       expect(result.error).toBe('Insert failed');
+      expect(result.user).toBeUndefined();
+    });
+
+    it('should return error when OauthTokenRepository.create fails', async () => {
+      // Arrange
+      MockedUserRepository.findByEmailOrPhone.mockResolvedValue(null);
+      MockedUserRepository.create.mockResolvedValue(mockUser);
+      MockedOauthTokenRepository.create.mockRejectedValue(new Error('Token creation failed'));
+
+      // Act
+      const result = await createUser(createArgs, mockContext);
+
+      // Assert
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Token creation failed');
       expect(result.user).toBeUndefined();
     });
   });
