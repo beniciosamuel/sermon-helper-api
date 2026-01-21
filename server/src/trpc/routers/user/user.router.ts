@@ -108,9 +108,20 @@ export const userRouter = router({
     }),
 
   authenticate: publicProcedure
-    .input(z.object({ email: z.string(), phone: z.string(), password: z.string() }))
+    .input(
+      z.object({
+        email: z.string().optional(),
+        phone: z.string().optional(),
+        password: z.string(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
-      const result = await authenticate({ ...input, context: ctx.context });
+      const result = await authenticate({
+        email: input.email || '',
+        phone: input.phone || '',
+        password: input.password,
+        context: ctx.context,
+      });
 
       if (!result.success) {
         throw new TRPCError({

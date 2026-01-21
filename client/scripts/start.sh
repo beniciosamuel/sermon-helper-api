@@ -78,7 +78,7 @@ check_gcloud_auth() {
 # Function to retrieve secret from Google Cloud Secret Manager
 retrieve_secret() {
     local secret_name="kerygma_client"
-    local secrets_dir=".secrets"
+    local secrets_dir="public/.env"
     local secrets_file="${secrets_dir}/secrets.json"
     
     print_success "Retrieving secret '${secret_name}' from Google Cloud Secret Manager..."

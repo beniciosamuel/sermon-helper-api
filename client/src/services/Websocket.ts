@@ -1,16 +1,16 @@
 import { Socket, io } from 'socket.io-client';
+import { secrets } from './Secrets';
 
 export class Websocket {
   connection: Socket;
 
-  constructor() {
-    // Use environment variable for WebSocket URL, fallback to localhost for development
-    const wsUrl = process.env.REACT_APP_WS_URL || 'http://localhost:3000';
+  private constructor(wsUrl: string) {
     this.connection = io(wsUrl);
   }
 
-  static getInstance() {
-    return new Websocket();
+  static async getInstance(): Promise<Websocket> {
+    const wsUrl = await secrets.getWsUrl();
+    return new Websocket(wsUrl);
   }
 
   async disconnect() {

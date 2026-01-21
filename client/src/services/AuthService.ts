@@ -1,13 +1,19 @@
-// Authentication service - prepared for future backend integration
+import { getTrpcClient, TrpcService } from './trpc/client';
+
 export interface LoginCredentials {
-  email: string;
+  email?: string;
+  phone?: string;
   password: string;
 }
 
 export interface SignUpData {
+  name: string;
   email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
+  color_theme?: 'light' | 'dark';
+  language?: 'en' | 'pt';
 }
 
 export interface AuthResponse {
@@ -17,72 +23,127 @@ export interface AuthResponse {
   user?: {
     id: string;
     email: string;
+    name?: string;
   };
 }
 
 class AuthService {
-  // Mock authentication - replace with actual API calls
+  /**
+   * Authenticate user with email, phone, and password
+   */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    // Simulate API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Mock validation
-        if (credentials.email && credentials.password) {
-          resolve({
-            success: true,
-            message: 'Login successful',
-            token: 'mock-token',
-            user: {
-              id: '1',
-              email: credentials.email,
-            },
-          });
-        } else {
-          resolve({
-            success: false,
-            message: 'Invalid credentials',
-          });
-        }
-      }, 1000);
-    });
+    try {
+      const trpc = await getTrpcClient();
+      const result = await trpc.user.authenticate.mutate({
+        email: credentials.email || '',
+        phone: credentials.phone || '',
+        password: credentials.password,
+      });
+
+      // Store the token on successful login
+      if (result.oauthToken) {
+        this.setToken(result.oauthToken);
+      }
+
+      return {
+        success: true,
+        message: 'Login successful',
+        token: result.oauthToken,
+        user: {
+          id: String(result.id),
+          email: result.email || '',
+          name: result.full_name || undefined,
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: TrpcService.getErrorMessage(error),
+      };
+    }
   }
 
+  /**
+   * Create a new user account
+   */
   async signUp(data: SignUpData): Promise<AuthResponse> {
-    // Simulate API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Mock validation
-        if (data.email && data.password && data.password === data.confirmPassword) {
-          resolve({
-            success: true,
-            message: 'Account created successfully',
-            token: 'mock-token',
-            user: {
-              id: '1',
-              email: data.email,
-            },
-          });
-        } else {
-          resolve({
-            success: false,
-            message: 'Failed to create account',
-          });
-        }
-      }, 1000);
-    });
+    // Client-side validation for password confirmation
+    if (data.password !== data.confirmPassword) {
+      return {
+        success: false,
+        message: 'Passwords do not match',
+      };
+    }
+
+    try {
+      const trpc = await getTrpcClient();
+      const result = await trpc.user.create.mutate({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+        color_theme: data.color_theme,
+        language: data.language,
+      });
+
+      // Store the token on successful signup
+      if (result.oauth_token) {
+        this.setToken(result.oauth_token);
+      }
+
+      return {
+        success: true,
+        message: 'Account created successfully',
+        token: result.oauth_token,
+        user: {
+          id: String(result.id),
+          email: result.email,
+          name: result.full_name,
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: TrpcService.getErrorMessage(error),
+      };
+    }
   }
 
-  // Store token in localStorage (for future use)
+  /**
+   * Log out the current user
+   * Clears the token and resets the tRPC client
+   */
+  logout(): void {
+    this.clearToken();
+    TrpcService.reset();
+  }
+
+  /**
+   * Store token in localStorage
+   */
   setToken(token: string): void {
     localStorage.setItem('auth_token', token);
   }
 
+  /**
+   * Get the current auth token
+   */
   getToken(): string | null {
     return localStorage.getItem('auth_token');
   }
 
+  /**
+   * Clear the stored auth token
+   */
   clearToken(): void {
     localStorage.removeItem('auth_token');
+  }
+
+  /**
+   * Check if user is authenticated
+   */
+  isAuthenticated(): boolean {
+    return this.getToken() !== null;
   }
 }
 

@@ -5,7 +5,7 @@
  * The tRPC endpoint is mounted at /v1/trpc
  */
 
-import { Router } from 'express';
+import { Router, json } from 'express';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { appRouter } from '../routers';
 import { createContext } from '../context';
@@ -30,6 +30,9 @@ function createTrpcMiddleware(): ReturnType<typeof trpcExpress.createExpressMidd
  */
 function createV1Router(): Router {
   const router = Router();
+
+  // Ensure body is parsed for tRPC routes (Express 5 compatibility)
+  router.use('/trpc', json());
 
   router.use(
     '/trpc',

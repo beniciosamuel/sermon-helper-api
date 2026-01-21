@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import { Request, Response } from 'express';
 import { createServer } from 'http';
+import cors from 'cors';
 import { EmailService, Secrets } from './services';
 import { emailConfirmation } from './templates/emails/emailConfirmation';
 import * as useCases from './useCases';
@@ -14,6 +15,14 @@ const server = createServer(app);
 const PORT = process.env.SERVER_PORT || 3000;
 
 // Middleware
+app.use(
+  cors({
+    origin: true, // Allow all origins in development; configure specific origins for production
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 app.use(express.json());
 
 // Health check endpoint (public)

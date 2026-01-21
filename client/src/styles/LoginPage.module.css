@@ -96,10 +96,58 @@
   text-align: center;
 }
 
+.successMessage {
+  padding: 12px 16px;
+  background: rgba(76, 175, 80, 0.15);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 8px;
+  color: #4caf50;
+  font-size: 14px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.loginMethodTabs {
+  display: flex;
+  gap: 4px;
+  background: var(--panel-alt);
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.loginMethodTab {
+  flex: 1;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+  text-align: center;
+}
+
+.loginMethodTab:hover {
+  color: var(--text-primary);
+}
+
+.loginMethodTabActive {
+  background: var(--panel);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+:global(body.theme-light) .loginMethodTabActive {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .formGroup {
