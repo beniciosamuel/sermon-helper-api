@@ -9,7 +9,7 @@ export class UserRepository extends User {
       .insert({
         full_name: args.name,
         email: args.email,
-        phone: args.phone,
+        phone: args.phone || null,
         password_hash: passwordHash,
         color_theme: args.color_theme,
         lang: args.language,

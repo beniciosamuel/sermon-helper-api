@@ -163,6 +163,12 @@
   transition: color 200ms ease-in-out;
 }
 
+.optional {
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
 .input {
   width: 100%;
   padding: 12px 16px;

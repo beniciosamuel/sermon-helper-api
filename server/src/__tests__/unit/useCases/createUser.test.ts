@@ -76,7 +76,7 @@ describe('createUser', () => {
       expect(result.error).toBeUndefined();
       expect(MockedUserRepository.findByEmailOrPhone).toHaveBeenCalledWith(
         createArgs.email,
-        createArgs.phone,
+        createArgs.phone || '',
         mockContext
       );
       expect(MockedUserRepository.create).toHaveBeenCalledWith(createArgs, mockContext);

@@ -110,15 +110,14 @@ export const userRouter = router({
   authenticate: publicProcedure
     .input(
       z.object({
-        email: z.string().optional(),
-        phone: z.string().optional(),
+        email: z.string().email('Invalid email address'),
         password: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       const result = await authenticate({
-        email: input.email || '',
-        phone: input.phone || '',
+        email: input.email,
+        phone: '',
         password: input.password,
         context: ctx.context,
       });

@@ -13,7 +13,7 @@ import { z } from 'zod';
 export const createUserInputSchema = z.object({
   name: z.string().min(1, 'Name is required').max(255),
   email: z.string().email('Invalid email address'),
-  phone: z.string().min(1, 'Phone is required'),
+  phone: z.string().optional(),
   password: z.string().min(8, 'Password must be at least 8 characters'),
   color_theme: z.enum(['light', 'dark']).default('light'),
   language: z.enum(['en', 'pt']).default('en'),

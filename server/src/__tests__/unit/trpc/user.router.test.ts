@@ -321,7 +321,6 @@ describe('User Router', () => {
   describe('authenticate', () => {
     const authenticateInput = {
       email: 'test@example.com',
-      phone: '+1234567890',
       password: 'password123',
     };
 
@@ -342,7 +341,9 @@ describe('User Router', () => {
       const result = await caller.authenticate(authenticateInput);
 
       expect(mockedAuthenticate).toHaveBeenCalledWith({
-        ...authenticateInput,
+        email: authenticateInput.email,
+        phone: '',
+        password: authenticateInput.password,
         context: mockContext.context,
       });
       expect(result).toEqual({
@@ -399,7 +400,6 @@ describe('User Router', () => {
       await expect(
         caller.authenticate({
           email: '',
-          phone: '+1234567890',
           password: 'password123',
         })
       ).rejects.toThrow();
@@ -409,7 +409,6 @@ describe('User Router', () => {
       await expect(
         caller.authenticate({
           email: 'test@example.com',
-          phone: '+1234567890',
           password: '',
         })
       ).rejects.toThrow();

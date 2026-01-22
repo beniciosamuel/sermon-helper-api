@@ -5,7 +5,6 @@ import { authService, LoginCredentials, SignUpData } from '../services/AuthServi
 import { useAuth } from '../context/AuthContext';
 import styles from '../styles/LoginPage.module.css';
 
-type LoginMethod = 'email' | 'phone';
 type MessageType = 'error' | 'success';
 interface Message {
   type: MessageType;
@@ -17,7 +16,6 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading: authLoading, checkAuth, login: setAuthUser } = useAuth();
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
-  const [loginMethod, setLoginMethod] = useState<LoginMethod>('email');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
 
@@ -31,7 +29,6 @@ const LoginPage: React.FC = () => {
   // Form state
   const [loginForm, setLoginForm] = useState<LoginCredentials>({
     email: '',
-    phone: '',
     password: '',
   });
 
@@ -50,16 +47,10 @@ const LoginPage: React.FC = () => {
   const validateLogin = (): boolean => {
     const errors: Partial<LoginCredentials> = {};
 
-    if (loginMethod === 'email') {
-      if (!loginForm.email?.trim()) {
-        errors.email = t('auth.login.emailRequired');
-      } else if (!/\S+@\S+\.\S+/.test(loginForm.email)) {
-        errors.email = t('auth.login.emailInvalid');
-      }
-    } else {
-      if (!loginForm.phone?.trim()) {
-        errors.phone = t('auth.login.phoneRequired');
-      }
+    if (!loginForm.email?.trim()) {
+      errors.email = t('auth.login.emailRequired');
+    } else if (!/\S+@\S+\.\S+/.test(loginForm.email)) {
+      errors.email = t('auth.login.emailInvalid');
     }
 
     if (!loginForm.password) {
@@ -83,9 +74,7 @@ const LoginPage: React.FC = () => {
       errors.email = t('auth.signup.emailInvalid');
     }
 
-    if (!signUpForm.phone.trim()) {
-      errors.phone = t('auth.signup.phoneRequired');
-    }
+    // Phone is optional, no validation needed
 
     if (!signUpForm.password) {
       errors.password = t('auth.signup.passwordRequired');
@@ -113,11 +102,10 @@ const LoginPage: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      // Only send the relevant field based on login method
-      const credentials: LoginCredentials =
-        loginMethod === 'email'
-          ? { email: loginForm.email, password: loginForm.password }
-          : { phone: loginForm.phone, password: loginForm.password };
+      const credentials: LoginCredentials = {
+        email: loginForm.email,
+        password: loginForm.password,
+      };
 
       const response = await authService.login(credentials);
       if (response.success) {
@@ -201,11 +189,6 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleLoginMethodChange = (method: LoginMethod) => {
-    setLoginMethod(method);
-    setLoginErrors({});
-    setMessage(null);
-  };
 
   return (
     <div className={styles.loginPage}>
@@ -251,61 +234,23 @@ const LoginPage: React.FC = () => {
 
           {activeTab === 'login' ? (
             <form onSubmit={handleLogin} className={styles.form}>
-              {/* Login method tabs */}
-              <div className={styles.loginMethodTabs}>
-                <button
-                  type="button"
-                  className={`${styles.loginMethodTab} ${loginMethod === 'email' ? styles.loginMethodTabActive : ''}`}
-                  onClick={() => handleLoginMethodChange('email')}
-                >
-                  {t('auth.login.withEmail')}
-                </button>
-                <button
-                  type="button"
-                  className={`${styles.loginMethodTab} ${loginMethod === 'phone' ? styles.loginMethodTabActive : ''}`}
-                  onClick={() => handleLoginMethodChange('phone')}
-                >
-                  {t('auth.login.withPhone')}
-                </button>
+              <div className={styles.formGroup}>
+                <label htmlFor="login-email" className={styles.label}>
+                  {t('auth.login.email')}
+                </label>
+                <input
+                  id="login-email"
+                  type="email"
+                  className={`${styles.input} ${loginErrors.email ? styles.inputError : ''}`}
+                  value={loginForm.email}
+                  onChange={(e) => handleLoginInputChange('email', e.target.value)}
+                  placeholder={t('auth.login.emailPlaceholder')}
+                  disabled={isSubmitting}
+                />
+                {loginErrors.email && (
+                  <span className={styles.errorText}>{loginErrors.email}</span>
+                )}
               </div>
-
-              {loginMethod === 'email' ? (
-                <div className={styles.formGroup}>
-                  <label htmlFor="login-email" className={styles.label}>
-                    {t('auth.login.email')}
-                  </label>
-                  <input
-                    id="login-email"
-                    type="email"
-                    className={`${styles.input} ${loginErrors.email ? styles.inputError : ''}`}
-                    value={loginForm.email}
-                    onChange={(e) => handleLoginInputChange('email', e.target.value)}
-                    placeholder={t('auth.login.emailPlaceholder')}
-                    disabled={isSubmitting}
-                  />
-                  {loginErrors.email && (
-                    <span className={styles.errorText}>{loginErrors.email}</span>
-                  )}
-                </div>
-              ) : (
-                <div className={styles.formGroup}>
-                  <label htmlFor="login-phone" className={styles.label}>
-                    {t('auth.login.phone')}
-                  </label>
-                  <input
-                    id="login-phone"
-                    type="tel"
-                    className={`${styles.input} ${loginErrors.phone ? styles.inputError : ''}`}
-                    value={loginForm.phone}
-                    onChange={(e) => handleLoginInputChange('phone', e.target.value)}
-                    placeholder={t('auth.login.phonePlaceholder')}
-                    disabled={isSubmitting}
-                  />
-                  {loginErrors.phone && (
-                    <span className={styles.errorText}>{loginErrors.phone}</span>
-                  )}
-                </div>
-              )}
 
               <div className={styles.formGroup}>
                 <label htmlFor="login-password" className={styles.label}>
@@ -367,13 +312,13 @@ const LoginPage: React.FC = () => {
 
               <div className={styles.formGroup}>
                 <label htmlFor="signup-phone" className={styles.label}>
-                  {t('auth.signup.phone')}
+                  {t('auth.signup.phone')} <span className={styles.optional}>({t('auth.signup.optional')})</span>
                 </label>
                 <input
                   id="signup-phone"
                   type="tel"
                   className={`${styles.input} ${signUpErrors.phone ? styles.inputError : ''}`}
-                  value={signUpForm.phone}
+                  value={signUpForm.phone || ''}
                   onChange={(e) => handleSignUpInputChange('phone', e.target.value)}
                   placeholder={t('auth.signup.phonePlaceholder')}
                   disabled={isSubmitting}

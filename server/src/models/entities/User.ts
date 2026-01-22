@@ -14,7 +14,7 @@ export interface UserDatabaseEntity {
 export interface UserCreateArgs {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   password: string;
   color_theme: string;
   language: string;

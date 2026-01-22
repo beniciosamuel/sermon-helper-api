@@ -186,6 +186,7 @@
       "phone": "Phone",
       "phonePlaceholder": "+1 (555) 123-4567",
       "phoneRequired": "Phone is required",
+      "optional": "Optional",
       "password": "Password",
       "passwordPlaceholder": "Create a password",
       "confirmPassword": "Confirm Password",

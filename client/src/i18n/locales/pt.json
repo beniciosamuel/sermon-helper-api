@@ -186,6 +186,7 @@
       "phone": "Telefone",
       "phonePlaceholder": "+55 (11) 99999-9999",
       "phoneRequired": "Telefone é obrigatório",
+      "optional": "Opcional",
       "password": "Senha",
       "passwordPlaceholder": "Crie uma senha",
       "confirmPassword": "Confirmar Senha",

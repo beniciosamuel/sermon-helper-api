@@ -2,15 +2,14 @@ import { getTrpcClient, TrpcService } from './trpc/client';
 import { setCookie, getCookie, deleteCookie } from '../utils/cookies';
 
 export interface LoginCredentials {
-  email?: string;
-  phone?: string;
+  email: string;
   password: string;
 }
 
 export interface SignUpData {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   password: string;
   confirmPassword: string;
   color_theme?: 'light' | 'dark';
@@ -30,14 +29,13 @@ export interface AuthResponse {
 
 class AuthService {
   /**
-   * Authenticate user with email, phone, and password
+   * Authenticate user with email and password
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       const trpc = await getTrpcClient();
       const result = await trpc.user.authenticate.mutate({
-        email: credentials.email || '',
-        phone: credentials.phone || '',
+        email: credentials.email,
         password: credentials.password,
       });
 
