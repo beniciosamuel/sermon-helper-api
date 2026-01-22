@@ -85,9 +85,10 @@ export async function authMiddleware(
   next: NextFunction
 ): Promise<void> {
   try {
+    console.log('authMiddleware', req.headers.authorization);
     // Extract token from Authorization header
     const token = extractBearerToken(req.headers.authorization);
-
+    console.log('token', token);
     if (!token) {
       res.status(401).json({
         error: 'Unauthorized',

@@ -81,11 +81,12 @@ class TrpcServiceClass {
           url: trpcUrl,
           /**
            * Custom headers function
+           * Reads token from cookie and sends it in Authorization header
            * Only adds Authorization header if token exists
            * Content-Type is handled by tRPC automatically
            */
           headers: () => {
-            const token = authService.getToken();
+            const token = authService.getToken(); // Reads from cookie
             if (token) {
               return {
                 Authorization: `Bearer ${token}`,

@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { router, publicProcedure } from '../../trpc';
+import { router, publicProcedure, protectedProcedure } from '../../trpc';
 import {
   createUserInputSchema,
   findByIdInputSchema,
@@ -142,6 +142,27 @@ export const userRouter = router({
         oauthToken: result.oauthToken,
       };
     }),
+
+  /**
+   * Get the current authenticated user
+   *
+   * @query
+   * @returns Current user data if authenticated
+   * @throws UNAUTHORIZED if not authenticated
+   */
+  getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+    // ctx.user is guaranteed to exist because we use protectedProcedure
+    return {
+      id: ctx.user.id,
+      full_name: ctx.user.full_name,
+      email: ctx.user.email,
+      phone: ctx.user.phone,
+      color_theme: ctx.user.color_theme,
+      lang: ctx.user.lang,
+      created_at: ctx.user.created_at,
+      updated_at: ctx.user.updated_at,
+    };
+  }),
 });
 
 /**

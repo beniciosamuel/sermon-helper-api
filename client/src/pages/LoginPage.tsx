@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { authService, LoginCredentials, SignUpData } from '../services/AuthService';
+import { useAuth } from '../context/AuthContext';
 import styles from '../styles/LoginPage.module.css';
 
 type LoginMethod = 'email' | 'phone';
@@ -14,10 +15,18 @@ interface Message {
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading: authLoading, checkAuth, login: setAuthUser } = useAuth();
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
   const [loginMethod, setLoginMethod] = useState<LoginMethod>('email');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
+
+  // Redirect to /bible if already authenticated
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/bible', { replace: true });
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   // Form state
   const [loginForm, setLoginForm] = useState<LoginCredentials>({
@@ -112,9 +121,22 @@ const LoginPage: React.FC = () => {
 
       const response = await authService.login(credentials);
       if (response.success) {
-        // Token is already stored by AuthService
-        // Navigate to home page after successful login
-        navigate('/bible');
+        // Token is already stored by AuthService in cookie
+        // Small delay to ensure cookie is set and tRPC client is ready
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Get full user data from server to update context
+        try {
+          const trpc = await import('../services/trpc/client').then((m) => m.getTrpcClient());
+          const userData = await trpc.user.getCurrentUser.query();
+          setAuthUser(userData);
+          // Navigate to home page after successful login
+          navigate('/bible');
+        } catch (error) {
+          // If getCurrentUser fails, still try to navigate (token might not be ready yet)
+          // The AuthContext will verify on next check
+          console.error('Failed to get user data after login:', error);
+          navigate('/bible');
+        }
       } else {
         setMessage({ type: 'error', text: response.message || t('auth.login.failed') });
       }
@@ -137,9 +159,22 @@ const LoginPage: React.FC = () => {
     try {
       const response = await authService.signUp(signUpForm);
       if (response.success) {
-        // Token is already stored by AuthService
-        // Navigate to home page after successful sign up
-        navigate('/bible');
+        // Token is already stored by AuthService in cookie
+        // Small delay to ensure cookie is set and tRPC client is ready
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Get full user data from server to update context
+        try {
+          const trpc = await import('../services/trpc/client').then((m) => m.getTrpcClient());
+          const userData = await trpc.user.getCurrentUser.query();
+          setAuthUser(userData);
+          // Navigate to home page after successful sign up
+          navigate('/bible');
+        } catch (error) {
+          // If getCurrentUser fails, still try to navigate (token might not be ready yet)
+          // The AuthContext will verify on next check
+          console.error('Failed to get user data after signup:', error);
+          navigate('/bible');
+        }
       } else {
         setMessage({ type: 'error', text: response.message || t('auth.signup.failed') });
       }

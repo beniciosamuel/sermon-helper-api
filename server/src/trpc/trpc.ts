@@ -85,7 +85,6 @@ const authMiddleware = middleware(async ({ ctx, next }) => {
   // Extract token from Authorization header
   const authHeader = ctx.req.headers.authorization;
   const token = extractBearerToken(authHeader);
-
   if (!token) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',

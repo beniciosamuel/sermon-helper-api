@@ -24,7 +24,7 @@ CREATE TABLE users (
 CREATE TABLE oauth_token (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    oath_token TEXT NOT NULL,
+    oauth_token TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,

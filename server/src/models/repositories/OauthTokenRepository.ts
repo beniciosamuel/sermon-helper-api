@@ -11,7 +11,7 @@ export class OauthTokenRepository extends OauthToken {
     const oauthToken = await context.db
       .insert({
         user_id,
-        oath_token: await this.generateToken(),
+        oauth_token: await this.generateToken(),
       })
       .into('oauth_token')
       .returning('*');
@@ -20,13 +20,19 @@ export class OauthTokenRepository extends OauthToken {
   }
 
   async regenerate(context: Context): Promise<boolean> {
+    const newToken = await OauthTokenRepository.generateToken();
     const updated = await context
       .db('oauth_token')
       .where('id', this.id)
       .update({
-        oath_token: await OauthTokenRepository.generateToken(),
+        oauth_token: newToken,
         updated_at: new Date().toISOString(),
       });
+
+    // Update the instance's oauth_token property
+    if (updated > 0) {
+      this.oauth_token = newToken;
+    }
 
     return updated > 0;
   }
@@ -70,7 +76,7 @@ export class OauthTokenRepository extends OauthToken {
   ): Promise<OauthTokenRepository | null> {
     const token = await context
       .db('oauth_token')
-      .where('oath_token', oauthToken)
+      .where('oauth_token', oauthToken)
       .whereNull('deleted_at')
       .first();
     return token ? new OauthTokenRepository(token) : null;

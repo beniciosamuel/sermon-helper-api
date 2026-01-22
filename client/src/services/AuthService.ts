@@ -1,4 +1,5 @@
 import { getTrpcClient, TrpcService } from './trpc/client';
+import { setCookie, getCookie, deleteCookie } from '../utils/cookies';
 
 export interface LoginCredentials {
   email?: string;
@@ -43,6 +44,8 @@ class AuthService {
       // Store the token on successful login
       if (result.oauthToken) {
         this.setToken(result.oauthToken);
+        // Reset tRPC client to ensure it picks up the new token
+        TrpcService.reset();
       }
 
       return {
@@ -89,6 +92,8 @@ class AuthService {
       // Store the token on successful signup
       if (result.oauth_token) {
         this.setToken(result.oauth_token);
+        // Reset tRPC client to ensure it picks up the new token
+        TrpcService.reset();
       }
 
       return {
@@ -112,6 +117,7 @@ class AuthService {
   /**
    * Log out the current user
    * Clears the token and resets the tRPC client
+   * Note: Redirect to login page is handled by AuthContext
    */
   logout(): void {
     this.clearToken();
@@ -119,28 +125,28 @@ class AuthService {
   }
 
   /**
-   * Store token in localStorage
+   * Store token in cookie
    */
   setToken(token: string): void {
-    localStorage.setItem('auth_token', token);
+    setCookie('accessToken', token);
   }
 
   /**
-   * Get the current auth token
+   * Get the current auth token from cookie
    */
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return getCookie('accessToken');
   }
 
   /**
-   * Clear the stored auth token
+   * Clear the stored auth token from cookie
    */
   clearToken(): void {
-    localStorage.removeItem('auth_token');
+    deleteCookie('accessToken');
   }
 
   /**
-   * Check if user is authenticated
+   * Check if user is authenticated (checks if token exists in cookie)
    */
   isAuthenticated(): boolean {
     return this.getToken() !== null;
