@@ -4,7 +4,8 @@ import path from 'path';
 const SECRETS_DIR = path.join(process.cwd(), '.env');
 
 export class Secrets {
-  private env: 'development' | 'production' = 'development';
+  private env: 'development' | 'production' =
+    process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
   async setEnv(env: 'development' | 'production'): Promise<void> {
     if (this.env === 'development') {
@@ -41,6 +42,7 @@ export class Secrets {
     user: string;
     password: string;
     database: string;
+    connectionString?: string;
   }> {
     const secrets = await this.getEnvSecrets();
 
@@ -50,6 +52,7 @@ export class Secrets {
       user: secrets.DB_USER,
       password: secrets.DB_PASSWORD,
       database: secrets.DB_NAME,
+      ...(secrets.DATABASE_URL && { connectionString: secrets.DATABASE_URL }),
     };
   }
 

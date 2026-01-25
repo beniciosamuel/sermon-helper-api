@@ -228,5 +228,27 @@ describe('Secrets', () => {
 
       await expect(secrets.getDatabaseConfig()).rejects.toThrow();
     });
+
+    it('should include connectionString when DATABASE_URL is set (e.g. Neon)', async () => {
+      mockFs.readFileSync.mockReturnValue(
+        JSON.stringify({
+          development: {
+            DB_HOST: 'localhost',
+            DB_PORT: '5432',
+            DB_USER: 'dev_user',
+            DB_PASSWORD: 'dev_password',
+            DB_NAME: 'dev_database',
+            DATABASE_URL:
+              'postgresql://user:pass@ep-xxx-pooler.region.aws.neon.tech/neondb?sslmode=require',
+          },
+        })
+      );
+
+      const config = await secrets.getDatabaseConfig();
+
+      expect(config.connectionString).toBe(
+        'postgresql://user:pass@ep-xxx-pooler.region.aws.neon.tech/neondb?sslmode=require'
+      );
+    });
   });
 });

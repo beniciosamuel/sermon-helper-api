@@ -19,7 +19,7 @@ function createTrpcMiddleware(): ReturnType<typeof trpcExpress.createExpressMidd
     createContext,
     onError({ error, path }) {
       // eslint-disable-next-line no-console
-      console.error(`[tRPC Error] ${path}:`, error.message);
+      console.error(`[tRPC Error] ${path}:`, error);
     },
   });
 }
@@ -37,7 +37,7 @@ function createV1Router(): Router {
   router.use(
     '/trpc',
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    createTrpcMiddleware() as any // Type assertion needed due to Express version mismatch in monorepo
+    createTrpcMiddleware() as any
   );
 
   return router;

@@ -138,43 +138,82 @@ retrieve_secret() {
     print_success "Secret also exported as KERYGMA_SERVER environment variable"
 }
 
+# Resolve NODE_ENV from argument, environment, or default
+resolve_node_env() {
+    if [ -n "$1" ]; then
+        case "$1" in
+            development|production)
+                echo "$1"
+                ;;
+            *)
+                print_error "Invalid NODE_ENV: $1 (use 'development' or 'production')"
+                exit 1
+                ;;
+        esac
+    elif [ -n "${NODE_ENV}" ]; then
+        case "${NODE_ENV}" in
+            development|production)
+                echo "${NODE_ENV}"
+                ;;
+            *)
+                print_error "Invalid NODE_ENV: ${NODE_ENV} (use 'development' or 'production')"
+                exit 1
+                ;;
+        esac
+    else
+        echo "development"
+    fi
+}
+
 # Main execution
 main() {
+    # Ensure we always run from the server package directory (fixes nodemon when started from repo root)
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    SERVER_ROOT="$(dirname "$SCRIPT_DIR")"
+    cd "$SERVER_ROOT"
+
+    NODE_ENV_RESOLVED=$(resolve_node_env "$1")
+    export NODE_ENV="${NODE_ENV_RESOLVED}"
+
     echo "=========================================="
     echo "Starting Server with Google Cloud Setup"
+    echo "NODE_ENV=${NODE_ENV_RESOLVED}"
     echo "=========================================="
     echo ""
-    
+
     # Step 1: Check if gcloud is installed
     check_gcloud_installed
-    
+
     # Step 2: Check and authenticate if needed
     check_gcloud_auth
-    
+
     # Step 3: Retrieve secret and export as environment variable
     retrieve_secret
-    
+
     echo ""
     echo "=========================================="
     print_success "Google Cloud setup complete"
     echo "=========================================="
     echo ""
-    
+
     # Step 4: Build the server
     echo "Building server..."
     if ! npm run build; then
         print_error "Build failed"
         exit 1
     fi
-    
-    # Step 5: Start the server with the environment variable available
-    echo "Starting server..."
+
+    # Step 5: Start the server (behavior depends on NODE_ENV)
+    echo "Starting server (NODE_ENV=${NODE_ENV_RESOLVED})..."
     echo ""
-    
-    # Use exec to replace the shell process with nodemon, ensuring environment variables are passed
-    # Watch the compiled output directory and run the entry point
-    exec nodemon -q -w .dist .dist/index.js
+
+    if [ "${NODE_ENV_RESOLVED}" = "production" ]; then
+        exec node .dist/index.js
+    else
+        # Development: nodemon watches src/ and tsconfig.json (see nodemon.json); on change: build then run
+        exec nodemon
+    fi
 }
 
-# Run main function
-main
+# Run main function; first argument can be 'development' or 'production'
+main "$1"

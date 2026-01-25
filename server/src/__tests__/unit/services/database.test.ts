@@ -116,6 +116,28 @@ describe('DatabaseService', () => {
       });
     });
 
+    it('should use connectionString and ssl when config has connectionString (e.g. Neon)', async () => {
+      const MockSecrets = Secrets as jest.MockedClass<typeof Secrets>;
+      const neonUrl =
+        'postgresql://user:pass@ep-xxx-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require';
+      MockSecrets.prototype.getDatabaseConfig.mockResolvedValue({
+        ...mockDatabaseConfig,
+        connectionString: neonUrl,
+      });
+
+      const service = DatabaseService.getInstance();
+
+      await service.connect();
+
+      expect(lastKnexConfig).toMatchObject({
+        client: 'pg',
+        connection: {
+          connectionString: neonUrl,
+          ssl: { rejectUnauthorized: true },
+        },
+      });
+    });
+
     it('should throw DatabaseConnectionError when host is missing', async () => {
       const MockSecrets = Secrets as jest.MockedClass<typeof Secrets>;
       MockSecrets.prototype.getDatabaseConfig.mockResolvedValue({

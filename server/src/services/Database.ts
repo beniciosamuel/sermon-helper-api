@@ -3,6 +3,7 @@ import { Secrets } from './Secrets';
 
 /**
  * Database configuration interface
+ * Use either connectionString (e.g. Neon DATABASE_URL) or individual params.
  */
 export interface DatabaseConfig {
   host: string;
@@ -10,6 +11,8 @@ export interface DatabaseConfig {
   user: string;
   password: string;
   database: string;
+  /** When set (e.g. Neon), used as the connection; must include SSL if required. */
+  connectionString?: string;
 }
 
 /**
@@ -55,29 +58,41 @@ export class DatabaseService {
   }
 
   /**
-   * Create Knex configuration from database config
+   * Create Knex configuration from database config.
+   * When connectionString is set (e.g. Neon DATABASE_URL), uses it with SSL.
+   * Otherwise uses host/port/user/password/database; enables SSL for non-localhost.
    */
   private createKnexConfig(config: DatabaseConfig): Knex.Config {
-    // eslint-disable-next-line no-console
-    console.log(config);
+    const useSsl =
+      !!config.connectionString ||
+      (config.host && !['localhost', '127.0.0.1'].includes(config.host));
+
+    const connection: Knex.PgConnectionConfig = config.connectionString
+      ? {
+          connectionString: config.connectionString,
+          ssl: useSsl ? { rejectUnauthorized: false } : undefined,
+        }
+      : {
+          host: config.host,
+          port: config.port,
+          user: config.user,
+          password: config.password,
+          database: config.database,
+          ssl: useSsl ? { rejectUnauthorized: false } : undefined,
+        };
+
     return {
       client: 'pg',
-      connection: {
-        host: config.host,
-        port: config.port,
-        user: config.user,
-        password: config.password,
-        database: config.database,
-      },
+      connection,
       pool: {
-        min: 2,
+        min: 0,
         max: 10,
         acquireTimeoutMillis: 30000,
         createTimeoutMillis: 30000,
         destroyTimeoutMillis: 5000,
-        idleTimeoutMillis: 30000,
+        idleTimeoutMillis: 20000,
         reapIntervalMillis: 1000,
-        createRetryIntervalMillis: 100,
+        createRetryIntervalMillis: 200,
       },
       acquireConnectionTimeout: 10000,
     };
@@ -95,25 +110,30 @@ export class DatabaseService {
     try {
       const config = await this.getConfig();
 
-      // Validate configuration
-      if (!config.host || !config.user || !config.database) {
+      const hasConnectionString = !!config.connectionString?.trim();
+      const hasIndividual = !!(
+        config.host?.trim() &&
+        config.user?.trim() &&
+        config.database?.trim()
+      );
+
+      if (!hasConnectionString && !hasIndividual) {
         throw new DatabaseConnectionError(
-          'Missing required database configuration. Please ensure DB_HOST, DB_USER, and DB_NAME are set.'
+          'Missing database config. Set DATABASE_URL (e.g. Neon) or DB_HOST, DB_USER, DB_NAME.'
         );
       }
 
       const knexConfig = this.createKnexConfig(config);
       this.knexInstance = knex(knexConfig);
 
-      // Test the connection getting all tables
-      const tables = await this.knexInstance.raw('SELECT 1');
-      // eslint-disable-next-line no-console
-      console.log(tables);
+      await this.knexInstance.raw('SELECT 1');
       this.isConnected = true;
 
       // eslint-disable-next-line no-console
       console.log(
-        `Database connected successfully to ${config.host}:${config.port}/${config.database}`
+        hasConnectionString
+          ? `Database connected successfully (connection string)`
+          : `Database connected successfully to ${config.host}:${config.port}/${config.database}`
       );
 
       return this.knexInstance;
