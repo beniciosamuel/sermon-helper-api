@@ -48,7 +48,7 @@ export class Secrets {
 
     return {
       host: secrets.DB_HOST,
-      port: parseInt(secrets.DB_PORT) || 5432,
+      port: parseInt(secrets.DB_PORT ?? '5432', 10) || 5432,
       user: secrets.DB_USER,
       password: secrets.DB_PASSWORD,
       database: secrets.DB_NAME,

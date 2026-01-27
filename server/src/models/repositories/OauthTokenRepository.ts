@@ -21,13 +21,10 @@ export class OauthTokenRepository extends OauthToken {
 
   async regenerate(context: Context): Promise<boolean> {
     const newToken = await OauthTokenRepository.generateToken();
-    const updated = await context
-      .db('oauth_token')
-      .where('id', this.id)
-      .update({
-        oauth_token: newToken,
-        updated_at: new Date().toISOString(),
-      });
+    const updated = await context.db('oauth_token').where('id', this.id).update({
+      oauth_token: newToken,
+      updated_at: new Date().toISOString(),
+    });
 
     // Update the instance's oauth_token property
     if (updated > 0) {

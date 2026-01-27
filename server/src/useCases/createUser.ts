@@ -8,7 +8,11 @@ export async function createUser(
   context: Context
 ): Promise<{ success: boolean; user?: User; oauthToken?: string; error?: string }> {
   try {
-    const existingUser = await UserRepository.findByEmailOrPhone(args.email, args.phone || '', context);
+    const existingUser = await UserRepository.findByEmailOrPhone(
+      args.email,
+      args.phone || '',
+      context
+    );
 
     if (existingUser) {
       throw new Error('User already exists');

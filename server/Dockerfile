@@ -46,6 +46,10 @@ RUN npm ci --omit=dev && \
 # Note: tsconfig outputs to .dist directory
 COPY --from=builder /app/.dist ./.dist
 
+# Copy .env folder with secrets.json from build context
+# This is created by start-docker.sh before Docker build
+COPY --from=builder /app/.env ./.env
+
 # Change ownership to non-root user
 RUN chown -R nodejs:nodejs /app
 

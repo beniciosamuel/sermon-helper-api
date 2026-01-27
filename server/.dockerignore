@@ -1,45 +1,52 @@
 # Node modules (will be installed in container)
+
 node_modules
 npm-debug.log
 yarn-error.log
 
 # Build output (will be built in container)
+
 .dist
 dist
 
 # Development files
-.env
+
+# Note: .env directory is NOT ignored to allow .env/secrets.json to be copied (created by start-docker.sh)
+
 .env.local
-.env.*.local
+.env.\*.local
 
 # IDE files
+
 .vscode
 .idea
-*.swp
-*.swo
-*~
+_.swp
+_.swo
+\*~
 
 # OS files
+
 .DS_Store
 Thumbs.db
 
 # Git
+
 .git
 .gitignore
 
 # Documentation
+
 README.md
-*.md
+\*.md
 
 # Test files
-*.test.ts
-*.test.js
-__tests__
+
+_.test.ts
+_.test.js
+**tests**
 coverage
 
 # Logs
+
 logs
-*.log
-
-
-
+\*.log
