@@ -1,186 +1,157 @@
 # Docker Setup Guide
 
-This guide explains how to run the Kerygma API monorepo using Docker and Docker Compose.
+This guide explains how to run the application using Docker and Docker Compose. The setup includes **Backend** and **Frontend** only; no Postgres or Metabase. The database must be provided externally (e.g. Cloud SQL) via environment variables.
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Docker Engine 20.10+
 - Docker Compose 2.0+
 - At least 4GB of available RAM
 - At least 10GB of available disk space
 
-## 🚀 Quick Start
+## Quick Start
 
-1. **Copy environment variables:**
+### Server + Client (from repo root)
+
+1. Copy environment variables and set your database URL:
 
    ```bash
    cp .env.example .env
+   # Edit .env and set DATABASE_URL (e.g. your Cloud SQL or external Postgres connection string)
    ```
 
-2. **Edit `.env` file** with your desired configuration (especially passwords for production)
-
-3. **Build and start all services:**
+2. Build and start backend and frontend:
 
    ```bash
-   docker compose up --build
+   docker compose up --build -d
    ```
 
-4. **Access the services:**
-   - Frontend: http://localhost:5000
+3. Access the services:
+   - Frontend: http://localhost:4000
    - Backend API: http://localhost:3000
-   - Metabase: http://localhost:3002
 
-## 🏗️ Architecture
+### Server only (from server directory)
+
+To run only the backend (e.g. for development or Cloud Run–style single service):
+
+1. From the `server/` directory, ensure `DATABASE_URL` (or `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`) is set in your environment or in a `.env` file in `server/` or the current directory.
+
+2. Start the server:
+
+   ```bash
+   cd server
+   docker compose up -d
+   ```
+
+3. Backend API: http://localhost:3000
+
+## Architecture
 
 The Docker setup includes:
 
-- **Backend** (`server/`): Node.js/Express API with TypeScript
-- **Frontend** (`client/`): React application served via Nginx
-- **PostgreSQL**: Database (not exposed externally)
-- **Metabase**: Business intelligence and analytics (port 3002)
+- **Backend** (`server/`): Node.js/Express API with TypeScript. Runs with `NODE_ENV=production` in Docker.
+- **Frontend** (`client/`): React application served via Nginx. Exposed on port 4000 (root compose) with `NODE_ENV=production`.
 
-## 📁 Project Structure
+There is **no** PostgreSQL or Metabase in the Docker setup; the backend expects a database to be provided via environment variables.
+
+## Project structure
 
 ```
 .
-├── docker-compose.yml          # Main Docker Compose configuration
-├── .env.example                # Environment variables template
+├── docker-compose.yml          # Root: backend + frontend
+├── .env.example                # Environment variables template (if present)
 ├── server/
-│   ├── Dockerfile              # Backend container definition
+│   ├── Dockerfile
+│   ├── docker-compose.yml      # Server only: backend
 │   └── .dockerignore
 └── client/
-    ├── Dockerfile              # Frontend container definition
+    ├── Dockerfile
     └── .dockerignore
 ```
 
-## 🔧 Configuration
+## Configuration
 
-### Environment Variables
+### Environment variables
 
-All configuration is done through the `.env` file. Key variables:
+- **Backend (required for DB):** `DATABASE_URL` (full connection string), or `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`.
+- **Backend (optional):** `PORT` or `SERVER_PORT` (default 3000), `CORS_ORIGIN` (default http://localhost:4000), `NODE_ENV` (set to `production` in Docker).
+- **Frontend:** `REACT_APP_API_URL`, `REACT_APP_WS_URL` (e.g. http://localhost:3000 for local backend).
 
-- `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`: Database credentials
-- `REACT_APP_API_URL`: Frontend API endpoint
-- `REACT_APP_WS_URL`: WebSocket endpoint
-- `NODE_ENV`: Node.js environment (production/development)
+Docker Compose sets `NODE_ENV=production` for both backend and frontend.
 
-### Service Dependencies
+### Service dependencies
 
-- Backend waits for PostgreSQL to be healthy before starting
-- Frontend depends on Backend
-- Metabase depends on PostgreSQL
+- Frontend depends on Backend (root compose).
+- Backend has no service dependencies; it only needs a valid database reachable via the configured env vars.
 
-## 🔍 Health Checks
+## Health checks
 
-All services include health checks:
+- **Backend:** `GET /health`
+- **Frontend:** Nginx health check on container port 5000
 
-- **Backend**: `GET /health` endpoint
-- **Frontend**: Nginx health endpoint
-- **PostgreSQL**: `pg_isready` command
-- **Metabase**: API health endpoint
+## Development
 
-## 📊 Analytics
-
-### Metabase
-
-Metabase connects to PostgreSQL and can query the application database. Access at http://localhost:3002 and follow the setup wizard.
-
-## 🗄️ Data Persistence
-
-All data is persisted in Docker volumes:
-
-- `postgres_data`: Database data
-- `metabase_data`: Metabase configuration
-
-To remove all data:
+### Rebuild a specific service
 
 ```bash
-docker compose down -v
-```
-
-## 🛠️ Development
-
-### Rebuild a specific service:
-
-```bash
+# From repo root
 docker compose build backend
-docker compose up backend
+docker compose up -d backend
 ```
 
-### View logs:
+### View logs
 
 ```bash
-# All services
 docker compose logs -f
-
-# Specific service
 docker compose logs -f backend
 ```
 
-### Execute commands in containers:
+### Run a shell in the backend container
 
 ```bash
-# Backend shell
 docker compose exec backend sh
-
-# Database shell
-docker compose exec postgres psql -U postgres -d kerygma
 ```
 
-## 🔒 Security Best Practices
+## Deploy server to Google Cloud Run
 
-1. **Change default passwords** in `.env` for production
-2. **Never commit `.env`** to version control
-3. **Use secrets management** in production (Docker Swarm secrets, Kubernetes secrets, etc.)
-4. **Run containers as non-root** (already configured in Dockerfiles)
-5. **Keep images updated** regularly
+1. Build the server image (e.g. from repo root):
 
-## 🐛 Troubleshooting
+   ```bash
+   docker build -t gcr.io/YOUR_PROJECT_ID/kerygma-server ./server
+   ```
+
+2. Push to Artifact Registry (or Container Registry):
+
+   ```bash
+   docker push gcr.io/YOUR_PROJECT_ID/kerygma-server
+   ```
+
+3. Create a Cloud Run service from that image. Configure:
+   - **Port:** Cloud Run sets `PORT` (e.g. 8080); the server reads `process.env.PORT`, so no extra config is needed.
+   - **Environment variables / Secret Manager:** Set `DATABASE_URL` (e.g. Cloud SQL connection string) and any other required env vars (e.g. `CORS_ORIGIN`, secrets for email, etc.).
+
+4. If you use Secret Manager, map the secret to `DATABASE_URL` in the Cloud Run service.
+
+The server Dockerfile and app are already compatible with Cloud Run (single container, respects `PORT`).
+
+## Security and production
+
+1. Never commit `.env` or secrets to version control.
+2. Use Secret Manager or env vars for `DATABASE_URL` and other secrets in production.
+3. Containers run as non-root (configured in Dockerfiles).
+4. Keep images and base images updated.
+
+## Troubleshooting
 
 ### Port conflicts
 
-If ports are already in use, modify port mappings in `docker-compose.yml`:
+Change the host port in `docker-compose.yml` (e.g. `4000:5000` for frontend, `3000:3000` for backend).
 
-```yaml
-ports:
-  - '3000:3000' # Change first number to available port
-```
+### Backend can't connect to the database
 
-### Services not starting
+- Ensure `DATABASE_URL` (or `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`) is set in the environment used by the backend container.
+- For Cloud Run, ensure the service has network access to your database (e.g. VPC connector for Cloud SQL).
 
-Check logs:
+### Frontend can't reach the backend
 
-```bash
-docker compose logs [service-name]
-```
-
-### Database connection issues
-
-Ensure PostgreSQL is healthy:
-
-```bash
-docker compose ps postgres
-```
-
-### Frontend can't connect to backend
-
-Check that `REACT_APP_API_URL` and `REACT_APP_WS_URL` in `.env` match your setup.
-
-## 📝 Notes
-
-- The backend uses multi-stage builds for optimized production images
-- Frontend is built and served via Nginx for production
-- All services communicate via internal Docker network (`kerygma-network`)
-- PostgreSQL is not exposed externally for security
-
-## 🚀 Production Deployment
-
-For production:
-
-1. Use environment-specific `.env` files
-2. Enable SSL/TLS (use reverse proxy like Traefik or Nginx)
-3. Set up proper backup strategy for volumes
-4. Configure resource limits in `docker-compose.yml`
-5. Use Docker secrets for sensitive data
-6. Set up log aggregation
-7. Configure monitoring alerts
+Set `REACT_APP_API_URL` and `REACT_APP_WS_URL` to the backend URL (e.g. `http://localhost:3000` for local). For production, use the public backend URL; rebuild the frontend image if these are build-time args.
