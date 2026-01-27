@@ -12,7 +12,11 @@ import { authMiddleware, AuthenticatedRequest } from './middlewares';
 const app = express();
 const server = createServer(app);
 
-const PORT = process.env.SERVER_PORT || 3000;
+// Port configuration:
+// - In Docker/Cloud Run: PORT env var (defaults to 8080 in Dockerfile)
+// - Local development: SERVER_PORT env var (defaults to 3000)
+// PORT takes precedence to ensure Docker always uses 8080
+const PORT = Number(process.env.PORT || process.env.SERVER_PORT || 3000);
 
 // Middleware
 app.use(
@@ -92,11 +96,12 @@ app.get('/createtestuser', async (req: Request, res: Response) => {
   res.status(200).json(response);
 });
 
-server.listen(PORT, () => {
+// Listen on 0.0.0.0 to accept connections from outside the container
+server.listen(PORT, '0.0.0.0', () => {
   // eslint-disable-next-line no-console
   console.log(`Server is running on port ${PORT}`);
   // eslint-disable-next-line no-console
-  console.log(`tRPC endpoint available at: http://localhost:${PORT}/v1/trpc`);
+  console.log(`tRPC endpoint available at: http://0.0.0.0:${PORT}/v1/trpc`);
   // eslint-disable-next-line no-console
-  console.log(`Protected API routes available at: http://localhost:${PORT}/api`);
+  console.log(`Protected API routes available at: http://0.0.0.0:${PORT}/api`);
 });

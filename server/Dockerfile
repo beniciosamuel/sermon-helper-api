@@ -56,12 +56,16 @@ RUN chown -R nodejs:nodejs /app
 # Switch to non-root user
 USER nodejs
 
-# Expose port
-EXPOSE 3000
+# Expose port (Cloud Run uses 8080, but PORT env var can override)
+EXPOSE 8080
 
-# Health check
+# Health check (uses PORT env var, defaults to 8080)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+  CMD node -e "const port = process.env.PORT || 8080; require('http').get(`http://localhost:${port}/health`, (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Set PORT to 8080 for Docker/Cloud Run
+# This ensures the container always listens on 8080 unless Cloud Run sets PORT explicitly
+ENV PORT=8080
 
 # Start the application
 # tsconfig compiles src/index.ts to .dist/index.js
